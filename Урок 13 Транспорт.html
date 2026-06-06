@@ -1,0 +1,1748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Transport World! 🚗🚢🚲</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&family=Bubblegum+Sans&display=swap" rel="stylesheet">
+<style>
+/* ─────────────────────────────────────
+   ROOT & RESET
+───────────────────────────────────── */
+:root {
+  --sky: #7ECFF5;
+  --sky-dark: #4AAAD4;
+  --sun: #FFE066;
+  --cloud: #FFFFFF;
+  --grass: #6BCB5B;
+  --road: #8B8FA8;
+  --road-line: #FFE066;
+  --water: #3BA7D6;
+  --sand: #F5D87A;
+
+  --car-red: #FF5252;
+  --bus-yellow: #FFD600;
+  --bike-green: #4CAF50;
+  --train-blue: #3F7FD4;
+  --boat-orange: #FF8C42;
+
+  --bg: #F0F9FF;
+  --card: #FFFFFF;
+  --ink: #1C2536;
+  --muted: #8090B0;
+  --correct: #4CAF50;
+  --wrong: #FF5252;
+
+  --r: 18px;
+  --shadow: 0 6px 24px rgba(28,37,54,0.10);
+}
+*, *::before, *::after { box-sizing: border-box; margin:0; padding:0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Baloo 2', cursive;
+  background: var(--bg);
+  color: var(--ink);
+  overflow-x: hidden;
+}
+
+/* ─────────────────────────────────────
+   SCENE — SKY & ROAD
+───────────────────────────────────── */
+.scene {
+  position: relative;
+  width: 100%;
+  height: 320px;
+  overflow: hidden;
+  background: linear-gradient(180deg, var(--sky) 0%, #B8E8FA 62%, #C8F0B0 62%, var(--grass) 100%);
+  margin-bottom: 0;
+}
+
+/* Sun */
+.sun {
+  position: absolute;
+  top: 22px; right: 80px;
+  width: 70px; height: 70px;
+  background: var(--sun);
+  border-radius: 50%;
+  box-shadow: 0 0 0 14px rgba(255,224,102,0.22), 0 0 0 28px rgba(255,224,102,0.10);
+  animation: sunPulse 4s ease-in-out infinite;
+}
+@keyframes sunPulse { 0%,100%{box-shadow:0 0 0 14px rgba(255,224,102,0.22),0 0 0 28px rgba(255,224,102,0.10)} 50%{box-shadow:0 0 0 20px rgba(255,224,102,0.28),0 0 0 38px rgba(255,224,102,0.12)} }
+
+/* Clouds */
+.cloud {
+  position: absolute;
+  background: white;
+  border-radius: 50px;
+  animation: cloudDrift linear infinite;
+}
+.cloud::before, .cloud::after {
+  content:''; position:absolute;
+  background: white; border-radius: 50%;
+}
+.c1 { width:110px; height:38px; top:28px; left:-130px; animation-duration:22s; animation-delay:0s; }
+.c1::before { width:56px; height:56px; top:-30px; left:14px; }
+.c1::after  { width:42px; height:42px; top:-22px; left:52px; }
+.c2 { width:80px; height:28px; top:55px; left:-100px; animation-duration:30s; animation-delay:4s; opacity:0.8; }
+.c2::before { width:38px; height:38px; top:-22px; left:10px; }
+.c2::after  { width:28px; height:28px; top:-16px; left:38px; }
+.c3 { width:130px; height:42px; top:14px; left:-160px; animation-duration:26s; animation-delay:10s; }
+.c3::before { width:64px; height:64px; top:-36px; left:18px; }
+.c3::after  { width:46px; height:46px; top:-26px; left:68px; }
+@keyframes cloudDrift { from{transform:translateX(0)} to{transform:translateX(calc(100vw + 200px))} }
+
+/* Road strip */
+.road-strip {
+  position: absolute;
+  bottom: 54px; left:0; right:0;
+  height: 68px;
+  background: var(--road);
+  border-top: 4px solid #70748A;
+  border-bottom: 4px solid #70748A;
+}
+.road-line {
+  position:absolute; top:50%; left:0; right:0;
+  height: 5px; margin-top:-2.5px;
+  background: repeating-linear-gradient(90deg, var(--road-line) 0, var(--road-line) 38px, transparent 38px, transparent 70px);
+  animation: roadScroll 1.4s linear infinite;
+}
+@keyframes roadScroll { from{background-position:0 0} to{background-position:-108px 0} }
+
+/* Grass strip */
+.grass-strip {
+  position: absolute;
+  bottom: 0; left:0; right:0; height:54px;
+  background: var(--grass);
+}
+/* Little flowers */
+.flower {
+  position:absolute; bottom:14px;
+  width:14px; height:14px;
+  background: #FF8FA3;
+  border-radius:50%;
+  box-shadow: 0 0 0 4px white, 0 0 0 5px #FF8FA3;
+}
+.flower::after { content:''; position:absolute; top:14px; left:4px; width:6px; height:14px; background:#4CAF50; border-radius:0 0 3px 3px; }
+
+/* ─────────────────────────────────────
+   CSS VEHICLES
+───────────────────────────────────── */
+.vehicle { position:absolute; bottom:54px; }
+
+/* ── CAR ── */
+.car-wrap {
+  animation: carDrive 7s linear infinite;
+  left:-180px; bottom:58px;
+}
+@keyframes carDrive { 0%{transform:translateX(0)} 100%{transform:translateX(calc(100vw + 220px))} }
+
+.car {
+  position:relative; width:120px; height:52px;
+}
+.car-body {
+  position:absolute; bottom:0; left:0;
+  width:120px; height:34px;
+  background: var(--car-red);
+  border-radius: 8px 8px 6px 6px;
+}
+.car-top {
+  position:absolute; bottom:28px; left:18px;
+  width:72px; height:30px;
+  background: #FF7373;
+  border-radius: 14px 14px 0 0;
+}
+.car-win {
+  position:absolute; bottom:32px; left:24px;
+  width:28px; height:18px;
+  background:#A8E6FF; border-radius:6px 6px 0 0;
+}
+.car-win2 {
+  position:absolute; bottom:32px; left:56px;
+  width:28px; height:18px;
+  background:#A8E6FF; border-radius:6px 6px 0 0;
+}
+.car-wheel {
+  position:absolute; bottom:-10px;
+  width:24px; height:24px;
+  background:#2C3E50; border-radius:50%;
+  border:3px solid #8090B0;
+  animation: wheelSpin 0.4s linear infinite;
+}
+@keyframes wheelSpin { from{transform:rotate(0)} to{transform:rotate(360deg)} }
+.car-wheel::after { content:''; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:8px; height:8px; background:#8090B0; border-radius:50%; }
+.wl { left:14px; }
+.wr { right:14px; }
+.car-light {
+  position:absolute; right:-6px; top:10px;
+  width:10px; height:8px;
+  background:var(--sun); border-radius:0 4px 4px 0;
+  box-shadow: 0 0 8px 3px rgba(255,224,102,0.5);
+}
+
+/* ── BUS ── */
+.bus-wrap {
+  animation: busDrive 12s linear infinite;
+  animation-delay:3s;
+  left:-240px; bottom:58px;
+}
+@keyframes busDrive { 0%{transform:translateX(0)} 100%{transform:translateX(calc(100vw + 280px))} }
+
+.bus {
+  position:relative; width:180px; height:70px;
+}
+.bus-body {
+  position:absolute; bottom:0; left:0;
+  width:180px; height:56px;
+  background:var(--bus-yellow);
+  border-radius:10px 10px 6px 6px;
+}
+.bus-front {
+  position:absolute; bottom:0; left:0;
+  width:28px; height:56px;
+  background:#E6C200;
+  border-radius:10px 0 0 6px;
+}
+.bus-top-stripe {
+  position:absolute; bottom:46px; left:0; right:0;
+  height:10px; background:#E6C200;
+  border-radius:10px 10px 0 0;
+}
+.bus-win {
+  position:absolute; bottom:28px;
+  width:24px; height:22px;
+  background:#A8E6FF; border-radius:5px;
+  border:2px solid #E6C200;
+}
+.bw1{left:38px} .bw2{left:70px} .bw3{left:102px} .bw4{left:134px}
+.bus-door { position:absolute; bottom:0; left:44px; width:22px; height:32px; background:#E6C200; border-radius:4px 4px 0 0; border:2px solid #C8A800; }
+.bus-wheel {
+  position:absolute; bottom:-11px;
+  width:26px; height:26px;
+  background:#2C3E50; border-radius:50%;
+  border:3px solid #8090B0;
+  animation: wheelSpin 0.4s linear infinite;
+}
+.bus-wheel::after { content:''; position:absolute; top:50%;left:50%; transform:translate(-50%,-50%); width:8px;height:8px;background:#8090B0;border-radius:50%; }
+.bwl{left:24px} .bwr{right:24px}
+.bus-sign { position:absolute; top:8px; left:34px; background:#2C3E50; color:var(--sun); font-size:9px; font-weight:800; padding:2px 8px; border-radius:4px; }
+
+/* ── BICYCLE on grass ── */
+.bike-wrap {
+  position:absolute;
+  animation: bikeDrive 9s linear infinite;
+  animation-delay:1s;
+  left:-100px; bottom:2px;
+}
+@keyframes bikeDrive { 0%{transform:translateX(0)} 100%{transform:translateX(calc(100vw + 140px))} }
+
+.bike {
+  position:relative; width:72px; height:56px;
+}
+.bike-wheel {
+  position:absolute; bottom:0;
+  width:28px; height:28px;
+  border:4px solid #2C3E50; border-radius:50%;
+  animation: wheelSpin 0.35s linear infinite;
+}
+.bike-wheel::after { content:''; position:absolute; top:50%;left:50%;transform:translate(-50%,-50%); width:4px; height:4px; background:#2C3E50; border-radius:50%; }
+.bkwl{left:0} .bkwr{right:0}
+/* Frame */
+.bike-frame {
+  position:absolute;
+  bottom:14px; left:14px;
+  width:0; height:0;
+}
+/* SVG bike frame inline */
+.bike svg { position:absolute; bottom:0; left:0; overflow:visible; }
+
+/* RIDER */
+.rider { position:absolute; bottom:26px; left:22px; }
+.rider-body { width:14px; height:20px; background:var(--bike-green); border-radius:4px; }
+.rider-head { width:14px; height:14px; background:#FDBCB4; border-radius:50%; margin-bottom:2px; }
+.rider-helmet { width:16px; height:9px; background:#2C3E50; border-radius:8px 8px 0 0; position:absolute; top:-2px; left:-1px; }
+
+/* ── TRAIN (top scene, on track) ── */
+.train-wrap {
+  position:absolute;
+  top:30px; left:-400px;
+  animation: trainRide 18s linear infinite;
+  animation-delay:2s;
+}
+@keyframes trainRide { 0%{transform:translateX(0)} 100%{transform:translateX(calc(100vw + 500px))} }
+
+.train-scene { display:flex; align-items:flex-end; gap:4px; }
+.train-car {
+  position:relative;
+  width:88px; height:44px;
+}
+.tc-body {
+  position:absolute; bottom:0; left:0;
+  width:88px; height:36px;
+  background:var(--train-blue);
+  border-radius:8px;
+}
+.tc-win {
+  position:absolute; bottom:14px;
+  width:16px; height:14px;
+  background:#C8EEFF; border-radius:3px;
+  border:2px solid #2C5EA8;
+}
+.tw1{left:10px} .tw2{left:34px} .tw3{left:58px}
+.tc-wheel {
+  position:absolute; bottom:-7px;
+  width:16px; height:16px;
+  background:#1A2A40; border-radius:50%;
+  border:2px solid #8090B0;
+  animation: wheelSpin 0.3s linear infinite;
+}
+.twl{left:12px} .twr{right:12px}
+
+.train-engine {
+  position:relative;
+  width:110px; height:54px;
+}
+.te-body {
+  position:absolute; bottom:0; left:0;
+  width:110px; height:44px;
+  background:#2C5EA8;
+  border-radius:12px 16px 8px 8px;
+}
+.te-front {
+  position:absolute; bottom:0; right:0;
+  width:24px; height:44px;
+  background:#1E4080;
+  border-radius:0 16px 8px 0;
+}
+.te-cab {
+  position:absolute; bottom:28px; left:8px;
+  width:50px; height:26px;
+  background:#3F7FD4;
+  border-radius:8px 8px 0 0;
+}
+.te-win {
+  position:absolute; bottom:30px; left:14px;
+  width:18px; height:16px;
+  background:#C8EEFF; border-radius:4px;
+}
+.te-smoke {
+  position:absolute; bottom:54px; left:18px;
+  width:10px; height:10px;
+  background:rgba(200,210,220,0.8);
+  border-radius:50%;
+  animation: smokePuff 1.2s ease-out infinite;
+}
+.te-smoke2 { left:28px; animation-delay:0.4s; }
+.te-smoke3 { left:38px; animation-delay:0.8s; }
+@keyframes smokePuff { 0%{transform:translateY(0) scale(1);opacity:0.8} 100%{transform:translateY(-28px) scale(2.4);opacity:0} }
+.te-wheel {
+  position:absolute; bottom:-8px;
+  width:20px; height:20px;
+  background:#1A2A40; border-radius:50%;
+  border:3px solid #8090B0;
+  animation: wheelSpin 0.3s linear infinite;
+}
+.tel{left:14px} .ter{right:20px}
+.te-light { position:absolute; right:-8px; top:14px; width:12px; height:10px; background:var(--sun); border-radius:0 5px 5px 0; box-shadow:0 0 10px 4px rgba(255,224,102,0.5); }
+
+/* ── BOAT (water strip) ── */
+.water-strip {
+  position:absolute;
+  bottom:118px; left:0; right:0;
+  height:42px;
+  background: linear-gradient(180deg,#60C8E8 0%,#3BA7D6 100%);
+  border-top: 3px solid rgba(255,255,255,0.4);
+}
+.wave {
+  position:absolute; top:4px; left:0; right:0;
+  height:6px;
+  background: repeating-linear-gradient(90deg, transparent 0, transparent 18px, rgba(255,255,255,0.3) 18px, rgba(255,255,255,0.3) 36px);
+  animation: waveAnim 1.2s linear infinite;
+}
+@keyframes waveAnim { from{background-position:0 0} to{background-position:-36px 0} }
+
+.boat-wrap {
+  position:absolute;
+  bottom:2px; left:-180px;
+  animation: boatSail 14s linear infinite;
+  animation-delay:0.5s;
+}
+@keyframes boatSail { 0%{transform:translateX(0)} 100%{transform:translateX(calc(100vw + 220px))} }
+
+.boat { position:relative; width:120px; height:60px; }
+.boat-hull {
+  position:absolute; bottom:0; left:10px;
+  width:100px; height:22px;
+  background:var(--boat-orange);
+  border-radius: 8px 8px 40px 40px / 8px 8px 26px 26px;
+  border-bottom: 4px solid #CC6A1A;
+}
+.boat-cabin {
+  position:absolute; bottom:20px; left:26px;
+  width:54px; height:26px;
+  background:#FF9A56;
+  border-radius:10px 10px 0 0;
+}
+.boat-win { position:absolute; bottom:28px; left:36px; width:16px; height:14px; background:#A8E6FF; border-radius:4px; border:2px solid #FF7A2A; }
+.boat-win2 { left:56px; }
+.boat-mast { position:absolute; bottom:46px; left:52px; width:4px; height:44px; background:#8B5E3C; }
+.boat-sail {
+  position:absolute; bottom:58px; left:44px;
+  width:0; height:0;
+  border-left:0 solid transparent;
+  border-right:34px solid transparent;
+  border-bottom:52px solid rgba(255,255,255,0.92);
+}
+.boat-sail2 {
+  position:absolute; bottom:58px; left:56px;
+  width:0; height:0;
+  border-right:0 solid transparent;
+  border-left:26px solid transparent;
+  border-bottom:42px solid rgba(255,220,180,0.85);
+}
+.boat-flag { position:absolute; bottom:90px; left:56px; width:18px; height:12px; background:#FF5252; clip-path:polygon(0 0,100% 50%,0 100%); }
+
+/* ─────────────────────────────────────
+   SCENE LABELS
+───────────────────────────────────── */
+.scene-label {
+  position:absolute;
+  background:white; border-radius:100px;
+  padding:4px 12px; font-size:0.72em; font-weight:800;
+  color:var(--ink); box-shadow:0 2px 8px rgba(0,0,0,0.12);
+  pointer-events:none;
+  animation: floatLabel 3s ease-in-out infinite;
+}
+@keyframes floatLabel { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-5px)} }
+
+/* ─────────────────────────────────────
+   HEADER TITLE
+───────────────────────────────────── */
+.hero-title {
+  position:absolute;
+  top:14px; left:50%; transform:translateX(-50%);
+  text-align:center; z-index:10; white-space:nowrap;
+}
+.hero-title h1 {
+  font-family:'Bubblegum Sans', cursive;
+  font-size: clamp(1.8em,5vw,3em);
+  color:white;
+  text-shadow:0 3px 0 rgba(0,0,0,0.15), 0 6px 18px rgba(0,0,0,0.1);
+  line-height:1;
+}
+.hero-title p {
+  font-size:0.82em; color:rgba(255,255,255,0.9); font-weight:700; margin-top:4px;
+}
+
+/* ─────────────────────────────────────
+   MAIN CONTENT
+───────────────────────────────────── */
+main {
+  max-width:860px; margin:0 auto;
+  padding:32px 18px 80px;
+}
+
+/* ─────────────────────────────────────
+   VOCAB CARDS — Transport gallery
+───────────────────────────────────── */
+.section-head {
+  display:flex; align-items:center; gap:12px;
+  margin-bottom:6px;
+}
+.sec-num {
+  font-family:'Bubblegum Sans',cursive;
+  font-size:2.4em; color:rgba(28,37,54,0.12);
+  line-height:1; flex-shrink:0;
+}
+.sec-info h2 {
+  font-family:'Bubblegum Sans',cursive;
+  font-size:1.6em; color:var(--ink); line-height:1;
+}
+.sec-info p { font-size:0.84em; color:var(--muted); font-weight:600; margin-top:2px; }
+
+.vocab-strip {
+  display:flex; gap:14px; overflow-x:auto;
+  padding-bottom:8px; margin-bottom:32px;
+  scrollbar-width:thin; scrollbar-color:rgba(0,0,0,0.12) transparent;
+}
+.vocab-strip::-webkit-scrollbar { height:5px; }
+.vocab-strip::-webkit-scrollbar-thumb { background:rgba(0,0,0,0.12); border-radius:4px; }
+
+.vocab-card {
+  flex:0 0 136px;
+  background:white;
+  border-radius:20px;
+  padding:16px 12px 14px;
+  text-align:center;
+  box-shadow:0 4px 18px rgba(0,0,0,0.07);
+  border:3px solid transparent;
+  transition:transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+  cursor:default;
+}
+.vocab-card:hover { transform:translateY(-6px); box-shadow:0 10px 28px rgba(0,0,0,0.11); }
+.vocab-card .vc-emoji { font-size:2.8em; display:block; margin-bottom:8px; }
+.vocab-card .vc-word {
+  font-family:'Bubblegum Sans',cursive; font-size:1.2em;
+  color:var(--ink); display:block; margin-bottom:4px;
+}
+.vocab-card .vc-verb {
+  font-size:0.74em; font-weight:700; color:var(--muted);
+  background:#F4F6FF; border-radius:100px;
+  padding:3px 10px; display:inline-block;
+}
+.vc-car   { border-color:#FFB3B3; } .vc-car   .vc-word { color:var(--car-red); }
+.vc-bus   { border-color:#FFE699; } .vc-bus   .vc-word { color:#C8A000; }
+.vc-bike  { border-color:#B8EAB3; } .vc-bike  .vc-word { color:#2E7D32; }
+.vc-train { border-color:#B3D4FF; } .vc-train .vc-word { color:var(--train-blue); }
+.vc-boat  { border-color:#FFD5B3; } .vc-boat  .vc-word { color:var(--boat-orange); }
+
+/* ─────────────────────────────────────
+   DIVIDER
+───────────────────────────────────── */
+.divider {
+  height:3px; border-radius:3px;
+  background:linear-gradient(90deg,transparent,#C8DAEF,transparent);
+  margin:36px 0;
+}
+
+/* ─────────────────────────────────────
+   CARD
+───────────────────────────────────── */
+.card {
+  background:white; border-radius:var(--r);
+  padding:22px 24px; margin-bottom:14px;
+  box-shadow:var(--shadow);
+  border:2.5px solid transparent;
+  transition:border-color 0.2s, transform 0.15s;
+  position:relative; overflow:hidden;
+}
+.card:hover { transform:translateY(-2px); }
+.card-type {
+  font-size:0.7em; font-weight:800;
+  text-transform:uppercase; letter-spacing:0.1em;
+  margin-bottom:8px; display:inline-block;
+  padding:3px 12px; border-radius:100px;
+  background:#F0F4FF; color:var(--muted);
+}
+.card-q { font-size:0.96em; font-weight:700; line-height:1.55; margin-bottom:14px; }
+.card-q em { font-style:normal; color:#3F7FD4; font-weight:800; }
+
+/* Progress badge */
+.card-num {
+  position:absolute; top:14px; right:16px;
+  font-size:0.7em; font-weight:900; opacity:0.25;
+  letter-spacing:0.06em; text-transform:uppercase;
+}
+
+/* ─────────────────────────────────────
+   MULTIPLE CHOICE
+───────────────────────────────────── */
+.mc-grid {
+  display:grid; grid-template-columns:1fr 1fr; gap:8px;
+}
+@media(max-width:480px){ .mc-grid{grid-template-columns:1fr} }
+
+.mc-btn {
+  padding:10px 14px;
+  border:2.5px solid #E4ECF7;
+  border-radius:12px;
+  background:#FAFCFF;
+  font-family:'Baloo 2',cursive; font-size:0.9em; font-weight:700;
+  color:var(--ink); cursor:pointer; text-align:left;
+  transition:all 0.18s; line-height:1.4;
+}
+.mc-btn:hover:not(:disabled) { border-color:#80AADD; background:#EEF5FF; }
+.mc-btn.correct { border-color:var(--correct); background:#E8F9ED; color:#2E7D32; }
+.mc-btn.wrong   { border-color:var(--wrong);   background:#FFF0F0; color:#C62828; }
+
+/* ─────────────────────────────────────
+   MATCHING
+───────────────────────────────────── */
+.match-layout {
+  display:grid; grid-template-columns:1fr 1fr; gap:12px 28px;
+}
+@media(max-width:500px){ .match-layout{grid-template-columns:1fr} }
+
+.match-col-label {
+  font-size:0.7em; font-weight:800; text-transform:uppercase; letter-spacing:0.1em;
+  color:var(--muted); margin-bottom:8px; padding-bottom:6px;
+  border-bottom:2px solid #E4ECF7;
+}
+
+.match-item {
+  display:flex; align-items:center; gap:10px;
+  padding:10px 14px; margin-bottom:8px;
+  border:2.5px solid #E4ECF7; border-radius:12px;
+  background:#FAFCFF; font-size:0.88em; font-weight:700;
+  cursor:pointer; transition:all 0.18s; user-select:none;
+}
+.match-item:hover:not(.matched):not(.disabled) { border-color:#80AADD; background:#EEF5FF; }
+.match-item.selected { border-color:#4AAAD4; background:#E6F5FF; box-shadow:0 0 0 3px rgba(74,170,212,0.2); }
+.match-item.matched  { border-color:var(--correct); background:#E8F9ED; color:#2E7D32; cursor:default; }
+.match-item.wrong-shake { border-color:var(--wrong); background:#FFF0F0; animation:shake 0.35s ease; }
+@keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
+
+.m-badge {
+  width:28px; height:28px; flex-shrink:0; border-radius:8px;
+  background:#E4ECF7; border:2px solid #C8DAEF;
+  display:flex; align-items:center; justify-content:center;
+  font-size:0.8em; font-weight:900; color:var(--muted);
+  transition:all 0.18s;
+}
+.match-item.selected .m-badge { background:#4AAAD4; color:white; border-color:#4AAAD4; }
+.match-item.matched  .m-badge { background:var(--correct); color:white; border-color:var(--correct); }
+
+/* ─────────────────────────────────────
+   FILL IN BLANKS
+───────────────────────────────────── */
+.fill-item {
+  background:#FAFCFF; border:2.5px solid #E4ECF7; border-radius:12px;
+  padding:14px 18px; margin-bottom:10px;
+  transition:border-color 0.2s;
+}
+.fill-item:focus-within { border-color:#4AAAD4; }
+.fill-item.correct { border-color:var(--correct); background:#E8F9ED; }
+.fill-item.wrong   { border-color:var(--wrong);   background:#FFF0F0; }
+
+.fill-sentence {
+  font-size:0.92em; font-weight:700; line-height:1.6; color:var(--ink);
+  display:flex; flex-wrap:wrap; align-items:center; gap:6px;
+}
+.fill-sentence .hint { color:var(--muted); font-size:0.85em; font-style:italic; }
+
+.blank-inp {
+  border:none; border-bottom:2.5px solid #C8DAEF;
+  background:transparent; outline:none;
+  font-family:'Baloo 2',cursive; font-size:0.95em; font-weight:700;
+  color:var(--ink); width:130px; padding:0 4px;
+  transition:border-color 0.2s;
+}
+.blank-inp:focus { border-color:#4AAAD4; }
+.fill-item.correct .blank-inp { border-color:transparent; color:#2E7D32; }
+.fill-item.wrong   .blank-inp { border-color:transparent; color:#C62828; }
+
+.shown-ans {
+  display:none; margin-top:6px; font-size:0.8em; font-weight:700;
+  color:#3F7FD4; background:#E6F0FF; border-radius:8px;
+  padding:5px 10px; border-left:3px solid #3F7FD4;
+}
+.show-mode .shown-ans { display:block; }
+
+/* ─────────────────────────────────────
+   WORD ORDER
+───────────────────────────────────── */
+.word-bank { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:12px; }
+.w-chip {
+  padding:7px 15px; border-radius:100px;
+  font-weight:800; font-size:0.88em; cursor:pointer;
+  border:2.5px solid; transition:all 0.2s; user-select:none;
+}
+.w-chip:hover:not(.used) { transform:scale(1.06) translateY(-2px); }
+.w-chip.used { opacity:0.25; pointer-events:none; }
+
+.answer-line {
+  min-height:46px; border:2.5px dashed #C8DAEF; border-radius:12px;
+  padding:8px 12px; display:flex; flex-wrap:wrap; gap:7px; align-items:center;
+  background:#FAFCFF; margin-bottom:10px; transition:all 0.2s;
+}
+.answer-line.correct-line { border-color:var(--correct); border-style:solid; background:#E8F9ED; }
+.answer-line.wrong-line   { border-color:var(--wrong);   border-style:solid; background:#FFF0F0; }
+.answer-line .ph { color:#C8DAEF; font-size:0.85em; font-weight:700; }
+
+.placed-chip {
+  padding:6px 12px; border-radius:100px;
+  font-weight:800; font-size:0.85em;
+  cursor:pointer; border:2.5px solid; transition:all 0.18s;
+}
+.placed-chip:hover { transform:scale(0.95); }
+
+/* ─────────────────────────────────────
+   TRUE / FALSE
+───────────────────────────────────── */
+.tf-list { display:flex; flex-direction:column; gap:10px; }
+.tf-row {
+  display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+  padding:11px 16px; border:2.5px solid #E4ECF7; border-radius:12px;
+  background:#FAFCFF; transition:all 0.2s;
+}
+.tf-row.correct { border-color:var(--correct); background:#E8F9ED; }
+.tf-row.wrong   { border-color:var(--wrong);   background:#FFF0F0; }
+.tf-text { flex:1; font-size:0.9em; font-weight:700; line-height:1.45; }
+.tf-btns { display:flex; gap:7px; }
+.tf-btn {
+  padding:6px 16px; border-radius:9px; border:2.5px solid;
+  font-family:'Baloo 2',cursive; font-weight:800; font-size:0.82em; cursor:pointer;
+  transition:all 0.18s; background:white;
+}
+.tf-btn.yes { border-color:var(--correct); color:var(--correct); }
+.tf-btn.no  { border-color:var(--wrong);   color:var(--wrong); }
+.tf-btn.yes:hover:not(:disabled) { background:#E8F9ED; }
+.tf-btn.no:hover:not(:disabled)  { background:#FFF0F0; }
+.tf-btn.ok  { background:var(--correct); color:white; border-color:var(--correct); }
+.tf-btn.err { background:var(--wrong);   color:white; border-color:var(--wrong); }
+
+/* ─────────────────────────────────────
+   DRAG & DROP IMAGE MATCH
+───────────────────────────────────── */
+.drop-targets {
+  display:flex; flex-wrap:wrap; gap:12px; margin-bottom:14px;
+}
+.drop-target {
+  flex:1; min-width:120px;
+  border:2.5px dashed #C8DAEF; border-radius:14px;
+  padding:14px 10px;
+  text-align:center; font-size:0.8em; font-weight:800; color:var(--muted);
+  min-height:80px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px;
+  transition:all 0.2s; background:#FAFCFF;
+}
+.drop-target.drag-over { border-color:#4AAAD4; background:#EEF5FF; }
+.drop-target.matched   { border-color:var(--correct); border-style:solid; background:#E8F9ED; }
+.drop-target .placed-emoji { font-size:2em; }
+.drop-target .target-label { font-size:1em; color:var(--ink); }
+
+.drag-words { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px; }
+.drag-word {
+  padding:8px 16px; border-radius:100px; border:2.5px solid;
+  font-weight:800; font-size:0.88em; cursor:grab;
+  user-select:none; transition:all 0.2s;
+}
+.drag-word:active { cursor:grabbing; transform:scale(1.08); }
+.drag-word.dragging { opacity:0.4; }
+.drag-word.placed { opacity:0.3; pointer-events:none; }
+
+/* ─────────────────────────────────────
+   ACTION BAR
+───────────────────────────────────── */
+.action-bar { display:flex; gap:8px; flex-wrap:wrap; margin-top:18px; }
+
+.btn-check {
+  padding:10px 22px; border-radius:12px; border:none; cursor:pointer;
+  font-family:'Baloo 2',cursive; font-size:0.88em; font-weight:800;
+  background:#4AAAD4; color:white;
+  transition:all 0.2s; box-shadow:0 4px 14px rgba(74,170,212,0.3);
+}
+.btn-check:hover { filter:brightness(1.08); transform:translateY(-1px); }
+
+.btn-show {
+  padding:10px 22px; border-radius:12px; cursor:pointer;
+  font-family:'Baloo 2',cursive; font-size:0.88em; font-weight:800;
+  background:white; color:var(--muted); border:2.5px solid #C8DAEF;
+  transition:all 0.2s;
+}
+.btn-show:hover { border-color:#80AADD; color:#3F7FD4; }
+
+.btn-reset {
+  padding:10px 22px; border-radius:12px; cursor:pointer;
+  font-family:'Baloo 2',cursive; font-size:0.88em; font-weight:800;
+  background:white; color:var(--muted); border:2.5px solid #C8DAEF;
+  transition:all 0.2s;
+}
+.btn-reset:hover { border-color:#F5B8B3; color:#C62828; }
+
+/* ─────────────────────────────────────
+   SCORE / FEEDBACK
+───────────────────────────────────── */
+.score-bar {
+  position:sticky; top:0; z-index:50;
+  background:rgba(240,249,255,0.94); backdrop-filter:blur(10px);
+  border-bottom:2px solid rgba(74,170,212,0.15);
+  padding:9px 20px; display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+}
+.score-pill {
+  display:flex; align-items:center; gap:7px; background:white;
+  border-radius:100px; padding:5px 16px;
+  font-weight:800; font-size:0.88em;
+  box-shadow:0 2px 8px rgba(0,0,0,0.07);
+}
+.prog-track { flex:1; min-width:100px; height:10px; background:#E4ECF7; border-radius:10px; overflow:hidden; }
+.prog-fill  { height:100%; background:linear-gradient(90deg,#4AAAD4,#6BCB5B); border-radius:10px; width:0%; transition:width 0.5s ease; }
+
+.fb-msg {
+  margin-top:10px; padding:8px 14px; border-radius:10px;
+  font-size:0.85em; font-weight:700; display:none;
+}
+.fb-msg.ok  { display:block; background:#E8F9ED; color:#2E7D32; }
+.fb-msg.err { display:block; background:#FFF0F0; color:#C62828; }
+
+.sec-score { display:none; margin-top:12px; padding:12px 18px; border-radius:12px; font-weight:800; font-size:0.9em; background:#E8F9ED; color:#2E7D32; }
+.sec-score.show { display:flex; align-items:center; gap:10px; }
+.sec-score-big { font-family:'Bubblegum Sans',cursive; font-size:2em; }
+
+/* ─────────────────────────────────────
+   CONFETTI
+───────────────────────────────────── */
+.cp { position:fixed; width:9px; height:9px; pointer-events:none; z-index:9999; border-radius:2px; animation:cpFall 1.3s ease-in forwards; }
+@keyframes cpFall { 0%{transform:translateY(-10px) rotate(0);opacity:1} 100%{transform:translateY(100vh) rotate(540deg);opacity:0} }
+
+/* FINAL */
+.final-banner {
+  display:none; text-align:center; padding:40px 24px;
+  background:linear-gradient(135deg,#7ECFF5,#6BCB5B);
+  border-radius:24px; margin-top:24px; color:white;
+}
+.final-banner.show { display:block; }
+.final-big { font-family:'Bubblegum Sans',cursive; font-size:3.5em; }
+
+@media(max-width:500px){
+  .scene { height:240px; }
+  main { padding:20px 12px 60px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════
+  ANIMATED SCENE
+═══════════════════════════════════ -->
+<div class="scene">
+  <div class="sun"></div>
+  <div class="cloud c1"></div>
+  <div class="cloud c2"></div>
+  <div class="cloud c3"></div>
+
+  <div class="hero-title">
+    <h1>🌍 Transport World!</h1>
+    <p>Learn words and sentences about transport 🚗🚲🚢</p>
+  </div>
+
+  <!-- TRAIN -->
+  <div class="train-wrap">
+    <div class="train-scene">
+      <!-- engine -->
+      <div class="train-engine">
+        <div class="te-light"></div>
+        <div class="te-body"></div>
+        <div class="te-front"></div>
+        <div class="te-cab"></div>
+        <div class="te-win"></div>
+        <div class="te-smoke"></div>
+        <div class="te-smoke te-smoke2"></div>
+        <div class="te-smoke te-smoke3"></div>
+        <div class="te-wheel tel"></div>
+        <div class="te-wheel ter"></div>
+      </div>
+      <!-- carriage 1 -->
+      <div class="train-car">
+        <div class="tc-body"></div>
+        <div class="tc-win tw1"></div>
+        <div class="tc-win tw2"></div>
+        <div class="tc-win tw3"></div>
+        <div class="tc-wheel twl"></div>
+        <div class="tc-wheel twr"></div>
+      </div>
+      <!-- carriage 2 -->
+      <div class="train-car">
+        <div class="tc-body"></div>
+        <div class="tc-win tw1"></div>
+        <div class="tc-win tw2"></div>
+        <div class="tc-win tw3"></div>
+        <div class="tc-wheel twl"></div>
+        <div class="tc-wheel twr"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WATER & BOAT -->
+  <div class="water-strip">
+    <div class="wave"></div>
+    <div class="boat-wrap">
+      <div class="boat">
+        <div class="boat-hull"></div>
+        <div class="boat-cabin"></div>
+        <div class="boat-win"></div>
+        <div class="boat-win boat-win2"></div>
+        <div class="boat-mast"></div>
+        <div class="boat-sail"></div>
+        <div class="boat-sail2"></div>
+        <div class="boat-flag"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROAD with CAR and BUS -->
+  <div class="road-strip">
+    <div class="road-line"></div>
+
+    <!-- CAR -->
+    <div class="vehicle car-wrap">
+      <div class="car">
+        <div class="car-light"></div>
+        <div class="car-body"></div>
+        <div class="car-top"></div>
+        <div class="car-win"></div>
+        <div class="car-win2"></div>
+        <div class="car-wheel wl"></div>
+        <div class="car-wheel wr"></div>
+      </div>
+    </div>
+
+    <!-- BUS -->
+    <div class="vehicle bus-wrap">
+      <div class="bus">
+        <div class="bus-body"></div>
+        <div class="bus-front"></div>
+        <div class="bus-top-stripe"></div>
+        <div class="bus-win bw1"></div>
+        <div class="bus-win bw2"></div>
+        <div class="bus-win bw3"></div>
+        <div class="bus-win bw4"></div>
+        <div class="bus-door"></div>
+        <div class="bus-sign">BUS 7</div>
+        <div class="bus-wheel bwl"></div>
+        <div class="bus-wheel bwr"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GRASS / BIKE -->
+  <div class="grass-strip">
+    <div class="flower" style="left:12%"></div>
+    <div class="flower" style="left:28%"></div>
+    <div class="flower" style="left:52%"></div>
+    <div class="flower" style="left:74%"></div>
+    <div class="flower" style="left:88%"></div>
+
+    <!-- BIKE + RIDER -->
+    <div class="bike-wrap">
+      <div class="bike">
+        <svg width="72" height="32" viewBox="0 0 72 32" fill="none">
+          <!-- rear wheel spoke lines -->
+          <circle cx="14" cy="20" r="12" stroke="#2C3E50" stroke-width="3.5"/>
+          <circle cx="58" cy="20" r="12" stroke="#2C3E50" stroke-width="3.5"/>
+          <!-- frame -->
+          <line x1="14" y1="20" x2="36" y2="8"  stroke="#4CAF50" stroke-width="3" stroke-linecap="round"/>
+          <line x1="36" y1="8"  x2="58" y2="20" stroke="#4CAF50" stroke-width="3" stroke-linecap="round"/>
+          <line x1="36" y1="8"  x2="36" y2="20" stroke="#2E7D32" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="14" y1="20" x2="36" y2="20" stroke="#4CAF50" stroke-width="3" stroke-linecap="round"/>
+          <!-- handlebar -->
+          <line x1="56" y1="6"  x2="62" y2="6"  stroke="#2C3E50" stroke-width="3" stroke-linecap="round"/>
+          <line x1="59" y1="4"  x2="59" y2="10" stroke="#2C3E50" stroke-width="2.5" stroke-linecap="round"/>
+          <!-- seat -->
+          <line x1="30" y1="8"  x2="40" y2="8"  stroke="#8B5E3C" stroke-width="3" stroke-linecap="round"/>
+          <line x1="35" y1="8"  x2="35" y2="14" stroke="#6D4C41" stroke-width="2.5" stroke-linecap="round"/>
+          <!-- pedal -->
+          <circle cx="36" cy="20" r="4" stroke="#2C3E50" stroke-width="2" fill="#E4ECF7"/>
+        </svg>
+        <!-- rider -->
+        <div style="position:absolute;bottom:20px;left:28px">
+          <div style="position:relative">
+            <div style="width:14px;height:14px;background:#FDBCB4;border-radius:50%;"></div>
+            <div style="width:16px;height:9px;background:#2C3E50;border-radius:8px 8px 0 0;position:absolute;top:-2px;left:-1px;"></div>
+          </div>
+          <div style="width:13px;height:18px;background:#4CAF50;border-radius:4px;margin-top:1px;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+  SCORE BAR
+═══════════════════════════════════ -->
+<div class="score-bar">
+  <div class="score-pill">⭐ <span id="starNum">0</span></div>
+  <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
+  <div class="score-pill">✅ <span id="doneNum">0</span> / <span id="totalNum">0</span></div>
+</div>
+
+<main>
+
+<!-- ════════════════════
+  VOCAB GALLERY
+════════════════════ -->
+<section style="margin-bottom:36px">
+  <div class="section-head">
+    <div class="sec-num">00</div>
+    <div class="sec-info">
+      <h2>Transport Vocabulary</h2>
+      <p>Learn the words and the verbs we use with them!</p>
+    </div>
+  </div>
+  <div class="vocab-strip">
+    <div class="vocab-card vc-car">
+      <span class="vc-emoji">🚗</span>
+      <span class="vc-word">car</span>
+      <span class="vc-verb">I drive a car</span>
+    </div>
+    <div class="vocab-card vc-bus">
+      <span class="vc-emoji">🚌</span>
+      <span class="vc-word">bus</span>
+      <span class="vc-verb">I take the bus</span>
+    </div>
+    <div class="vocab-card vc-bike">
+      <span class="vc-emoji">🚲</span>
+      <span class="vc-word">bicycle</span>
+      <span class="vc-verb">I ride a bicycle</span>
+    </div>
+    <div class="vocab-card vc-train">
+      <span class="vc-emoji">🚂</span>
+      <span class="vc-word">train</span>
+      <span class="vc-verb">I catch the train</span>
+    </div>
+    <div class="vocab-card vc-boat">
+      <span class="vc-emoji">⛵</span>
+      <span class="vc-word">boat</span>
+      <span class="vc-verb">I sail a boat</span>
+    </div>
+  </div>
+
+  <!-- Verb highlight box -->
+  <div style="background:white;border-radius:18px;padding:20px 24px;box-shadow:var(--shadow);border:2.5px solid #E4ECF7;">
+    <div style="font-size:0.75em;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:14px">🔑 Key Verbs with Transport</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px">
+      <div style="background:#FFF0F0;border-radius:12px;padding:10px 14px">
+        <div style="font-size:1.4em">🚗</div>
+        <div style="font-weight:800;color:var(--car-red);margin:2px 0">drive</div>
+        <div style="font-size:0.82em;color:var(--muted);font-weight:600">I <strong>drive</strong> a car.</div>
+      </div>
+      <div style="background:#FFFBE0;border-radius:12px;padding:10px 14px">
+        <div style="font-size:1.4em">🚌</div>
+        <div style="font-weight:800;color:#C8A000;margin:2px 0">take / get on</div>
+        <div style="font-size:0.82em;color:var(--muted);font-weight:600">I <strong>take</strong> the bus.</div>
+      </div>
+      <div style="background:#E8F9ED;border-radius:12px;padding:10px 14px">
+        <div style="font-size:1.4em">🚲</div>
+        <div style="font-weight:800;color:#2E7D32;margin:2px 0">ride</div>
+        <div style="font-size:0.82em;color:var(--muted);font-weight:600">I <strong>ride</strong> a bicycle.</div>
+      </div>
+      <div style="background:#E6F0FF;border-radius:12px;padding:10px 14px">
+        <div style="font-size:1.4em">🚂</div>
+        <div style="font-weight:800;color:var(--train-blue);margin:2px 0">catch / take</div>
+        <div style="font-size:0.82em;color:var(--muted);font-weight:600">I <strong>catch</strong> the train.</div>
+      </div>
+      <div style="background:#FFF4EC;border-radius:12px;padding:10px 14px">
+        <div style="font-size:1.4em">⛵</div>
+        <div style="font-weight:800;color:var(--boat-orange);margin:2px 0">sail</div>
+        <div style="font-size:0.82em;color:var(--muted);font-weight:600">I <strong>sail</strong> a boat.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ════════════════════
+  EX 1 — MATCHING emojis ↔ words
+════════════════════ -->
+<section style="margin-bottom:36px">
+  <div class="section-head">
+    <div class="sec-num">01</div>
+    <div class="sec-info">
+      <h2>Match the emoji!</h2>
+      <p>Tap an emoji, then tap the correct word. 🖱️</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-type">Matching</div>
+    <div class="card-q">Match each transport emoji with its name:</div>
+    <div class="match-layout">
+      <div>
+        <div class="match-col-label">Emoji</div>
+        <div class="match-item" data-key="car"   onclick="matchSel(this,'left','m1')"><div class="m-badge">🚗</div> car</div>
+        <div class="match-item" data-key="bus"   onclick="matchSel(this,'left','m1')"><div class="m-badge">🚌</div> bus</div>
+        <div class="match-item" data-key="bike"  onclick="matchSel(this,'left','m1')"><div class="m-badge">🚲</div> bicycle</div>
+        <div class="match-item" data-key="train" onclick="matchSel(this,'left','m1')"><div class="m-badge">🚂</div> train</div>
+        <div class="match-item" data-key="boat"  onclick="matchSel(this,'left','m1')"><div class="m-badge">⛵</div> boat</div>
+      </div>
+      <div>
+        <div class="match-col-label">Definition</div>
+        <div class="match-item" data-key="train" onclick="matchSel(this,'right','m1')"><div class="m-badge">1</div>It runs on tracks and has carriages.</div>
+        <div class="match-item" data-key="boat"  onclick="matchSel(this,'right','m1')"><div class="m-badge">2</div>It floats on water and has sails.</div>
+        <div class="match-item" data-key="car"   onclick="matchSel(this,'right','m1')"><div class="m-badge">3</div>It has four wheels. Families use it.</div>
+        <div class="match-item" data-key="bike"  onclick="matchSel(this,'right','m1')"><div class="m-badge">4</div>It has two wheels. You use your legs.</div>
+        <div class="match-item" data-key="bus"   onclick="matchSel(this,'right','m1')"><div class="m-badge">5</div>It is big and carries many passengers.</div>
+      </div>
+    </div>
+    <div class="action-bar">
+      <button class="btn-show" onclick="showMatchAnswers('m1')">👁 Show Answers</button>
+      <button class="btn-reset" onclick="resetMatch('m1')">↺ Reset</button>
+    </div>
+    <div class="sec-score" id="sc-m1"></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ════════════════════
+  EX 2 — CHOOSE THE VERB
+════════════════════ -->
+<section style="margin-bottom:36px">
+  <div class="section-head">
+    <div class="sec-num">02</div>
+    <div class="sec-info">
+      <h2>Choose the verb!</h2>
+      <p>Pick the correct verb to go with each transport. 🎯</p>
+    </div>
+  </div>
+
+  <!-- Q1 -->
+  <div class="card" id="mc-q1">
+    <div class="card-num">#1</div>
+    <div class="card-type">Multiple Choice</div>
+    <div class="card-q">🚗 I _______ a car to work every morning.</div>
+    <div class="mc-grid" id="mc1">
+      <button class="mc-btn" onclick="mc('mc1',this,false,'fb-mc1','mc-q1')">ride</button>
+      <button class="mc-btn" onclick="mc('mc1',this,true,'fb-mc1','mc-q1')">drive</button>
+      <button class="mc-btn" onclick="mc('mc1',this,false,'fb-mc1','mc-q1')">sail</button>
+      <button class="mc-btn" onclick="mc('mc1',this,false,'fb-mc1','mc-q1')">catch</button>
+    </div>
+    <div class="fb-msg" id="fb-mc1"></div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="card" id="mc-q2">
+    <div class="card-num">#2</div>
+    <div class="card-type">Multiple Choice</div>
+    <div class="card-q">🚲 She _______ her bicycle to school every day.</div>
+    <div class="mc-grid" id="mc2">
+      <button class="mc-btn" onclick="mc('mc2',this,false,'fb-mc2','mc-q2')">drives</button>
+      <button class="mc-btn" onclick="mc('mc2',this,false,'fb-mc2','mc-q2')">sails</button>
+      <button class="mc-btn" onclick="mc('mc2',this,true,'fb-mc2','mc-q2')">rides</button>
+      <button class="mc-btn" onclick="mc('mc2',this,false,'fb-mc2','mc-q2')">takes</button>
+    </div>
+    <div class="fb-msg" id="fb-mc2"></div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="card" id="mc-q3">
+    <div class="card-num">#3</div>
+    <div class="card-type">Multiple Choice</div>
+    <div class="card-q">⛵ The captain _______ the boat across the sea.</div>
+    <div class="mc-grid" id="mc3">
+      <button class="mc-btn" onclick="mc('mc3',this,true,'fb-mc3','mc-q3')">sails</button>
+      <button class="mc-btn" onclick="mc('mc3',this,false,'fb-mc3','mc-q3')">drives</button>
+      <button class="mc-btn" onclick="mc('mc3',this,false,'fb-mc3','mc-q3')">rides</button>
+      <button class="mc-btn" onclick="mc('mc3',this,false,'fb-mc3','mc-q3')">catches</button>
+    </div>
+    <div class="fb-msg" id="fb-mc3"></div>
+  </div>
+
+  <!-- Q4 -->
+  <div class="card" id="mc-q4">
+    <div class="card-num">#4</div>
+    <div class="card-type">Multiple Choice</div>
+    <div class="card-q">🚌 We always _______ the bus when it rains.</div>
+    <div class="mc-grid" id="mc4">
+      <button class="mc-btn" onclick="mc('mc4',this,false,'fb-mc4','mc-q4')">ride</button>
+      <button class="mc-btn" onclick="mc('mc4',this,true,'fb-mc4','mc-q4')">take</button>
+      <button class="mc-btn" onclick="mc('mc4',this,false,'fb-mc4','mc-q4')">sail</button>
+      <button class="mc-btn" onclick="mc('mc4',this,false,'fb-mc4','mc-q4')">drive</button>
+    </div>
+    <div class="fb-msg" id="fb-mc4"></div>
+  </div>
+
+  <!-- Q5 -->
+  <div class="card" id="mc-q5">
+    <div class="card-num">#5</div>
+    <div class="card-type">Multiple Choice</div>
+    <div class="card-q">🚂 They _______ the train from London to Paris.</div>
+    <div class="mc-grid" id="mc5">
+      <button class="mc-btn" onclick="mc('mc5',this,false,'fb-mc5','mc-q5')">drive</button>
+      <button class="mc-btn" onclick="mc('mc5',this,false,'fb-mc5','mc-q5')">sail</button>
+      <button class="mc-btn" onclick="mc('mc5',this,true,'fb-mc5','mc-q5')">catch</button>
+      <button class="mc-btn" onclick="mc('mc5',this,false,'fb-mc5','mc-q5')">ride</button>
+    </div>
+    <div class="fb-msg" id="fb-mc5"></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ════════════════════
+  EX 3 — FILL IN THE BLANK
+════════════════════ -->
+<section style="margin-bottom:36px">
+  <div class="section-head">
+    <div class="sec-num">03</div>
+    <div class="sec-info">
+      <h2>Fill in the blank!</h2>
+      <p>Write the correct word (transport or verb) in each gap. ✏️</p>
+    </div>
+  </div>
+
+  <div class="card" id="fill-sec">
+    <div class="card-type">Fill in the blank</div>
+    <div class="card-q">Use the words from the box: <em>drives · bicycle · boat · train · takes · sails · car · ride · bus</em></div>
+
+    <div class="fill-item" id="fi1">
+      <div class="fill-sentence">
+        🚗 My dad <input class="blank-inp" id="b1" data-ans="drives" autocomplete="off"> his <input class="blank-inp" id="b2" data-ans="car" autocomplete="off" style="width:80px"> to the supermarket.
+      </div>
+      <div class="shown-ans">✓ drives · car</div>
+    </div>
+
+    <div class="fill-item" id="fi2">
+      <div class="fill-sentence">
+        🚌 I always <input class="blank-inp" id="b3" data-ans="takes" autocomplete="off"> the <input class="blank-inp" id="b4" data-ans="bus" autocomplete="off" style="width:70px"> to school.
+        <span class="hint">(he/she/I)</span>
+      </div>
+      <div class="shown-ans">✓ take · bus</div>
+    </div>
+
+    <div class="fill-item" id="fi3">
+      <div class="fill-sentence">
+        🚲 Can you <input class="blank-inp" id="b5" data-ans="ride" autocomplete="off"> a <input class="blank-inp" id="b6" data-ans="bicycle" autocomplete="off" style="width:100px">?
+      </div>
+      <div class="shown-ans">✓ ride · bicycle</div>
+    </div>
+
+    <div class="fill-item" id="fi4">
+      <div class="fill-sentence">
+        ⛵ The sailor <input class="blank-inp" id="b7" data-ans="sails" autocomplete="off"> his <input class="blank-inp" id="b8" data-ans="boat" autocomplete="off" style="width:80px"> every weekend.
+      </div>
+      <div class="shown-ans">✓ sails · boat</div>
+    </div>
+
+    <div class="fill-item" id="fi5">
+      <div class="fill-sentence">
+        🚂 We like to travel by <input class="blank-inp" id="b9" data-ans="train" autocomplete="off"> because it is fast.
+      </div>
+      <div class="shown-ans">✓ train</div>
+    </div>
+
+    <div class="action-bar">
+      <button class="btn-check" onclick="checkFill()">✓ Check Answers</button>
+      <button class="btn-show"  onclick="showFill()">👁 Show Answers</button>
+      <button class="btn-reset" onclick="resetFill()">↺ Reset</button>
+    </div>
+    <div class="sec-score" id="sc-fill"></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ════════════════════
+  EX 4 — WORD ORDER
+════════════════════ -->
+<section style="margin-bottom:36px">
+  <div class="section-head">
+    <div class="sec-num">04</div>
+    <div class="sec-info">
+      <h2>Make a sentence!</h2>
+      <p>Tap the words to put them in the right order. 🧩</p>
+    </div>
+  </div>
+
+  <div class="card" id="wo1">
+    <div class="card-num">#1</div>
+    <div class="card-type">Word Order</div>
+    <div class="card-q">🚗 Make a sentence with these words:</div>
+    <div class="word-bank" id="wb1"></div>
+    <div class="answer-line" id="al1"><span class="ph">Tap words above ↑</span></div>
+    <div class="fb-msg" id="fb-wo1"></div>
+  </div>
+
+  <div class="card" id="wo2">
+    <div class="card-num">#2</div>
+    <div class="card-type">Word Order</div>
+    <div class="card-q">🚲 Make a sentence with these words:</div>
+    <div class="word-bank" id="wb2"></div>
+    <div class="answer-line" id="al2"><span class="ph">Tap words above ↑</span></div>
+    <div class="fb-msg" id="fb-wo2"></div>
+  </div>
+
+  <div class="card" id="wo3">
+    <div class="card-num">#3</div>
+    <div class="card-type">Word Order</div>
+    <div class="card-q">🚂 Make a sentence with these words:</div>
+    <div class="word-bank" id="wb3"></div>
+    <div class="answer-line" id="al3"><span class="ph">Tap words above ↑</span></div>
+    <div class="fb-msg" id="fb-wo3"></div>
+  </div>
+
+  <div style="display:flex;gap:8px;margin-top:4px">
+    <button class="btn-show"  onclick="showAllWordOrders()">👁 Show Answers</button>
+    <button class="btn-reset" onclick="resetAllWordOrders()">↺ Reset All</button>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ════════════════════
+  EX 5 — TRUE / FALSE
+════════════════════ -->
+<section style="margin-bottom:36px">
+  <div class="section-head">
+    <div class="sec-num">05</div>
+    <div class="sec-info">
+      <h2>True or False?</h2>
+      <p>Read each sentence. Is it correct? ✅ / ❌</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-type">True or False</div>
+    <div class="card-q">Choose ✅ TRUE or ❌ FALSE for each sentence:</div>
+
+    <div class="tf-list">
+      <div class="tf-row" id="tf1">
+        <span class="tf-text">🚗 You <strong>ride</strong> a car.</span>
+        <div class="tf-btns">
+          <button class="tf-btn yes" onclick="tf('tf1',this,'yes','no')">✅ True</button>
+          <button class="tf-btn no"  onclick="tf('tf1',this,'no','no')">❌ False</button>
+        </div>
+      </div>
+      <div class="tf-row" id="tf2">
+        <span class="tf-text">🚲 You <strong>ride</strong> a bicycle.</span>
+        <div class="tf-btns">
+          <button class="tf-btn yes" onclick="tf('tf2',this,'yes','yes')">✅ True</button>
+          <button class="tf-btn no"  onclick="tf('tf2',this,'no','yes')">❌ False</button>
+        </div>
+      </div>
+      <div class="tf-row" id="tf3">
+        <span class="tf-text">⛵ You <strong>drive</strong> a boat.</span>
+        <div class="tf-btns">
+          <button class="tf-btn yes" onclick="tf('tf3',this,'yes','no')">✅ True</button>
+          <button class="tf-btn no"  onclick="tf('tf3',this,'no','no')">❌ False</button>
+        </div>
+      </div>
+      <div class="tf-row" id="tf4">
+        <span class="tf-text">🚌 A bus carries many passengers.</span>
+        <div class="tf-btns">
+          <button class="tf-btn yes" onclick="tf('tf4',this,'yes','yes')">✅ True</button>
+          <button class="tf-btn no"  onclick="tf('tf4',this,'no','yes')">❌ False</button>
+        </div>
+      </div>
+      <div class="tf-row" id="tf5">
+        <span class="tf-text">🚂 A train travels on water.</span>
+        <div class="tf-btns">
+          <button class="tf-btn yes" onclick="tf('tf5',this,'yes','no')">✅ True</button>
+          <button class="tf-btn no"  onclick="tf('tf5',this,'no','no')">❌ False</button>
+        </div>
+      </div>
+      <div class="tf-row" id="tf6">
+        <span class="tf-text">🚗 You need a driving licence to drive a car.</span>
+        <div class="tf-btns">
+          <button class="tf-btn yes" onclick="tf('tf6',this,'yes','yes')">✅ True</button>
+          <button class="tf-btn no"  onclick="tf('tf6',this,'no','yes')">❌ False</button>
+        </div>
+      </div>
+      <div class="tf-row" id="tf7">
+        <span class="tf-text">⛵ You <strong>sail</strong> a boat.</span>
+        <div class="tf-btns">
+          <button class="tf-btn yes" onclick="tf('tf7',this,'yes','yes')">✅ True</button>
+          <button class="tf-btn no"  onclick="tf('tf7',this,'no','yes')">❌ False</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="action-bar">
+      <button class="btn-show"  onclick="showTFAnswers()">👁 Show Answers</button>
+      <button class="btn-reset" onclick="resetTF()">↺ Reset</button>
+    </div>
+    <div class="sec-score" id="sc-tf"></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ════════════════════
+  EX 6 — COMPLETE THE SENTENCE
+════════════════════ -->
+<section style="margin-bottom:36px">
+  <div class="section-head">
+    <div class="sec-num">06</div>
+    <div class="sec-info">
+      <h2>Complete about YOU!</h2>
+      <p>Write sentences about how YOU travel. Use drive, ride, take, sail, catch. ✏️</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-type">Write about yourself</div>
+    <div class="card-q">Finish each sentence using your own ideas:</div>
+
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="background:#FAFCFF;border:2.5px solid #E4ECF7;border-radius:12px;padding:14px 18px">
+        <div style="font-weight:800;font-size:0.9em;margin-bottom:8px">🏠 → 🏫 How do you get to school?</div>
+        <div style="font-size:0.88em;font-weight:700;color:var(--muted);margin-bottom:6px">I <strong style="color:var(--ink)">_________</strong> to school by <strong style="color:var(--ink)">_________</strong>.</div>
+        <textarea style="width:100%;border:1.5px solid #C8DAEF;border-radius:8px;padding:8px 12px;font-family:'Baloo 2',cursive;font-size:0.88em;font-weight:600;color:var(--ink);background:#FAFCFF;outline:none;resize:vertical;min-height:54px;transition:border-color 0.2s" placeholder="Write your answer here..." onfocus="this.style.borderColor='#4AAAD4'" onblur="this.style.borderColor='#C8DAEF'"></textarea>
+      </div>
+
+      <div style="background:#FAFCFF;border:2.5px solid #E4ECF7;border-radius:12px;padding:14px 18px">
+        <div style="font-weight:800;font-size:0.9em;margin-bottom:8px">🏖️ How do you travel on holiday?</div>
+        <div style="font-size:0.88em;font-weight:700;color:var(--muted);margin-bottom:6px">On holiday, I travel by <strong style="color:var(--ink)">_________</strong>.</div>
+        <textarea style="width:100%;border:1.5px solid #C8DAEF;border-radius:8px;padding:8px 12px;font-family:'Baloo 2',cursive;font-size:0.88em;font-weight:600;color:var(--ink);background:#FAFCFF;outline:none;resize:vertical;min-height:54px;transition:border-color 0.2s" placeholder="Write your answer here..." onfocus="this.style.borderColor='#4AAAD4'" onblur="this.style.borderColor='#C8DAEF'"></textarea>
+      </div>
+
+      <div style="background:#FAFCFF;border:2.5px solid #E4ECF7;border-radius:12px;padding:14px 18px">
+        <div style="font-weight:800;font-size:0.9em;margin-bottom:8px">❤️ What is your favourite transport? Why?</div>
+        <textarea style="width:100%;border:1.5px solid #C8DAEF;border-radius:8px;padding:8px 12px;font-family:'Baloo 2',cursive;font-size:0.88em;font-weight:600;color:var(--ink);background:#FAFCFF;outline:none;resize:vertical;min-height:68px;transition:border-color 0.2s" placeholder="My favourite transport is _____ because ..." onfocus="this.style.borderColor='#4AAAD4'" onblur="this.style.borderColor='#C8DAEF'"></textarea>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════
+  FINAL SCORE
+════════════════════ -->
+<div style="text-align:center;margin-bottom:16px">
+  <button onclick="showFinal()" style="padding:14px 36px;border-radius:14px;border:none;cursor:pointer;font-family:'Bubblegum Sans',cursive;font-size:1.3em;background:linear-gradient(135deg,#7ECFF5,#6BCB5B);color:white;box-shadow:0 6px 20px rgba(107,203,91,0.35);transition:all 0.2s" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform=''">
+    🏆 See My Score!
+  </button>
+</div>
+
+<div class="final-banner" id="finalBanner">
+  <div class="final-big" id="finalBig">🌟</div>
+  <div style="font-family:'Bubblegum Sans',cursive;font-size:2em;margin-top:10px" id="finalTitle">Amazing!</div>
+  <div style="margin-top:8px;opacity:0.9;font-weight:700" id="finalSub"></div>
+</div>
+
+</main>
+
+<script>
+// ═══════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════
+let stars = 0, done = 0, total = 0;
+const tfDone = {}, mcDone = {}, inputDone = {};
+
+window.addEventListener('load', () => {
+  // count scorable items: 5 mc, fill blanks (9), tf (7), word orders (3), match (5)
+  total = 5 + 9 + 7 + 3 + 5;
+  document.getElementById('totalNum').textContent = total;
+
+  // init word orders
+  initWO('wb1','al1',
+    ['I','drive','my','car','every','day.'],
+    ['i drive my car every day'],
+    'I drive my car every day.',
+    'fb-wo1');
+  initWO('wb2','al2',
+    ['She','rides','her','bicycle','to','school.'],
+    ['she rides her bicycle to school'],
+    'She rides her bicycle to school.',
+    'fb-wo2');
+  initWO('wb3','al3',
+    ['We','catch','the','train','on','Sundays.'],
+    ['we catch the train on sundays'],
+    'We catch the train on Sundays.',
+    'fb-wo3');
+});
+
+function addStar() {
+  stars++; done++;
+  document.getElementById('starNum').textContent = stars;
+  document.getElementById('doneNum').textContent = done;
+  document.getElementById('progFill').style.width = Math.min(100, Math.round(done/total*100)) + '%';
+  confetti(2);
+}
+function addDone() {
+  done++;
+  document.getElementById('doneNum').textContent = done;
+  document.getElementById('progFill').style.width = Math.min(100, Math.round(done/total*100)) + '%';
+}
+
+// ═══════════════════════════════════════════
+//  MULTIPLE CHOICE
+// ═══════════════════════════════════════════
+function mc(mcId, btn, correct, fbId, cardId) {
+  if(mcDone[mcId]) return;
+  mcDone[mcId] = true;
+  document.querySelectorAll('#'+mcId+' .mc-btn').forEach(b=>b.disabled=true);
+  btn.classList.add(correct?'correct':'wrong');
+  const fb = document.getElementById(fbId);
+  fb.textContent = correct ? '🎉 Correct! Great job!' : '❌ Oops! Check the verb box above.';
+  fb.className = 'fb-msg '+(correct?'ok':'err');
+  correct ? addStar() : addDone();
+}
+
+// ═══════════════════════════════════════════
+//  MATCHING
+// ═══════════════════════════════════════════
+const matchState = {};
+function matchSel(el, side, gId) {
+  if(el.classList.contains('matched')) return;
+  if(!matchState[gId]) matchState[gId]={left:null,right:null,count:0};
+  const s = matchState[gId];
+  if(side==='left') {
+    document.querySelectorAll(`[onclick*="'left','${gId}'"]`).forEach(e=>{ if(!e.classList.contains('matched')) e.classList.remove('selected'); });
+    el.classList.toggle('selected');
+    s.left = el.classList.contains('selected') ? el : null;
+  } else {
+    document.querySelectorAll(`[onclick*="'right','${gId}'"]`).forEach(e=>{ if(!e.classList.contains('matched')) e.classList.remove('selected'); });
+    el.classList.toggle('selected');
+    s.right = el.classList.contains('selected') ? el : null;
+  }
+  if(s.left && s.right) {
+    if(s.left.dataset.key === s.right.dataset.key) {
+      s.left.classList.remove('selected'); s.left.classList.add('matched'); s.left.onclick=null;
+      s.right.classList.remove('selected'); s.right.classList.add('matched'); s.right.onclick=null;
+      s.count++;
+      addStar();
+      if(s.count===5) {
+        const sc = document.getElementById('sc-'+gId);
+        sc.innerHTML='<span class="sec-score-big">🎯 5/5</span> All matched!';
+        sc.classList.add('show');
+      }
+    } else {
+      const l=s.left, r=s.right;
+      l.classList.add('wrong-shake'); r.classList.add('wrong-shake');
+      setTimeout(()=>{ l.classList.remove('selected','wrong-shake'); r.classList.remove('selected','wrong-shake'); },500);
+    }
+    s.left=null; s.right=null;
+  }
+}
+
+function showMatchAnswers(gId) {
+  document.querySelectorAll(`[onclick*="'${gId}'"]`).forEach(el=>{
+    if(!el.classList.contains('matched')){ el.classList.add('matched'); el.onclick=null; }
+  });
+}
+function resetMatch(gId) {
+  matchState[gId]={left:null,right:null,count:0};
+  document.querySelectorAll(`[onclick*="'${gId}'"]`).forEach(el=>{
+    el.classList.remove('matched','selected','wrong-shake');
+  });
+  // re-attach onclick
+  document.querySelectorAll('#sc-'+gId).forEach(el=>{ el.classList.remove('show'); });
+  // crude re-attach: reload inline handlers by re-assigning
+  document.querySelectorAll('.match-item').forEach(el=>{
+    const oc = el.getAttribute('onclick');
+    if(oc && oc.includes(gId)){ el.onclick = ()=>eval(oc); }
+  });
+}
+
+// ═══════════════════════════════════════════
+//  FILL IN
+// ═══════════════════════════════════════════
+const fillAccept = {
+  b1:['drives','drive'], b2:['car'],
+  b3:['take','takes'], b4:['bus'],
+  b5:['ride','rides'], b6:['bicycle','bike'],
+  b7:['sails','sail'], b8:['boat'],
+  b9:['train']
+};
+const fillItems = {b1:'fi1',b2:'fi1',b3:'fi2',b4:'fi2',b5:'fi3',b6:'fi3',b7:'fi4',b8:'fi4',b9:'fi5'};
+
+function checkFill() {
+  let correct=0, answered=0;
+  Object.entries(fillAccept).forEach(([id, vals]) => {
+    const inp = document.getElementById(id);
+    if(!inp||inputDone[id]) return;
+    const v = inp.value.trim().toLowerCase();
+    if(!v) return;
+    answered++;
+    if(vals.includes(v)) {
+      inp.classList.add('correct'); inp.disabled=true;
+      correct++; inputDone[id]=true; addStar();
+    } else {
+      inp.classList.add('wrong');
+      setTimeout(()=>inp.classList.remove('wrong'),1800);
+    }
+  });
+  const sc=document.getElementById('sc-fill');
+  sc.innerHTML=`<span class="sec-score-big">✅ ${correct}</span> correct answers`;
+  sc.classList.add('show');
+}
+
+function showFill() {
+  document.querySelectorAll('.fill-item').forEach(fi=>fi.classList.add('show-mode'));
+  Object.entries(fillAccept).forEach(([id,vals])=>{
+    const inp=document.getElementById(id);
+    if(inp&&!inp.disabled){ inp.value=vals[0]; inp.classList.add('correct'); }
+  });
+}
+function resetFill() {
+  Object.keys(fillAccept).forEach(id=>{
+    const inp=document.getElementById(id);
+    if(inp){ inp.value=''; inp.className='blank-inp'; inp.disabled=false; delete inputDone[id]; }
+  });
+  document.querySelectorAll('.fill-item').forEach(fi=>fi.classList.remove('show-mode','correct','wrong'));
+  document.getElementById('sc-fill').classList.remove('show');
+}
+
+// ═══════════════════════════════════════════
+//  WORD ORDER
+// ═══════════════════════════════════════════
+const chipColors = ['#4AAAD4','#FF8C42','#6BCB5B','#FF5FA0','#9B5FE3','#FFD600','#FF5252'];
+const woState = {};
+
+function initWO(wbId, alId, words, accepted, displayAns, fbId) {
+  woState[wbId] = {alId, accepted, displayAns, fbId, placed:[], done:false, origWords:[...words]};
+  renderWB(wbId, words);
+}
+
+function renderWB(wbId, words) {
+  const s = woState[wbId];
+  const bank = document.getElementById(wbId);
+  bank.innerHTML='';
+  const shuffled=[...words].sort(()=>Math.random()-0.5);
+  shuffled.forEach((w,i)=>{
+    const chip=document.createElement('span');
+    chip.className='w-chip';
+    chip.textContent=w;
+    chip.dataset.word=w;
+    const col=chipColors[i%chipColors.length];
+    chip.style.background=col+'22';
+    chip.style.borderColor=col;
+    chip.style.color=col;
+    chip.onclick=()=>woAdd(wbId,chip,w,col);
+    bank.appendChild(chip);
+  });
+  renderAL(wbId);
+}
+
+function woAdd(wbId,chip,word,col){
+  const s=woState[wbId]; if(s.done) return;
+  chip.classList.add('used');
+  s.placed.push({word,col,chip});
+  renderAL(wbId);
+}
+
+function woRemove(wbId,idx){
+  const s=woState[wbId]; if(s.done) return;
+  s.placed[idx].chip.classList.remove('used');
+  s.placed.splice(idx,1);
+  renderAL(wbId);
+}
+
+function renderAL(wbId){
+  const s=woState[wbId];
+  const al=document.getElementById(s.alId);
+  al.innerHTML=''; al.classList.remove('correct-line','wrong-line');
+  if(!s.placed.length){ al.innerHTML='<span class="ph">Tap words above ↑</span>'; return; }
+  s.placed.forEach(({word,col},i)=>{
+    const ch=document.createElement('span');
+    ch.className='placed-chip';
+    ch.textContent=word;
+    ch.style.background=col+'22'; ch.style.borderColor=col; ch.style.color=col;
+    ch.onclick=()=>woRemove(wbId,i);
+    al.appendChild(ch);
+  });
+  if(s.placed.length===s.origWords.length) checkWO(wbId);
+}
+
+function checkWO(wbId){
+  const s=woState[wbId]; if(s.done) return;
+  const sentence=s.placed.map(p=>p.word.replace(/[.!?]/g,'')).join(' ').toLowerCase().trim();
+  const al=document.getElementById(s.alId);
+  const fb=document.getElementById(s.fbId);
+  if(s.accepted.includes(sentence)){
+    al.classList.add('correct-line');
+    fb.textContent='🎉 Perfect! '+s.displayAns;
+    fb.className='fb-msg ok';
+    s.done=true;
+    document.querySelectorAll('#'+wbId+' .w-chip').forEach(c=>c.onclick=null);
+    addStar();
+  } else {
+    al.classList.add('wrong-line');
+    fb.textContent='❌ Not quite! Try a different order. (Tap words to remove them.)';
+    fb.className='fb-msg err';
+    setTimeout(()=>{ al.classList.remove('wrong-line'); fb.className='fb-msg'; },1800);
+  }
+}
+
+function showAllWordOrders(){
+  ['wb1','wb2','wb3'].forEach(id=>{
+    const s=woState[id]; if(!s||s.done) return;
+    // clear and set correct
+    s.placed.forEach(p=>p.chip.classList.remove('used'));
+    s.placed=[];
+    // place correct order
+    const words = s.origWords;
+    const bank = document.getElementById(id);
+    words.forEach(w=>{
+      const chip=[...bank.children].find(c=>c.dataset.word===w&&!c.classList.contains('used'));
+      if(chip){ chip.classList.add('used'); s.placed.push({word:w,col:chip.style.color,chip}); }
+    });
+    s.done=true;
+    renderAL(id);
+    const al=document.getElementById(s.alId);
+    al.classList.add('correct-line');
+    const fb=document.getElementById(s.fbId);
+    fb.textContent='✓ '+s.displayAns;
+    fb.className='fb-msg ok';
+  });
+}
+
+function resetAllWordOrders(){
+  ['wb1','wb2','wb3'].forEach(id=>{
+    const s=woState[id]; if(!s) return;
+    s.placed=[]; s.done=false;
+    renderWB(id, s.origWords);
+    const fb=document.getElementById(s.fbId);
+    fb.className='fb-msg';
+  });
+}
+
+// ═══════════════════════════════════════════
+//  TRUE / FALSE
+// ═══════════════════════════════════════════
+const tfCorrect={tf1:'no',tf2:'yes',tf3:'no',tf4:'yes',tf5:'no',tf6:'yes',tf7:'yes'};
+const tfDoneMap={};
+
+function tf(rowId, btn, chosen, correct){
+  if(tfDoneMap[rowId]) return;
+  tfDoneMap[rowId]=true;
+  const row=document.getElementById(rowId);
+  row.querySelectorAll('.tf-btn').forEach(b=>b.disabled=true);
+  const ok=(chosen===correct);
+  btn.classList.add(ok?'ok':'err');
+  row.classList.add(ok?'correct':'wrong');
+  ok?addStar():addDone();
+}
+
+function showTFAnswers(){
+  Object.entries(tfCorrect).forEach(([rowId,ans])=>{
+    const row=document.getElementById(rowId);
+    if(!row) return;
+    row.querySelectorAll('.tf-btn').forEach(b=>b.disabled=true);
+    row.querySelectorAll('.tf-btn').forEach(b=>{
+      if(b.classList.contains('yes')&&ans==='yes') b.classList.add('ok');
+      if(b.classList.contains('no')&&ans==='no')   b.classList.add('ok');
+    });
+    row.classList.add('correct');
+  });
+  const sc=document.getElementById('sc-tf');
+  sc.innerHTML='<span class="sec-score-big">👁</span> Answers shown!';
+  sc.classList.add('show');
+}
+
+function resetTF(){
+  Object.keys(tfCorrect).forEach(id=>{
+    const row=document.getElementById(id);
+    row.classList.remove('correct','wrong');
+    row.querySelectorAll('.tf-btn').forEach(b=>{ b.disabled=false; b.classList.remove('ok','err'); });
+    delete tfDoneMap[id];
+  });
+  document.getElementById('sc-tf').classList.remove('show');
+}
+
+// ═══════════════════════════════════════════
+//  CONFETTI
+// ═══════════════════════════════════════════
+const confCols=['#4AAAD4','#6BCB5B','#FF8C42','#FF5FA0','#FFD600','#9B5FE3','#FF5252'];
+function confetti(n){
+  for(let i=0;i<n;i++){
+    const c=document.createElement('div');
+    c.className='cp';
+    c.style.left=(15+Math.random()*70)+'vw';
+    c.style.background=confCols[Math.floor(Math.random()*confCols.length)];
+    c.style.animationDuration=(0.9+Math.random()*0.7)+'s';
+    c.style.animationDelay=Math.random()*0.3+'s';
+    c.style.borderRadius=Math.random()>0.5?'50%':'3px';
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),2000);
+  }
+}
+
+// ═══════════════════════════════════════════
+//  FINAL
+// ═══════════════════════════════════════════
+function showFinal(){
+  const b=document.getElementById('finalBanner');
+  b.classList.add('show');
+  const pct=Math.round(stars/total*100);
+  const big=document.getElementById('finalBig');
+  const title=document.getElementById('finalTitle');
+  const sub=document.getElementById('finalSub');
+  if(pct>=80){ big.textContent='🏆🌟🏆'; title.textContent='Superstar!'; sub.textContent=`You got ${stars} out of ${total} stars — you know transport so well!`; }
+  else if(pct>=50){ big.textContent='🌟🌟'; title.textContent='Great job!'; sub.textContent=`You got ${stars} out of ${total} stars — keep practising!`; }
+  else { big.textContent='💪'; title.textContent='Keep going!'; sub.textContent=`You got ${stars} out of ${total} stars — review the words and try again!`; }
+  b.scrollIntoView({behavior:'smooth'});
+  for(let i=0;i<5;i++) setTimeout(()=>confetti(5),i*120);
+}
+</script>
+</body>
+</html>

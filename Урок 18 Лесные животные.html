@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌲 Forest Animals 🌲</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green-dark: #2d6a2d;
+    --green-mid: #4caf50;
+    --green-light: #a8e6a3;
+    --green-pale: #e8f5e9;
+    --brown: #795548;
+    --brown-light: #d7b899;
+    --sky: #b3e5fc;
+    --yellow: #fff176;
+    --orange: #ffb74d;
+    --red: #ef9a9a;
+    --white: #fffdf7;
+    --shadow: 0 4px 16px rgba(45,106,45,0.15);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: linear-gradient(160deg, #e8f5e9 0%, #b3e5fc 50%, #fff9c4 100%);
+    min-height: 100vh;
+    padding: 20px;
+    overflow-x: hidden;
+  }
+
+  /* Floating leaves background */
+  .leaf {
+    position: fixed;
+    font-size: 1.5rem;
+    opacity: 0.18;
+    pointer-events: none;
+    animation: floatLeaf 12s ease-in-out infinite;
+    z-index: 0;
+  }
+  .leaf:nth-child(1)  { top:5%;  left:3%;  animation-delay:0s; }
+  .leaf:nth-child(2)  { top:15%; right:5%; animation-delay:2s; }
+  .leaf:nth-child(3)  { top:40%; left:8%; animation-delay:4s; }
+  .leaf:nth-child(4)  { top:60%; right:3%; animation-delay:1s; }
+  .leaf:nth-child(5)  { top:80%; left:5%; animation-delay:3s; }
+  .leaf:nth-child(6)  { top:90%; right:8%; animation-delay:5s; }
+  @keyframes floatLeaf {
+    0%,100% { transform: translateY(0) rotate(0deg); }
+    50%      { transform: translateY(-18px) rotate(15deg); }
+  }
+
+  /* Header */
+  header {
+    text-align: center;
+    padding: 30px 20px 20px;
+    position: relative;
+    z-index: 1;
+  }
+  header h1 {
+    font-family: 'Fredoka One', cursive;
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    color: var(--green-dark);
+    text-shadow: 3px 3px 0 rgba(76,175,80,0.3);
+    letter-spacing: 2px;
+  }
+  header p {
+    font-size: 1.1rem;
+    color: var(--brown);
+    font-weight: 700;
+    margin-top: 6px;
+  }
+  .header-emojis { font-size: 2rem; margin-bottom: 8px; }
+
+  /* Progress bar */
+  .progress-bar {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 18px auto 10px;
+    flex-wrap: wrap;
+  }
+  .progress-dot {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    background: #ccc;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Fredoka One', cursive;
+    font-size: 0.95rem;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s;
+    border: 3px solid white;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+  .progress-dot.active   { background: var(--green-mid); transform: scale(1.15); }
+  .progress-dot.done     { background: var(--brown); }
+  .progress-dot:hover    { transform: scale(1.15); }
+
+  /* Sections */
+  .section {
+    display: none;
+    max-width: 860px;
+    margin: 0 auto 30px;
+    background: var(--white);
+    border-radius: 28px;
+    padding: 30px 28px;
+    box-shadow: var(--shadow);
+    position: relative;
+    z-index: 1;
+    animation: popIn 0.4s cubic-bezier(.34,1.56,.64,1);
+  }
+  .section.active { display: block; }
+  @keyframes popIn {
+    from { opacity:0; transform: scale(0.92) translateY(20px); }
+    to   { opacity:1; transform: scale(1) translateY(0); }
+  }
+
+  .section-badge {
+    display: inline-block;
+    background: var(--green-dark);
+    color: white;
+    font-family: 'Fredoka One', cursive;
+    font-size: 0.85rem;
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+  }
+  .section h2 {
+    font-family: 'Fredoka One', cursive;
+    font-size: clamp(1.4rem, 4vw, 2rem);
+    color: var(--green-dark);
+    margin-bottom: 6px;
+  }
+  .section .subtitle {
+    color: var(--brown);
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 22px;
+  }
+
+  /* ── TASK 1: Listen & Repeat ── */
+  .animal-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: center;
+  }
+  .animal-card {
+    background: linear-gradient(135deg, var(--green-pale) 0%, #fff 100%);
+    border: 3px solid var(--green-light);
+    border-radius: 22px;
+    padding: 18px 20px;
+    text-align: center;
+    width: 130px;
+    cursor: pointer;
+    transition: all 0.25s;
+    box-shadow: 0 3px 10px rgba(76,175,80,0.15);
+    user-select: none;
+  }
+  .animal-card:hover  { transform: translateY(-6px) scale(1.05); box-shadow: 0 8px 24px rgba(76,175,80,0.25); }
+  .animal-card.playing { border-color: var(--orange); background: linear-gradient(135deg, #fff8e1 0%, #fff 100%); transform: scale(1.08); }
+  .animal-card .emoji  { font-size: 2.8rem; display: block; margin-bottom: 8px; }
+  .animal-card .word   { font-family: 'Fredoka One', cursive; font-size: 1.05rem; color: var(--green-dark); }
+  .animal-card .article{ font-size: 0.85rem; color: var(--brown); font-weight: 700; }
+  .animal-card .speaker{ font-size: 1.5rem; margin-top: 8px; display: block; }
+  .repeat-hint { text-align:center; margin-top:16px; font-size:0.95rem; color:var(--brown); font-weight:700; }
+
+  /* ── TASK 2: Match ── */
+  .match-container { display:flex; gap:30px; flex-wrap:wrap; justify-content:center; }
+  .match-col { display:flex; flex-direction:column; gap:12px; min-width:140px; }
+  .match-col h3 { font-family:'Fredoka One',cursive; color:var(--green-dark); font-size:1rem; text-align:center; margin-bottom:4px; }
+  .match-item {
+    background: var(--green-pale);
+    border: 3px solid var(--green-light);
+    border-radius: 16px;
+    padding: 10px 16px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-weight: 700;
+    color: var(--brown);
+    font-size: 1rem;
+    position: relative;
+  }
+  .match-item.word  { font-family:'Fredoka One',cursive; color:var(--green-dark); font-size:1.1rem; }
+  .match-item.emoji-item { font-size:2rem; }
+  .match-item.selected  { border-color:var(--orange); background:#fff8e1; transform:scale(1.07); }
+  .match-item.matched   { border-color:var(--green-mid); background:#e8f5e9; opacity:0.7; pointer-events:none; }
+  .match-item.wrong     { border-color:#ef5350; background:#ffebee; animation:shake 0.35s; }
+  @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
+  .match-score { text-align:center; margin-top:16px; font-family:'Fredoka One',cursive; font-size:1.3rem; color:var(--green-dark); }
+
+  /* ── TASK 3: I See ── */
+  .isee-card {
+    background: linear-gradient(135deg, #e3f2fd 0%, var(--white) 100%);
+    border: 3px solid var(--sky);
+    border-radius: 22px;
+    padding: 24px;
+    margin-bottom: 16px;
+    display:flex; align-items:center; gap:20px;
+    flex-wrap:wrap;
+    animation: slideIn 0.4s ease;
+  }
+  @keyframes slideIn { from{opacity:0;transform:translateX(-20px)} to{opacity:1;transform:translateX(0)} }
+  .isee-emoji { font-size:4rem; flex-shrink:0; }
+  .isee-text  { font-family:'Fredoka One',cursive; font-size:1.5rem; color:var(--green-dark); }
+  .isee-text span { color:var(--brown); }
+  .isee-nav { display:flex; gap:14px; justify-content:center; margin-top:18px; }
+
+  /* ── TASK 4: Animal Actions ── */
+  .action-card {
+    background: linear-gradient(135deg, #fff9c4 0%, var(--white) 100%);
+    border: 4px solid var(--orange);
+    border-radius: 28px;
+    padding: 28px;
+    text-align:center;
+    margin-bottom:20px;
+    animation: popIn 0.4s cubic-bezier(.34,1.56,.64,1);
+  }
+  .action-emoji { font-size:5rem; display:block; margin-bottom:10px; animation:bounce 1s infinite; }
+  @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-14px)} }
+  .action-command { font-family:'Fredoka One',cursive; font-size:clamp(1.5rem,5vw,2.2rem); color:var(--brown); margin-bottom:8px; }
+  .action-hint { font-size:1rem; color:#888; font-weight:700; }
+  .action-progress { display:flex; justify-content:center; gap:8px; margin:14px 0; }
+  .action-dot { width:14px;height:14px;border-radius:50%;background:#ddd;transition:all 0.3s; }
+  .action-dot.done{background:var(--green-mid);}
+  .action-nav { display:flex; gap:14px; justify-content:center; }
+
+  /* ── TASK 5: Big or Small ── */
+  .sort-animals { display:flex; flex-wrap:wrap; gap:12px; justify-content:center; margin-bottom:24px; min-height:80px; }
+  .sort-item {
+    background: var(--green-pale);
+    border: 3px dashed var(--green-mid);
+    border-radius: 16px;
+    padding: 10px 16px;
+    cursor: grab;
+    font-size: 1.1rem;
+    font-family:'Fredoka One',cursive;
+    color:var(--green-dark);
+    display:flex; align-items:center; gap:6px;
+    transition: all 0.2s;
+    user-select:none;
+  }
+  .sort-item:hover{transform:scale(1.08);border-color:var(--orange);}
+  .sort-item.dragging{opacity:0.5;transform:scale(1.1);}
+  .sort-baskets { display:flex; gap:20px; justify-content:center; flex-wrap:wrap; }
+  .basket {
+    flex:1; min-width:200px; max-width:280px;
+    background: linear-gradient(135deg, #fff 0%, var(--green-pale) 100%);
+    border: 3px solid var(--green-mid);
+    border-radius: 22px;
+    padding: 18px;
+    min-height:130px;
+    text-align:center;
+    transition:all 0.2s;
+  }
+  .basket.drag-over{ border-color:var(--orange); background:#fff8e1; transform:scale(1.03); }
+  .basket h3{ font-family:'Fredoka One',cursive; font-size:1.3rem; color:var(--green-dark); margin-bottom:12px; }
+  .basket-content{ display:flex; flex-wrap:wrap; gap:8px; justify-content:center; min-height:60px; }
+  .basket-item{ background:white; border:2px solid var(--green-light); border-radius:12px; padding:6px 12px; font-family:'Fredoka One',cursive; font-size:0.95rem; color:var(--brown); }
+  .sort-check-btn { display:block; margin:20px auto 0; }
+  .sort-feedback { text-align:center; margin-top:12px; font-family:'Fredoka One',cursive; font-size:1.2rem; display:none; }
+
+  /* ── TASK 6: Where Does It Live ── */
+  .habitat-source { display:flex; flex-wrap:wrap; gap:12px; justify-content:center; margin-bottom:24px; min-height:70px; }
+  .habitat-zones { display:flex; gap:16px; justify-content:center; flex-wrap:wrap; }
+  .habitat-zone {
+    flex:1; min-width:190px; max-width:250px;
+    border-radius: 22px;
+    padding: 16px;
+    min-height:140px;
+    text-align:center;
+    transition: all 0.2s;
+    border: 3px solid;
+  }
+  .habitat-zone.forest { background:linear-gradient(135deg,#e8f5e9,#fff); border-color:var(--green-mid); }
+  .habitat-zone.river  { background:linear-gradient(135deg,#e3f2fd,#fff); border-color:#64b5f6; }
+  .habitat-zone.tree   { background:linear-gradient(135deg,#fff9c4,#fff); border-color:var(--orange); }
+  .habitat-zone.drag-over{ transform:scale(1.04); }
+  .habitat-zone h3 { font-family:'Fredoka One',cursive; font-size:1.2rem; margin-bottom:10px; }
+  .habitat-zone.forest h3{ color:var(--green-dark); }
+  .habitat-zone.river  h3{ color:#1565c0; }
+  .habitat-zone.tree   h3{ color:#e65100; }
+  .habitat-content { display:flex; flex-wrap:wrap; gap:6px; justify-content:center; min-height:60px; }
+  .hab-item {
+    background:var(--green-pale);
+    border:2px dashed var(--green-mid);
+    border-radius:14px;
+    padding:8px 14px;
+    font-family:'Fredoka One',cursive;
+    font-size:1rem;
+    color:var(--green-dark);
+    cursor:grab;
+    display:flex;align-items:center;gap:5px;
+    transition:all 0.2s;
+    user-select:none;
+  }
+  .hab-item:hover{transform:scale(1.08);}
+  .hab-item.dragging{opacity:0.4;}
+  .habitat-check-btn{ display:block; margin:20px auto 0; }
+  .habitat-feedback { text-align:center; margin-top:12px; font-family:'Fredoka One',cursive; font-size:1.2rem; display:none; }
+
+  /* Shared buttons */
+  .btn {
+    background: var(--green-dark);
+    color: white;
+    font-family:'Fredoka One',cursive;
+    font-size:1.05rem;
+    padding: 12px 28px;
+    border:none; border-radius:50px;
+    cursor:pointer;
+    transition:all 0.2s;
+    box-shadow: 0 4px 14px rgba(45,106,45,0.3);
+    letter-spacing:0.5px;
+  }
+  .btn:hover{ background:var(--green-mid); transform:translateY(-2px); box-shadow:0 6px 20px rgba(76,175,80,0.35); }
+  .btn.secondary{ background:var(--brown-light); color:var(--brown); box-shadow:none; }
+  .btn.secondary:hover{ background:#c9a47e; }
+  .btn.orange{ background:var(--orange); color:white; box-shadow:0 4px 14px rgba(255,183,77,0.4); }
+  .btn.orange:hover{ background:#ffa726; }
+
+  .next-btn { display:block; margin:28px auto 0; }
+
+  /* Celebration */
+  .celebration { text-align:center; padding:20px; }
+  .celebration h2{ font-family:'Fredoka One',cursive; font-size:2.5rem; color:var(--green-dark); margin-bottom:10px; }
+  .celebration p { font-size:1.1rem; color:var(--brown); font-weight:700; }
+  .stars { font-size:3rem; letter-spacing:6px; animation:starPop 0.5s ease forwards; }
+  @keyframes starPop{ from{transform:scale(0)}to{transform:scale(1)} }
+  .confetti-emoji { font-size:2rem; animation:floatLeaf 2s ease-in-out infinite; display:inline-block; }
+
+  /* Tooltip */
+  .tooltip {
+    position:fixed; background:var(--brown); color:white;
+    font-family:'Fredoka One',cursive; font-size:1rem;
+    padding:8px 18px; border-radius:20px;
+    pointer-events:none; opacity:0; transition:opacity 0.2s;
+    z-index:9999; white-space:nowrap;
+    box-shadow:0 4px 16px rgba(0,0,0,0.2);
+  }
+  .tooltip.show{opacity:1;}
+
+  @media(max-width:600px){
+    .section{padding:20px 14px;}
+    .animal-card{width:110px; padding:14px 10px;}
+    .match-container{flex-direction:column; align-items:center;}
+    .sort-baskets,.habitat-zones{flex-direction:column; align-items:center;}
+  }
+</style>
+</head>
+<body>
+
+<!-- Background leaves -->
+<div class="leaf">🍃</div>
+<div class="leaf">🌿</div>
+<div class="leaf">🍂</div>
+<div class="leaf">🌱</div>
+<div class="leaf">🍀</div>
+<div class="leaf">🍁</div>
+
+<div class="tooltip" id="tooltip"></div>
+
+<header>
+  <div class="header-emojis">🌲🦊🌲</div>
+  <h1>Forest Animals</h1>
+  <p>Let's learn about animals in the forest! 🐻</p>
+</header>
+
+<!-- Progress -->
+<div class="progress-bar">
+  <div class="progress-dot active" onclick="goTo(1)">1</div>
+  <div class="progress-dot" onclick="goTo(2)">2</div>
+  <div class="progress-dot" onclick="goTo(3)">3</div>
+  <div class="progress-dot" onclick="goTo(4)">4</div>
+  <div class="progress-dot" onclick="goTo(5)">5</div>
+  <div class="progress-dot" onclick="goTo(6)">6</div>
+</div>
+
+<!-- ══════════ SECTION 1: Listen & Repeat ══════════ -->
+<div class="section active" id="sec1">
+  <span class="section-badge">TASK 1</span>
+  <h2>🎧 Listen & Repeat</h2>
+  <p class="subtitle">Tap each card to hear the word. Then say it out loud!</p>
+  <div class="animal-cards">
+    <div class="animal-card" onclick="speak('a bear','bear')">
+      <span class="emoji">🐻</span>
+      <span class="article">a</span>
+      <span class="word">bear</span>
+      <span class="speaker">🔊</span>
+    </div>
+    <div class="animal-card" onclick="speak('a fox','fox')">
+      <span class="emoji">🦊</span>
+      <span class="article">a</span>
+      <span class="word">fox</span>
+      <span class="speaker">🔊</span>
+    </div>
+    <div class="animal-card" onclick="speak('a rabbit','rabbit')">
+      <span class="emoji">🐰</span>
+      <span class="article">a</span>
+      <span class="word">rabbit</span>
+      <span class="speaker">🔊</span>
+    </div>
+    <div class="animal-card" onclick="speak('a deer','deer')">
+      <span class="emoji">🦌</span>
+      <span class="article">a</span>
+      <span class="word">deer</span>
+      <span class="speaker">🔊</span>
+    </div>
+    <div class="animal-card" onclick="speak('an owl','owl')">
+      <span class="emoji">🦉</span>
+      <span class="article">an</span>
+      <span class="word">owl</span>
+      <span class="speaker">🔊</span>
+    </div>
+    <div class="animal-card" onclick="speak('a frog','frog')">
+      <span class="emoji">🐸</span>
+      <span class="article">a</span>
+      <span class="word">frog</span>
+      <span class="speaker">🔊</span>
+    </div>
+  </div>
+  <p class="repeat-hint">👆 Tap a card → listen → repeat! 🗣️</p>
+  <button class="btn next-btn" onclick="nextSection(1)">Next ➜</button>
+</div>
+
+<!-- ══════════ SECTION 2: Match the Words ══════════ -->
+<div class="section" id="sec2">
+  <span class="section-badge">TASK 2</span>
+  <h2>🔗 Match the Words</h2>
+  <p class="subtitle">Tap a word, then tap the matching picture!</p>
+  <div class="match-container">
+    <div class="match-col">
+      <h3>Words</h3>
+      <div class="match-item word" id="mw-bear"   onclick="selectMatch('word','bear'  )">bear</div>
+      <div class="match-item word" id="mw-fox"    onclick="selectMatch('word','fox'   )">fox</div>
+      <div class="match-item word" id="mw-rabbit" onclick="selectMatch('word','rabbit')">rabbit</div>
+      <div class="match-item word" id="mw-deer"   onclick="selectMatch('word','deer'  )">deer</div>
+      <div class="match-item word" id="mw-owl"    onclick="selectMatch('word','owl'   )">owl</div>
+      <div class="match-item word" id="mw-frog"   onclick="selectMatch('word','frog'  )">frog</div>
+    </div>
+    <div class="match-col">
+      <h3>Pictures</h3>
+      <div class="match-item emoji-item" id="me-owl"    onclick="selectMatch('emoji','owl'   )">🦉</div>
+      <div class="match-item emoji-item" id="me-rabbit" onclick="selectMatch('emoji','rabbit')">🐰</div>
+      <div class="match-item emoji-item" id="me-bear"   onclick="selectMatch('emoji','bear'  )">🐻</div>
+      <div class="match-item emoji-item" id="me-frog"   onclick="selectMatch('emoji','frog'  )">🐸</div>
+      <div class="match-item emoji-item" id="me-deer"   onclick="selectMatch('emoji','deer'  )">🦌</div>
+      <div class="match-item emoji-item" id="me-fox"    onclick="selectMatch('emoji','fox'   )">🦊</div>
+    </div>
+  </div>
+  <div class="match-score" id="match-score"></div>
+  <button class="btn next-btn" onclick="nextSection(2)" id="sec2-next" style="display:none">Next ➜</button>
+</div>
+
+<!-- ══════════ SECTION 3: I See ══════════ -->
+<div class="section" id="sec3">
+  <span class="section-badge">TASK 3</span>
+  <h2>👀 I See…</h2>
+  <p class="subtitle">Read the sentence aloud! Then tap the arrow for the next one.</p>
+  <div id="isee-display"></div>
+  <div class="isee-nav">
+    <button class="btn secondary" onclick="iseePrev()">◀ Back</button>
+    <button class="btn" onclick="iseeNext()" id="isee-next-btn">Next ▶</button>
+  </div>
+  <button class="btn next-btn" id="sec3-next" style="display:none" onclick="nextSection(3)">Next Task ➜</button>
+</div>
+
+<!-- ══════════ SECTION 4: Animal Actions ══════════ -->
+<div class="section" id="sec4">
+  <span class="section-badge">TASK 4</span>
+  <h2>🏃 Animal Actions!</h2>
+  <p class="subtitle">Read the command and do it! Move your body! 🎉</p>
+  <div id="action-display"></div>
+  <div class="action-progress" id="action-progress"></div>
+  <div class="action-nav">
+    <button class="btn secondary" onclick="actionPrev()">◀ Back</button>
+    <button class="btn orange" onclick="actionNext()" id="action-next-btn">Let's go! ▶</button>
+  </div>
+  <button class="btn next-btn" id="sec4-next" style="display:none" onclick="nextSection(4)">Next Task ➜</button>
+</div>
+
+<!-- ══════════ SECTION 5: Big or Small ══════════ -->
+<div class="section" id="sec5">
+  <span class="section-badge">TASK 5</span>
+  <h2>📏 Big or Small?</h2>
+  <p class="subtitle">Drag each animal into the right basket!</p>
+  <div class="sort-animals" id="sort-source"></div>
+  <div class="sort-baskets">
+    <div class="basket" id="basket-big"
+         ondragover="dragOver(event)" ondrop="dropSort(event,'big')" ondragleave="dragLeave(event)">
+      <h3>🐘 BIG animals</h3>
+      <div class="basket-content" id="basket-big-content"></div>
+    </div>
+    <div class="basket" id="basket-small"
+         ondragover="dragOver(event)" ondrop="dropSort(event,'small')" ondragleave="dragLeave(event)">
+      <h3>🐭 SMALL animals</h3>
+      <div class="basket-content" id="basket-small-content"></div>
+    </div>
+  </div>
+  <button class="btn sort-check-btn" onclick="checkSort()">Check! ✔</button>
+  <div class="sort-feedback" id="sort-feedback"></div>
+  <button class="btn next-btn" id="sec5-next" style="display:none" onclick="nextSection(5)">Next Task ➜</button>
+</div>
+
+<!-- ══════════ SECTION 6: Where Does It Live ══════════ -->
+<div class="section" id="sec6">
+  <span class="section-badge">TASK 6</span>
+  <h2>🏡 Where Does It Live?</h2>
+  <p class="subtitle">Drag each animal to its home!</p>
+  <div class="habitat-source" id="habitat-source"></div>
+  <div class="habitat-zones">
+    <div class="habitat-zone forest"
+         ondragover="dragOver(event)" ondrop="dropHabitat(event,'forest')" ondragleave="dragLeave(event)">
+      <h3>🌲 Forest</h3>
+      <div class="habitat-content" id="zone-forest"></div>
+    </div>
+    <div class="habitat-zone river"
+         ondragover="dragOver(event)" ondrop="dropHabitat(event,'river')" ondragleave="dragLeave(event)">
+      <h3>💧 River</h3>
+      <div class="habitat-content" id="zone-river"></div>
+    </div>
+    <div class="habitat-zone tree"
+         ondragover="dragOver(event)" ondrop="dropHabitat(event,'tree')" ondragleave="dragLeave(event)">
+      <h3>🌳 Tree</h3>
+      <div class="habitat-content" id="zone-tree"></div>
+    </div>
+  </div>
+  <button class="btn habitat-check-btn" onclick="checkHabitat()">Check! ✔</button>
+  <div class="habitat-feedback" id="habitat-feedback"></div>
+  <button class="btn next-btn" id="sec6-next" style="display:none" onclick="showCelebration()">Finish! 🎉</button>
+</div>
+
+<!-- ══════════ CELEBRATION ══════════ -->
+<div class="section" id="sec-done">
+  <div class="celebration">
+    <div class="stars">⭐⭐⭐</div>
+    <h2>Amazing! You did it! 🎉</h2>
+    <p>You know ALL the forest animals now!</p>
+    <br>
+    <div>
+      <span class="confetti-emoji">🐻</span>
+      <span class="confetti-emoji" style="animation-delay:0.3s">🦊</span>
+      <span class="confetti-emoji" style="animation-delay:0.6s">🐰</span>
+      <span class="confetti-emoji" style="animation-delay:0.9s">🦌</span>
+      <span class="confetti-emoji" style="animation-delay:1.2s">🦉</span>
+      <span class="confetti-emoji" style="animation-delay:1.5s">🐸</span>
+    </div>
+    <br>
+    <button class="btn orange" onclick="goTo(1)" style="font-size:1.1rem;padding:14px 34px;">Play Again! 🔄</button>
+  </div>
+</div>
+
+<script>
+/* ── Speech ── */
+const animals = {
+  bear:   { emoji:'🐻', article:'a'  },
+  fox:    { emoji:'🦊', article:'a'  },
+  rabbit: { emoji:'🐰', article:'a'  },
+  deer:   { emoji:'🦌', article:'a'  },
+  owl:    { emoji:'🦉', article:'an' },
+  frog:   { emoji:'🐸', article:'a'  },
+};
+
+let currentSpeechEl = null;
+
+function speak(text, key) {
+  if (!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = 'en-GB';
+  utter.rate = 0.85;
+  utter.pitch = 1.1;
+
+  // Try British voice
+  const voices = window.speechSynthesis.getVoices();
+  const british = voices.find(v => v.lang === 'en-GB') ||
+                  voices.find(v => v.lang.startsWith('en'));
+  if (british) utter.voice = british;
+
+  if (currentSpeechEl) currentSpeechEl.classList.remove('playing');
+  const card = document.querySelector(`.animal-card[onclick*="'${key}'"]`);
+  if (card) { currentSpeechEl = card; card.classList.add('playing'); }
+  utter.onend = () => { if(card) card.classList.remove('playing'); };
+  window.speechSynthesis.speak(utter);
+
+  // tooltip
+  showTooltip(text);
+}
+
+function showTooltip(text) {
+  const t = document.getElementById('tooltip');
+  t.textContent = text.charAt(0).toUpperCase() + text.slice(1);
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 1800);
+}
+
+/* preload voices */
+window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+
+/* ── Navigation ── */
+let currentSection = 1;
+const TOTAL = 6;
+
+function goTo(n) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.progress-dot').forEach((d,i) => {
+    d.classList.remove('active');
+    if (i+1 < n) d.classList.add('done'); else d.classList.remove('done');
+  });
+  const id = n <= TOTAL ? `sec${n}` : 'sec-done';
+  document.getElementById(id).classList.add('active');
+  if (n <= TOTAL) document.querySelectorAll('.progress-dot')[n-1].classList.add('active');
+  currentSection = n;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function nextSection(from) {
+  goTo(from + 1);
+  initSection(from + 1);
+}
+
+/* ── TASK 2: Match ── */
+let matchWord = null, matchEmoji = null, matchScore = 0;
+
+function selectMatch(type, key) {
+  if (document.getElementById(`mw-${key}`).classList.contains('matched')) return;
+
+  if (type === 'word') {
+    if (matchWord) document.getElementById(`mw-${matchWord}`).classList.remove('selected');
+    matchWord = key;
+    document.getElementById(`mw-${key}`).classList.add('selected');
+  } else {
+    if (matchEmoji) document.getElementById(`me-${matchEmoji}`).classList.remove('selected');
+    matchEmoji = key;
+    document.getElementById(`me-${key}`).classList.add('selected');
+  }
+
+  if (matchWord && matchEmoji) {
+    if (matchWord === matchEmoji) {
+      // Correct!
+      ['mw','me'].forEach(pre => {
+        const el = document.getElementById(`${pre}-${matchWord}`);
+        el.classList.remove('selected'); el.classList.add('matched');
+      });
+      matchScore++;
+      speak(matchWord, matchWord);
+      document.getElementById('match-score').textContent =
+        `✅ ${matchScore} / 6 matched!`;
+      if (matchScore === 6) {
+        document.getElementById('match-score').textContent = '🎉 All matched! Well done!';
+        document.getElementById('sec2-next').style.display = 'block';
+      }
+      matchWord = matchEmoji = null;
+    } else {
+      // Wrong
+      ['mw-'+matchWord,'me-'+matchEmoji].forEach(id => {
+        const el = document.getElementById(id);
+        el.classList.add('wrong');
+        setTimeout(()=>{ el.classList.remove('wrong','selected'); },600);
+      });
+      matchWord = matchEmoji = null;
+    }
+  }
+}
+
+/* ── TASK 3: I See ── */
+const iseeSentences = [
+  { text:'I see a bear.',  emoji:'🐻', key:'bear',   color:'#e8f5e9' },
+  { text:'I see a fox.',   emoji:'🦊', key:'fox',    color:'#fff3e0' },
+  { text:'I see a rabbit.',emoji:'🐰', key:'rabbit', color:'#fce4ec' },
+  { text:'I see a deer.',  emoji:'🦌', key:'deer',   color:'#f3e5f5' },
+  { text:'I see an owl.',  emoji:'🦉', key:'owl',    color:'#e3f2fd' },
+];
+let iseeIdx = 0;
+
+function renderIsee() {
+  const s = iseeSentences[iseeIdx];
+  document.getElementById('isee-display').innerHTML = `
+    <div class="isee-card" style="background:linear-gradient(135deg,${s.color},#fff)">
+      <span class="isee-emoji">${s.emoji}</span>
+      <div>
+        <div class="isee-text">${s.text}</div>
+        <div style="margin-top:8px;font-size:0.9rem;color:#888;font-weight:700;">
+          👉 Say it out loud! Can you point to the picture?
+        </div>
+      </div>
+    </div>
+    <div style="text-align:center;color:#aaa;font-weight:700;font-size:0.9rem;">
+      ${iseeIdx+1} / ${iseeSentences.length}
+    </div>`;
+  speak(s.text, s.key);
+  document.getElementById('isee-next-btn').textContent =
+    iseeIdx === iseeSentences.length-1 ? 'Done! ✔' : 'Next ▶';
+}
+
+function iseeNext() {
+  if (iseeIdx < iseeSentences.length - 1) { iseeIdx++; renderIsee(); }
+  else { document.getElementById('sec3-next').style.display='block'; }
+}
+function iseePrev() {
+  if (iseeIdx > 0) { iseeIdx--; renderIsee(); }
+}
+
+/* ── TASK 4: Animal Actions ── */
+const actions = [
+  { emoji:'🐰', command:'Hop like a rabbit!',     hint:'Jump up and down! 🦵', key:'rabbit' },
+  { emoji:'🐻', command:'Roar like a bear!',       hint:'Say: ROOOAR! 🗣️',     key:'bear'   },
+  { emoji:'🐸', command:'Jump like a frog!',       hint:'Bend your knees and jump! 🦘', key:'frog' },
+  { emoji:'🦉', command:'Fly like an owl!',        hint:'Flap your arms! 🪶',  key:'owl'    },
+  { emoji:'🦊', command:'Run like a fox!',         hint:'Run on the spot! 🏃', key:'fox'    },
+  { emoji:'🦌', command:'Walk tall like a deer!',  hint:'Stand up very straight! 🦒', key:'deer' },
+];
+let actionIdx = 0;
+
+function renderAction() {
+  const a = actions[actionIdx];
+  document.getElementById('action-display').innerHTML = `
+    <div class="action-card">
+      <span class="action-emoji">${a.emoji}</span>
+      <div class="action-command">${a.command}</div>
+      <div class="action-hint">${a.hint}</div>
+    </div>`;
+  const prog = document.getElementById('action-progress');
+  prog.innerHTML = actions.map((_,i)=>`<div class="action-dot${i<=actionIdx?' done':''}"></div>`).join('');
+  document.getElementById('action-next-btn').textContent =
+    actionIdx === actions.length-1 ? 'Done! ✔' : 'Let\'s go! ▶';
+}
+
+function actionNext() {
+  if (actionIdx < actions.length - 1) { actionIdx++; renderAction(); }
+  else document.getElementById('sec4-next').style.display='block';
+}
+function actionPrev() {
+  if (actionIdx > 0) { actionIdx--; renderAction(); }
+}
+
+/* ── TASK 5: Big or Small ── */
+const sortData = {
+  bear:   { size:'big',   emoji:'🐻', label:'bear'   },
+  fox:    { size:'small', emoji:'🦊', label:'fox'    },
+  rabbit: { size:'small', emoji:'🐰', label:'rabbit' },
+  deer:   { size:'big',   emoji:'🦌', label:'deer'   },
+  owl:    { size:'small', emoji:'🦉', label:'owl'    },
+  frog:   { size:'small', emoji:'🐸', label:'frog'   },
+};
+let sortPlaced = {};
+let dragKey = null;
+
+function initSort() {
+  sortPlaced = {};
+  const src = document.getElementById('sort-source');
+  src.innerHTML = Object.entries(sortData).map(([k,v])=>`
+    <div class="sort-item" id="sort-${k}" draggable="true"
+         ondragstart="dragStart('${k}')" ondragend="dragEndSort()">
+      ${v.emoji} ${v.label}
+    </div>`).join('');
+  document.getElementById('basket-big-content').innerHTML='';
+  document.getElementById('basket-small-content').innerHTML='';
+  document.getElementById('sort-feedback').style.display='none';
+  document.getElementById('sec5-next').style.display='none';
+}
+
+function dragStart(key){ dragKey=key; setTimeout(()=>document.getElementById(`sort-${key}`).classList.add('dragging'),0); }
+function dragEndSort(){ if(dragKey) document.getElementById(`sort-${key}`).classList.remove('dragging'); }
+function dragOver(e){ e.preventDefault(); e.currentTarget.classList.add('drag-over'); }
+function dragLeave(e){ e.currentTarget.classList.remove('drag-over'); }
+
+function dropSort(e, size) {
+  e.preventDefault(); e.currentTarget.classList.remove('drag-over');
+  if (!dragKey) return;
+  const item = document.getElementById(`sort-${dragKey}`);
+  if (!item) return;
+  const basket = document.getElementById(`basket-${size}-content`);
+  const clone = document.createElement('div');
+  clone.className = 'basket-item';
+  clone.textContent = sortData[dragKey].emoji + ' ' + sortData[dragKey].label;
+  basket.appendChild(clone);
+  item.remove();
+  sortPlaced[dragKey] = size;
+  dragKey = null;
+}
+
+function checkSort() {
+  let correct = 0;
+  Object.entries(sortPlaced).forEach(([k,placed])=>{
+    if (placed === sortData[k].size) correct++;
+  });
+  const total = Object.keys(sortPlaced).length;
+  const fb = document.getElementById('sort-feedback');
+  fb.style.display='block';
+  if (total < 6) {
+    fb.textContent='🐾 Sort all animals first!'; fb.style.color=var_brown();
+  } else if (correct === 6) {
+    fb.textContent='🎉 Perfect! All correct!'; fb.style.color='#2d6a2d';
+    document.getElementById('sec5-next').style.display='block';
+  } else {
+    fb.textContent=`✅ ${correct} / 6 correct. Try again!`; fb.style.color='#e65100';
+  }
+}
+function var_brown(){ return '#795548'; }
+
+/* ── TASK 6: Habitat ── */
+const habitatData = {
+  bear:   { habitat:'forest', emoji:'🐻', label:'bear'   },
+  fox:    { habitat:'forest', emoji:'🦊', label:'fox'    },
+  rabbit: { habitat:'forest', emoji:'🐰', label:'rabbit' },
+  deer:   { habitat:'forest', emoji:'🦌', label:'deer'   },
+  owl:    { habitat:'tree',   emoji:'🦉', label:'owl'    },
+  frog:   { habitat:'river',  emoji:'🐸', label:'frog'   },
+};
+let habPlaced = {};
+let habDragKey = null;
+
+function initHabitat() {
+  habPlaced = {};
+  const src = document.getElementById('habitat-source');
+  src.innerHTML = Object.entries(habitatData).map(([k,v])=>`
+    <div class="hab-item" id="hab-${k}" draggable="true"
+         ondragstart="habDragStart('${k}')" ondragend="habDragEnd('${k}')">
+      ${v.emoji} ${v.label}
+    </div>`).join('');
+  ['forest','river','tree'].forEach(z => document.getElementById(`zone-${z}`).innerHTML='');
+  document.getElementById('habitat-feedback').style.display='none';
+  document.getElementById('sec6-next').style.display='none';
+}
+
+function habDragStart(k){ habDragKey=k; setTimeout(()=>{const el=document.getElementById(`hab-${k}`);if(el)el.classList.add('dragging');},0); }
+function habDragEnd(k){ const el=document.getElementById(`hab-${k}`);if(el)el.classList.remove('dragging'); }
+
+function dropHabitat(e, zone) {
+  e.preventDefault(); e.currentTarget.classList.remove('drag-over');
+  if (!habDragKey) return;
+  const item = document.getElementById(`hab-${habDragKey}`);
+  if (!item) return;
+  const zoneEl = document.getElementById(`zone-${zone}`);
+  const clone = document.createElement('div');
+  clone.className = 'hab-item';
+  clone.style.cursor='default';
+  clone.textContent = habitatData[habDragKey].emoji + ' ' + habitatData[habDragKey].label;
+  zoneEl.appendChild(clone);
+  item.remove();
+  habPlaced[habDragKey] = zone;
+  habDragKey = null;
+}
+
+function checkHabitat() {
+  let correct=0;
+  Object.entries(habPlaced).forEach(([k,placed])=>{
+    if(placed===habitatData[k].habitat) correct++;
+  });
+  const total=Object.keys(habPlaced).length;
+  const fb=document.getElementById('habitat-feedback');
+  fb.style.display='block';
+  if(total<6){
+    fb.textContent='🐾 Place all animals first!';fb.style.color=var_brown();
+  } else if(correct===6){
+    fb.textContent='🎉 Amazing! All correct!';fb.style.color='#2d6a2d';
+    document.getElementById('sec6-next').style.display='block';
+  } else {
+    fb.textContent=`✅ ${correct} / 6 correct. Try again!`;fb.style.color='#e65100';
+  }
+}
+
+/* ── Celebration ── */
+function showCelebration(){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.getElementById('sec-done').classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ── Init section on arrival ── */
+function initSection(n) {
+  if (n===3){ iseeIdx=0; renderIsee(); }
+  if (n===4){ actionIdx=0; renderAction(); }
+  if (n===5){ initSort(); }
+  if (n===6){ initHabitat(); }
+}
+
+/* Boot */
+initSection(1);
+
+// Touch/mobile drag support for task 5 & 6 (pointer events)
+(function() {
+  let ghost = null, touchKey = null, touchType = null;
+
+  function makeTouchHandlers(prefix, data, dragStartFn, dropSortFn, dropHabitatFn) {
+    document.addEventListener('touchstart', e => {
+      const target = e.target.closest(`[id^="${prefix}-"]`);
+      if (!target) return;
+      touchKey = target.id.replace(`${prefix}-`,'');
+      touchType = prefix;
+      ghost = target.cloneNode(true);
+      ghost.style.cssText='position:fixed;opacity:0.7;pointer-events:none;z-index:9999;border-radius:14px;padding:8px 14px;background:#e8f5e9;font-family:Fredoka One,cursive;font-size:1rem;border:2px dashed #4caf50;';
+      document.body.appendChild(ghost);
+    }, {passive:true});
+
+    document.addEventListener('touchmove', e => {
+      if (!ghost) return;
+      const t = e.touches[0];
+      ghost.style.left=(t.clientX-40)+'px';
+      ghost.style.top=(t.clientY-20)+'px';
+    }, {passive:true});
+
+    document.addEventListener('touchend', e => {
+      if (!ghost || !touchKey) return;
+      const t = e.changedTouches[0];
+      const el = document.elementFromPoint(t.clientX, t.clientY);
+      ghost.remove(); ghost=null;
+      if (!el) { touchKey=null; return; }
+      if (touchType==='sort') {
+        const basket=el.closest('[id^="basket-"]');
+        if(basket){ const size=basket.id.replace('basket-',''); dropSortFn({preventDefault:()=>{},currentTarget:basket},size); }
+      } else if (touchType==='hab') {
+        const zone=el.closest('[id^="zone-"]');
+        if(zone){ const z=zone.id.replace('zone-',''); dropHabitatFn({preventDefault:()=>{},currentTarget:{classList:{remove:()=>{}}}},z); }
+      }
+      touchKey=null;touchType=null;
+    }, {passive:true});
+  }
+
+  makeTouchHandlers('sort',sortData,
+    k=>{dragKey=k;},
+    (e,size)=>dropSort(e,size),
+    ()=>{}
+  );
+  makeTouchHandlers('hab',habitatData,
+    k=>{habDragKey=k;},
+    ()=>{},
+    (e,zone)=>dropHabitat(e,zone)
+  );
+})();
+</script>
+</body>
+</html>

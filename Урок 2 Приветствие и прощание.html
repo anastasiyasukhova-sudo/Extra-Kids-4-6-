@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>👋 Hello & Goodbye!</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --sky: #74C7F5;
+  --sun: #FFD93D;
+  --grass: #6BCB77;
+  --coral: #FF6B6B;
+  --peach: #FFB347;
+  --lavender: #C77DFF;
+  --mint: #A8E6CF;
+  --bg: #F0FAFF;
+  --card: #ffffff;
+  --shadow: 0 8px 30px rgba(0,0,0,0.10);
+  --radius: 24px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--bg);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ---- HERO ---- */
+.hero {
+  background: linear-gradient(160deg, #74C7F5 0%, #A8E6CF 40%, #FFD93D 100%);
+  padding: 44px 20px 56px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.hero-clouds {
+  position: absolute; top: 10px; left: 0; right: 0;
+  display: flex; justify-content: space-around;
+  font-size: 2.8rem; opacity: 0.35; pointer-events: none;
+  animation: float 6s ease-in-out infinite;
+}
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+.hero h1 {
+  font-family: 'Fredoka One', cursive;
+  font-size: clamp(2.8rem, 8vw, 5.5rem);
+  color: white;
+  text-shadow: 4px 4px 0 rgba(0,0,0,0.12), 0 0 40px rgba(255,255,255,0.3);
+  position: relative;
+  letter-spacing: 1px;
+}
+.hero p {
+  color: rgba(255,255,255,0.95);
+  font-size: clamp(1rem, 3vw, 1.35rem);
+  font-weight: 700;
+  margin-top: 10px;
+  position: relative;
+}
+.wave-divider {
+  position: absolute; bottom: -2px; left: 0; width: 100%;
+  line-height: 0;
+}
+.wave-divider svg { display: block; }
+
+/* ---- TABS ---- */
+.tab-nav {
+  display: flex; flex-wrap: wrap; justify-content: center;
+  gap: 8px; padding: 20px 16px 16px;
+  background: white;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+  position: sticky; top: 0; z-index: 100;
+}
+.tab-btn {
+  font-family: 'Fredoka One', cursive;
+  font-size: 0.9rem; padding: 9px 18px;
+  border: 3px solid #eee; border-radius: 50px;
+  cursor: pointer; background: #f7f7f7; color: #666;
+  transition: all 0.22s; white-space: nowrap;
+}
+.tab-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.12); }
+.tab-btn.active { color: white; border-color: transparent; box-shadow: 0 4px 16px rgba(0,0,0,0.18); }
+.tab-btn[data-tab="colours"].active  { background: #FF6B6B; }
+.tab-btn[data-tab="meet"].active     { background: #74C7F5; }
+.tab-btn[data-tab="match"].active    { background: #FFB347; }
+.tab-btn[data-tab="scene"].active    { background: #6BCB77; }
+.tab-btn[data-tab="action"].active   { background: #C77DFF; }
+.tab-btn[data-tab="sentences"].active{ background: #FF6B9D; }
+.tab-btn[data-tab="quiz"].active     { background: #FFD93D; color: #333; }
+
+/* ---- SECTIONS ---- */
+.section { display: none; padding: 36px 20px 60px; max-width: 920px; margin: 0 auto; }
+.section.active { display: block; animation: fadeUp 0.38s ease; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
+
+.section-title {
+  font-family: 'Fredoka One', cursive;
+  font-size: clamp(1.6rem, 5vw, 2.4rem);
+  text-align: center; margin-bottom: 8px; color: #333;
+}
+.section-sub {
+  text-align: center; color: #999; font-size: 1rem;
+  font-weight: 700; margin-bottom: 28px;
+}
+
+/* ---- SHARED ---- */
+.big-btn {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.1rem; padding: 13px 34px;
+  border: none; border-radius: 50px; cursor: pointer;
+  color: white; transition: transform 0.2s, box-shadow 0.2s;
+  display: inline-block;
+}
+.big-btn:hover { transform: scale(1.05); }
+.center { text-align: center; margin-top: 20px; }
+.feedback {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.25rem; min-height: 36px;
+  text-align: center; margin-top: 16px;
+}
+
+/* ============================================================
+   SECTION 1 — COLOURS REVIEW
+   ============================================================ */
+.colours-review-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 14px;
+}
+.cr-card {
+  background: white; border-radius: 20px;
+  box-shadow: var(--shadow); padding: 16px 8px 12px;
+  text-align: center; cursor: pointer;
+  border: 3px solid transparent;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.cr-card:hover { transform: translateY(-5px) scale(1.05); box-shadow: 0 14px 36px rgba(0,0,0,0.15); }
+.cr-swatch {
+  width: 66px; height: 66px; border-radius: 50%;
+  margin: 0 auto 10px;
+  border: 3px solid rgba(0,0,0,0.08);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.6rem;
+  transition: transform 0.3s;
+}
+.cr-card:hover .cr-swatch { transform: rotate(20deg) scale(1.1); }
+.cr-name { font-family: 'Fredoka One', cursive; font-size: 1rem; color: #444; }
+.cr-note { text-align:center;color:#bbb;font-size:0.88rem;margin-bottom:18px;font-style:italic; }
+
+/* Colour spin quiz */
+.spin-wrap { background: white; border-radius: var(--radius); box-shadow: var(--shadow); padding: 30px; text-align: center; max-width: 500px; margin: 28px auto 0; }
+.spin-swatch { width: 110px; height: 110px; border-radius: 50%; margin: 0 auto 20px; border: 5px solid rgba(0,0,0,0.08); transition: background 0.5s; }
+.spin-question { font-family: 'Fredoka One', cursive; font-size: 1.4rem; color: #333; margin-bottom: 20px; }
+.spin-opts { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+.spin-opt {
+  font-family: 'Fredoka One', cursive; font-size: 1rem;
+  padding: 10px 22px; border: 3px solid #ddd; border-radius: 50px;
+  background: #f5f5f5; cursor: pointer; transition: all 0.2s;
+}
+.spin-opt:hover { background: #eee; transform: scale(1.04); }
+.spin-opt.correct { background: #d4edda; border-color: #2ECC40; }
+.spin-opt.wrong   { background: #fde8e8; border-color: #FF3B3B; }
+.spin-score { font-family: 'Fredoka One', cursive; font-size: 1.1rem; color: #888; margin-top: 16px; }
+
+/* ============================================================
+   SECTION 2 — MEET THE WORDS
+   ============================================================ */
+.words-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 18px;
+}
+.word-card {
+  background: white; border-radius: var(--radius);
+  box-shadow: var(--shadow); padding: 22px 12px 16px;
+  text-align: center; cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  position: relative; overflow: hidden;
+}
+.word-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 6px;
+}
+.word-card:hover { transform: translateY(-6px); box-shadow: 0 16px 40px rgba(0,0,0,0.15); }
+.word-emoji { font-size: 2.8rem; margin-bottom: 10px; }
+.word-text { font-family: 'Fredoka One', cursive; font-size: 1.2rem; color: #333; margin-bottom: 6px; }
+.word-tag { font-size: 0.78rem; font-weight: 700; padding: 3px 12px; border-radius: 20px; display: inline-block; margin-bottom: 10px; }
+.tag-greet { background: #e3f7ff; color: #0099cc; }
+.tag-bye   { background: #fff0e3; color: #cc6600; }
+.tag-other { background: #f0ffe3; color: #339900; }
+.listen-btn {
+  background: rgba(0,0,0,0.06); border: none; border-radius: 20px;
+  padding: 5px 14px; font-size: 0.82rem; cursor: pointer;
+  font-family: 'Nunito', sans-serif; font-weight: 700; color: #666;
+  transition: background 0.2s;
+}
+.listen-btn:hover { background: rgba(0,0,0,0.12); }
+
+/* ============================================================
+   SECTION 3 — MATCHING
+   ============================================================ */
+.match-area { display: flex; gap: 32px; flex-wrap: wrap; justify-content: center; }
+.match-col { flex: 1; min-width: 200px; }
+.match-col h3 { font-family:'Fredoka One',cursive; text-align:center; margin-bottom:14px; color:#777; }
+.m-item {
+  display: flex; align-items: center; gap: 12px;
+  background: white; border-radius: 16px; padding: 14px 18px;
+  margin-bottom: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  cursor: pointer; border: 3px solid transparent;
+  transition: all 0.2s;
+  font-family: 'Fredoka One', cursive; font-size: 1.05rem; color: #444;
+}
+.m-item:hover { transform: translateX(4px); }
+.m-item.selected { border-color: #74C7F5; background: #e8f6ff; }
+.m-item.correct  { border-color: #2ECC40; background: #d4edda; pointer-events: none; }
+.m-item.wrong    { border-color: #FF3B3B; background: #fde8e8; animation: shake 0.4s; }
+.m-emoji { font-size: 1.6rem; }
+@keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
+.match-score { font-family:'Fredoka One',cursive; font-size:1.2rem; color:#777; text-align:center; margin-top:18px; }
+
+/* ============================================================
+   SECTION 4 — SCENE MATCH
+   ============================================================ */
+.scene-progress { display:flex; gap:8px; justify-content:center; margin-bottom:22px; }
+.scene-dot { width:14px; height:14px; border-radius:50%; background:#ddd; transition:background 0.3s; }
+.scene-dot.done { background: #6BCB77; }
+.scene-card {
+  background: white; border-radius: var(--radius); box-shadow: var(--shadow);
+  padding: 32px; text-align: center;
+}
+.scene-big { font-size: 7rem; margin-bottom: 16px; animation: wobble 2s infinite; }
+@keyframes wobble { 0%,100%{transform:rotate(-4deg)} 50%{transform:rotate(4deg)} }
+.scene-question { font-family:'Fredoka One',cursive; font-size:1.5rem; color:#333; margin-bottom:24px; }
+.scene-opts { display:flex; flex-wrap:wrap; gap:14px; justify-content:center; }
+.scene-opt {
+  font-family:'Fredoka One',cursive; font-size:1.1rem;
+  padding: 14px 28px; border: 3px solid #ddd; border-radius: 18px;
+  background: #f7f7f7; cursor: pointer; transition: all 0.2s;
+}
+.scene-opt:hover { background:#eee; transform:scale(1.06); box-shadow:0 4px 14px rgba(0,0,0,0.1); }
+.scene-opt.correct { background:#d4edda; border-color:#2ECC40; }
+.scene-opt.wrong   { background:#fde8e8; border-color:#FF3B3B; animation:shake 0.4s; }
+.scene-feedback { font-family:'Fredoka One',cursive; font-size:1.2rem; margin-top:16px; min-height:32px; }
+
+/* ============================================================
+   SECTION 5 — ACTION GREETINGS
+   ============================================================ */
+.action-intro { background:white; border-radius:var(--radius); box-shadow:var(--shadow); padding:28px; text-align:center; margin-bottom:24px; }
+.action-intro p { font-size:1.05rem; font-weight:700; color:#666; line-height:1.6; }
+.characters-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:18px; }
+.char-card {
+  background: white; border-radius: var(--radius); box-shadow: var(--shadow);
+  padding: 24px 16px; text-align: center; cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  border: 4px solid transparent;
+}
+.char-card:hover { transform: translateY(-6px); box-shadow: 0 16px 36px rgba(0,0,0,0.15); }
+.char-card.active-char { border-color: #C77DFF; background: #f8f0ff; }
+.char-big { font-size: 4rem; margin-bottom: 10px; }
+.char-name { font-family:'Fredoka One',cursive; font-size:1.15rem; color:#444; margin-bottom:6px; }
+.char-hint { font-size:0.82rem; font-weight:700; color:#aaa; }
+.action-stage {
+  background: white; border-radius: var(--radius); box-shadow: var(--shadow);
+  padding: 32px; text-align: center; margin-top: 24px;
+  display: none;
+}
+.action-stage.visible { display: block; animation: fadeUp 0.4s; }
+.stage-char { font-size: 5rem; animation: bounce 1.2s infinite; }
+@keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+.stage-word { font-family:'Fredoka One',cursive; font-size:2.5rem; color:#C77DFF; margin: 12px 0; }
+.stage-instruction { font-size:1.05rem; font-weight:700; color:#888; }
+.word-selector { display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-top:20px; }
+.word-sel-btn {
+  font-family:'Fredoka One',cursive; font-size:1rem;
+  padding: 10px 22px; border: 3px solid #C77DFF; border-radius: 50px;
+  background: #f8f0ff; color: #9B59B6; cursor: pointer; transition: all 0.2s;
+}
+.word-sel-btn:hover { background: #C77DFF; color: white; transform: scale(1.05); }
+.word-sel-btn.active-word { background: #C77DFF; color: white; }
+
+.action-prompt {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.15rem; color: #666;
+  background: #f8f0ff; border-radius: 16px;
+  padding: 14px 20px; display: inline-block;
+  border: 2px dashed #C77DFF;
+}
+.action-countdown {
+  font-family: 'Fredoka One', cursive;
+  font-size: 5rem; color: #C77DFF;
+  animation: countPop 0.5s ease;
+  line-height: 1;
+  margin: 10px 0;
+}
+@keyframes countPop { 0%{transform:scale(0.5);opacity:0} 60%{transform:scale(1.3)} 100%{transform:scale(1);opacity:1} }
+.action-praise {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.5rem; margin-top: 14px;
+  min-height: 36px;
+  animation: fadeUp 0.4s ease;
+}
+
+/* ============================================================
+   SECTION 6 — COMPLETE THE SENTENCE
+   ============================================================ */
+.sent-card {
+  background: white; border-radius: var(--radius); box-shadow: var(--shadow);
+  padding: 22px 20px; margin-bottom: 16px;
+  display: flex; align-items: center; flex-wrap: wrap; gap: 14px;
+}
+.sent-emoji { font-size: 2.4rem; flex-shrink: 0; }
+.sent-text { font-family:'Fredoka One',cursive; font-size:1.15rem; color:#333; flex:1; min-width:200px; line-height:1.6; }
+.word-select {
+  font-family:'Fredoka One',cursive; font-size:1rem;
+  padding: 8px 16px; border: 3px solid #ddd; border-radius: 14px;
+  background: #f9f9f9; cursor: pointer; appearance: none; color: #555;
+  outline: none; transition: border-color 0.2s;
+}
+.word-select:focus { border-color: #74C7F5; }
+.word-select.correct { border-color:#2ECC40; background:#d4edda; }
+.word-select.wrong   { border-color:#FF3B3B; background:#fde8e8; }
+.check-btn {
+  display:block; margin:10px auto 0;
+  font-family:'Fredoka One',cursive; font-size:1.1rem;
+  padding: 14px 36px; border:none; border-radius:50px; cursor:pointer;
+  background: linear-gradient(135deg, #74C7F5, #6BCB77);
+  color: white; box-shadow: 0 4px 16px rgba(116,199,245,0.4);
+  transition: transform 0.2s;
+}
+.check-btn:hover { transform: scale(1.05); }
+.sent-result { text-align:center; font-family:'Fredoka One',cursive; font-size:1.3rem; margin-top:16px; min-height:36px; }
+
+/* ============================================================
+   SECTION 7 — QUIZ
+   ============================================================ */
+.quiz-wrap { max-width:580px; margin:0 auto; }
+.quiz-bar { height:10px; background:#eee; border-radius:10px; overflow:hidden; margin-bottom:16px; }
+.quiz-fill { height:100%; background:linear-gradient(90deg,#74C7F5,#6BCB77,#FFD93D); border-radius:10px; transition:width 0.4s; }
+.quiz-score-disp { font-family:'Fredoka One',cursive; font-size:1.05rem; color:#aaa; text-align:center; margin-bottom:16px; }
+.quiz-card { background:white; border-radius:var(--radius); box-shadow:var(--shadow); padding:30px; text-align:center; }
+.quiz-num { font-size:0.85rem; font-weight:700; color:#ccc; margin-bottom:8px; }
+.quiz-big { font-size:5rem; margin-bottom:16px; }
+.quiz-question { font-family:'Fredoka One',cursive; font-size:1.35rem; color:#333; margin-bottom:22px; }
+.quiz-opts { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.quiz-opt {
+  font-family:'Fredoka One',cursive; font-size:1rem;
+  padding:13px 10px; border:3px solid #eee; border-radius:16px;
+  background:#f5f5f5; cursor:pointer; transition:all 0.2s;
+}
+.quiz-opt:hover { background:#e8e8e8; transform:scale(1.03); }
+.quiz-opt.correct { background:#d4edda; border-color:#2ECC40; }
+.quiz-opt.wrong   { background:#fde8e8; border-color:#FF3B3B; }
+.quiz-done { background:white; border-radius:var(--radius); box-shadow:var(--shadow); padding:40px; text-align:center; }
+.quiz-done .trophy { font-size:4.5rem; }
+.quiz-done h2 { font-family:'Fredoka One',cursive; font-size:2rem; margin:12px 0; }
+.quiz-done p  { color:#888; font-size:1.1rem; margin-bottom:24px; }
+
+/* CELEBRATE */
+.celebrate { position:fixed; inset:0; pointer-events:none; z-index:9999; display:flex; align-items:center; justify-content:center; }
+.celebrate-text { font-family:'Fredoka One',cursive; font-size:3.5rem; color:white; text-shadow:3px 3px 0 rgba(0,0,0,0.25); animation:bigPop 0.75s forwards; }
+@keyframes bigPop { 0%{opacity:0;transform:scale(0)} 60%{transform:scale(1.2);opacity:1} 100%{transform:scale(1);opacity:0} }
+@keyframes pop { 0%,100%{transform:scale(1)} 50%{transform:scale(1.15)} }
+
+@media(max-width:480px){
+  .quiz-opts { grid-template-columns:1fr; }
+  .match-area { flex-direction:column; }
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-clouds">☁️ ☁️ ☁️ ☁️ ☁️</div>
+  <h1>👋 Hello & Goodbye!</h1>
+  <p>Learn greetings and farewells in English!</p>
+  <div class="wave-divider">
+    <svg viewBox="0 0 1200 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" height="40">
+      <path d="M0,30 C300,60 900,0 1200,30 L1200,60 L0,60 Z" fill="#F0FAFF"/>
+    </svg>
+  </div>
+</div>
+
+<nav class="tab-nav">
+  <button class="tab-btn active" data-tab="colours">🎨 Colours</button>
+  <button class="tab-btn" data-tab="meet">👋 Words</button>
+  <button class="tab-btn" data-tab="match">🔗 Matching</button>
+  <button class="tab-btn" data-tab="scene">🎯 Find It!</button>
+  <button class="tab-btn" data-tab="action">🤸 Action!</button>
+  <button class="tab-btn" data-tab="sentences">✏️ Sentences</button>
+  <button class="tab-btn" data-tab="quiz">❓ Quiz</button>
+</nav>
+
+<!-- ===== COLOURS REVIEW ===== -->
+<section class="section active" id="colours">
+  <h2 class="section-title">🎨 Colours — Quick Review!</h2>
+  <p class="section-sub">Tap a colour to hear it! Then test yourself below 👇</p>
+  <p class="cr-note">👆 Tap any card to listen!</p>
+  <div class="colours-review-grid" id="crGrid"></div>
+
+  <div class="spin-wrap">
+    <div class="spin-question" id="spinQ">What colour is this? 🤔</div>
+    <div class="spin-swatch" id="spinSwatch"></div>
+    <div class="spin-opts" id="spinOpts"></div>
+    <div class="feedback" id="spinFeedback"></div>
+    <div class="spin-score" id="spinScore">⭐ 0 correct</div>
+    <div class="center"><button class="big-btn" style="background:linear-gradient(135deg,#FF6B6B,#FFD93D)" onclick="nextSpin()">Next colour ➡️</button></div>
+  </div>
+</section>
+
+<!-- ===== MEET THE WORDS ===== -->
+<section class="section" id="meet">
+  <h2 class="section-title">👋 Meet the Words!</h2>
+  <p class="section-sub">Tap any card to hear how it sounds! 🔊</p>
+  <div class="words-grid" id="wordsGrid"></div>
+</section>
+
+<!-- ===== MATCHING ===== -->
+<section class="section" id="match">
+  <h2 class="section-title">🔗 Matching!</h2>
+  <p class="section-sub">Tap a picture on the left, then the matching word on the right!</p>
+  <div class="match-area">
+    <div class="match-col"><h3>Pictures 🖼️</h3><div id="matchLeft"></div></div>
+    <div class="match-col"><h3>Words 📝</h3><div id="matchRight"></div></div>
+  </div>
+  <div class="match-score" id="matchScore">⭐ 0 / 8</div>
+  <div class="center"><button class="big-btn" style="background:linear-gradient(135deg,#FFB347,#FF6B6B)" onclick="initMatch()">🔄 Play Again!</button></div>
+</section>
+
+<!-- ===== SCENE FIND ===== -->
+<section class="section" id="scene">
+  <h2 class="section-title">🎯 Find the Correct Greeting!</h2>
+  <p class="section-sub">Look at the picture and choose the right word!</p>
+  <div class="scene-progress" id="sceneProgress"></div>
+  <div class="scene-card">
+    <div class="scene-big" id="sceneBig"></div>
+    <div class="scene-question" id="sceneQ"></div>
+    <div class="scene-opts" id="sceneOpts"></div>
+    <div class="scene-feedback" id="sceneFeedback"></div>
+  </div>
+</section>
+
+<!-- ===== ACTION ===== -->
+<section class="section" id="action">
+  <h2 class="section-title">🤸 Action Greetings!</h2>
+  <div class="action-intro">
+    <p>Pick a character 👇 then pick a word — and say it <strong>out loud</strong> in that voice! 🎭<br>Can you sound like a real monster or a tiny mouse? 🐭👹</p>
+  </div>
+  <div class="characters-grid" id="charsGrid"></div>
+  <div class="action-stage" id="actionStage">
+    <div class="stage-char" id="stageChar"></div>
+    <div class="stage-word" id="stageWord">— pick a word below —</div>
+    <div class="stage-instruction" id="stageInstr"></div>
+    <div class="word-selector" id="wordSelector"></div>
+    <div id="actionReady" style="display:none;margin-top:22px;text-align:center">
+      <div class="action-prompt" id="actionPrompt"></div>
+      <div class="action-countdown" id="actionCountdown" style="display:none"></div>
+      <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:16px">
+        <button class="big-btn" id="goBtn" style="background:linear-gradient(135deg,#C77DFF,#FF6B9D);font-size:1.2rem" onclick="startCountdown()">🎬 Go!</button>
+        <button class="big-btn" id="didItBtn" style="background:linear-gradient(135deg,#6BCB77,#74C7F5);display:none;font-size:1.2rem" onclick="didIt()">✅ I said it!</button>
+      </div>
+      <div class="action-praise" id="actionPraise"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SENTENCES ===== -->
+<section class="section" id="sentences">
+  <h2 class="section-title">✏️ Complete the Sentence!</h2>
+  <p class="section-sub">Choose the right word to finish each sentence!</p>
+  <div id="sentWrap"></div>
+  <button class="check-btn" onclick="checkSentences()">✅ Check my answers!</button>
+  <div class="sent-result" id="sentResult"></div>
+  <div class="center"><button class="big-btn" style="background:linear-gradient(135deg,#FF6B9D,#FFB347);margin-top:10px" onclick="initSentences()">🔄 Try Again!</button></div>
+</section>
+
+<!-- ===== QUIZ ===== -->
+<section class="section" id="quiz">
+  <h2 class="section-title">❓ Greetings Quiz!</h2>
+  <div class="quiz-wrap">
+    <div class="quiz-bar"><div class="quiz-fill" id="quizFill" style="width:0%"></div></div>
+    <div class="quiz-score-disp" id="quizScoreDisp">⭐ 0 correct</div>
+    <div id="quizContent"></div>
+  </div>
+</section>
+
+<div class="celebrate" id="celebrate" style="display:none">
+  <div class="celebrate-text" id="celebrateText"></div>
+</div>
+
+<script>
+// ===== SPEAK =====
+function speak(text, rate=0.88, pitch=1.1) {
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang='en-US'; u.rate=rate; u.pitch=pitch;
+  speechSynthesis.cancel();
+  speechSynthesis.speak(u);
+}
+
+// ===== CELEBRATE =====
+function celebrate(msg) {
+  const el=document.getElementById('celebrate');
+  document.getElementById('celebrateText').textContent=msg;
+  el.style.display='flex';
+  setTimeout(()=>el.style.display='none', 850);
+}
+
+// ===== TAB NAV =====
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.tab).classList.add('active');
+  });
+});
+
+// ============================================================
+// COLOURS DATA & REVIEW
+// ============================================================
+const COLOURS=[
+  {name:'Red',    hex:'#FF3B3B',emoji:'🍎'},
+  {name:'Orange', hex:'#FF8C00',emoji:'🍊'},
+  {name:'Yellow', hex:'#FFD600',emoji:'🌞'},
+  {name:'Green',  hex:'#2ECC40',emoji:'🐸'},
+  {name:'Blue',   hex:'#2196F3',emoji:'🌊'},
+  {name:'Purple', hex:'#9B59B6',emoji:'🍇'},
+  {name:'Pink',   hex:'#FF69B4',emoji:'🌸'},
+  {name:'White',  hex:'#F0F0F0',emoji:'☁️'},
+];
+
+function initColours(){
+  const grid=document.getElementById('crGrid');
+  grid.innerHTML='';
+  COLOURS.forEach(c=>{
+    const card=document.createElement('div');
+    card.className='cr-card';
+    card.innerHTML=`<div class="cr-swatch" style="background:${c.hex}">${c.emoji}</div><div class="cr-name">${c.name}</div>`;
+    card.addEventListener('click',()=>speak(c.name));
+    grid.appendChild(card);
+  });
+  spinScore=0; nextSpin();
+}
+let spinScore=0;
+function nextSpin(){
+  const c=COLOURS[Math.floor(Math.random()*COLOURS.length)];
+  document.getElementById('spinSwatch').style.background=c.hex;
+  document.getElementById('spinFeedback').textContent='';
+  document.getElementById('spinScore').textContent=`⭐ ${spinScore} correct`;
+  const wrong=COLOURS.filter(x=>x.name!==c.name).sort(()=>Math.random()-0.5).slice(0,3).map(x=>x.name);
+  const opts=[...wrong,c.name].sort(()=>Math.random()-0.5);
+  const div=document.getElementById('spinOpts');
+  div.innerHTML='';
+  opts.forEach(o=>{
+    const btn=document.createElement('button');
+    btn.className='spin-opt'; btn.textContent=o;
+    btn.addEventListener('click',()=>{
+      div.querySelectorAll('.spin-opt').forEach(b=>b.disabled=true);
+      if(o===c.name){
+        btn.classList.add('correct');
+        spinScore++;
+        document.getElementById('spinScore').textContent=`⭐ ${spinScore} correct`;
+        document.getElementById('spinFeedback').textContent='✅ Correct! 🎉';
+        celebrate('🌈 Yes!');
+        speak('Correct! '+c.name);
+      } else {
+        btn.classList.add('wrong');
+        div.querySelectorAll('.spin-opt').forEach(b=>{ if(b.textContent===c.name) b.classList.add('correct'); });
+        document.getElementById('spinFeedback').textContent=`❌ It was ${c.name}!`;
+        speak('The colour is '+c.name);
+      }
+    });
+    div.appendChild(btn);
+  });
+}
+
+// ============================================================
+// GREETINGS DATA
+// ============================================================
+const WORDS=[
+  {text:'Hello!',       emoji:'👋', tag:'greet', color:'#74C7F5', hint:'A friendly hello!',  scene: null},
+  {text:'Hi!',          emoji:'😊', tag:'greet', color:'#6BCB77', hint:'Short and sweet!',   scene: null},
+  {text:'Good morning!',emoji:'🌞', tag:'greet', color:'#FFD93D', hint:'Say in the morning!', scene: '🌞'},
+  {text:'Goodbye!',     emoji:'👋', tag:'bye',   color:'#FF6B6B', hint:'Leaving? Say this!',  scene: '🎒'},
+  {text:'Bye!',         emoji:'✌️', tag:'bye',   color:'#FFB347', hint:'Short goodbye!',      scene: null},
+  {text:'See you!',     emoji:'😄', tag:'bye',   color:'#C77DFF', hint:'Until next time!',    scene: null},
+  {text:'Good night!',  emoji:'🌙', tag:'bye',   color:'#5C6BC0', hint:'Going to sleep!',     scene: '🌙'},
+  {text:'How are you?', emoji:'🤗', tag:'other', color:'#FF69B4', hint:'Ask a friend!',       scene: null},
+  {text:"I'm fine!",    emoji:'😃', tag:'other', color:'#26C6DA', hint:'You feel good!',      scene: null},
+  {text:"I'm happy!",   emoji:'🥰', tag:'other', color:'#EF9A9A', hint:'You feel great!',     scene: null},
+];
+
+function initWords(){
+  const g=document.getElementById('wordsGrid');
+  g.innerHTML='';
+  WORDS.forEach(w=>{
+    const card=document.createElement('div');
+    card.className='word-card';
+    card.style.cursor='pointer';
+    const tagLabel=w.tag==='greet'?'Greeting':w.tag==='bye'?'Goodbye':'Feeling';
+    card.innerHTML=`
+      <div style="position:absolute;top:0;left:0;right:0;height:6px;background:${w.color};border-radius:24px 24px 0 0"></div>
+      <div class="word-emoji">${w.emoji}</div>
+      <div class="word-text">${w.text}</div>
+      <div class="word-tag tag-${w.tag}">${tagLabel}</div>
+      <button class="listen-btn">🔊 Listen</button>
+    `;
+    card.querySelector('.listen-btn').addEventListener('click',e=>{ e.stopPropagation(); speak(w.text.replace('!','').replace('?','')); });
+    card.addEventListener('click',()=>speak(w.text.replace('!','').replace('?','')));
+    g.appendChild(card);
+  });
+}
+
+// ============================================================
+// MATCHING
+// ============================================================
+const MATCH_PAIRS=[
+  {emoji:'🌞',word:'Good morning!'},
+  {emoji:'👋',word:'Hello!'},
+  {emoji:'😊',word:'Hi!'},
+  {emoji:'🎒',word:'Goodbye!'},
+  {emoji:'✌️',word:'Bye!'},
+  {emoji:'🌙',word:'Good night!'},
+  {emoji:'🤗',word:'How are you?'},
+  {emoji:'😃',word:"I'm fine!"},
+];
+let mSelected=null, mScore=0, mDone=new Set();
+
+function initMatch(){
+  mSelected=null; mScore=0; mDone.clear();
+  document.getElementById('matchScore').textContent='⭐ 0 / 8';
+  const left=document.getElementById('matchLeft');
+  const right=document.getElementById('matchRight');
+  left.innerHTML=''; right.innerHTML='';
+  const shuffR=[...MATCH_PAIRS].sort(()=>Math.random()-0.5);
+  MATCH_PAIRS.forEach(p=>{
+    const li=document.createElement('div');
+    li.className='m-item'; li.dataset.word=p.word; li.dataset.side='left';
+    li.innerHTML=`<span class="m-emoji">${p.emoji}</span>`;
+    li.addEventListener('click',()=>handleMatch(li));
+    left.appendChild(li);
+  });
+  shuffR.forEach(p=>{
+    const ri=document.createElement('div');
+    ri.className='m-item'; ri.dataset.word=p.word; ri.dataset.side='right';
+    ri.textContent=p.word;
+    ri.addEventListener('click',()=>handleMatch(ri));
+    right.appendChild(ri);
+  });
+}
+
+function handleMatch(el){
+  if(el.classList.contains('correct')) return;
+  if(!mSelected){
+    if(el.dataset.side!=='left') return;
+    mSelected=el; el.classList.add('selected');
+    speak(el.dataset.word.replace('!','').replace('?',''));
+  } else {
+    if(el.dataset.side!=='right'){ mSelected.classList.remove('selected'); mSelected=el; el.classList.add('selected'); return; }
+    if(mSelected.dataset.word===el.dataset.word){
+      mSelected.classList.remove('selected'); mSelected.classList.add('correct'); el.classList.add('correct');
+      mScore++; celebrate('🎉 Yes!');
+      speak('Great job!');
+      document.getElementById('matchScore').textContent=`⭐ ${mScore} / 8`;
+      if(mScore===8) setTimeout(()=>speak('Fantastic! You matched everything!'),300);
+    } else {
+      mSelected.classList.add('wrong'); el.classList.add('wrong');
+      speak('Try again!');
+      const s=mSelected,e2=el;
+      setTimeout(()=>{ s.classList.remove('wrong','selected'); e2.classList.remove('wrong'); },700);
+    }
+    mSelected=null;
+  }
+}
+
+// ============================================================
+// SCENE FIND
+// ============================================================
+const SCENE_QS=[
+  { pic:'🌞', question:'You wake up in the morning. What do you say?',
+    correct:'Good morning!', opts:['Good morning!','Good night!','Goodbye!','See you!'] },
+  { pic:'🌙', question:'You are going to sleep. What do you say?',
+    correct:'Good night!', opts:['Hello!','Good morning!','Good night!','Hi!'] },
+  { pic:'🎒', question:'You are leaving school. What do you say?',
+    correct:'Goodbye!', opts:['Good morning!','How are you?','Goodbye!','I\'m fine!'] },
+  { pic:'🤗', question:'You meet a friend. What do you ask?',
+    correct:'How are you?', opts:['Goodbye!','How are you?','Good night!','See you!'] },
+  { pic:'🥰', question:'Your friend asks "How are you?" You feel great!',
+    correct:"I'm happy!", opts:["I'm fine!","I'm happy!","Goodbye!","Good morning!"] },
+  { pic:'👋', question:'You see a friend across the street. You wave!',
+    correct:'Hello!', opts:['Good night!','Hello!','Goodbye!','How are you?'] },
+  { pic:'✌️', question:'Your friend leaves. Short and sweet!',
+    correct:'Bye!', opts:['Bye!','Good morning!','Hi!','I\'m fine!'] },
+  { pic:'😊', question:'You meet someone new. Short greeting!',
+    correct:'Hi!', opts:['Hi!','Good night!','Goodbye!','I\'m happy!'] },
+];
+let sceneIdx=0, sceneCorrect=0;
+
+function initScene(){
+  sceneIdx=0; sceneCorrect=0; renderScene();
+}
+function renderScene(){
+  const prog=document.getElementById('sceneProgress');
+  prog.innerHTML=SCENE_QS.map((_,i)=>`<div class="scene-dot${i<sceneIdx?' done':''}"></div>`).join('');
+  if(sceneIdx>=SCENE_QS.length){
+    document.getElementById('sceneBig').textContent='🏆';
+    document.getElementById('sceneQ').textContent=`You got ${sceneCorrect} out of ${SCENE_QS.length}! 🌟`;
+    document.getElementById('sceneOpts').innerHTML=`<button class="big-btn" style="background:linear-gradient(135deg,#6BCB77,#74C7F5)" onclick="initScene()">🔄 Play Again!</button>`;
+    document.getElementById('sceneFeedback').textContent='';
+    speak(`Amazing! You got ${sceneCorrect} out of ${SCENE_QS.length}!`);
+    return;
+  }
+  const q=SCENE_QS[sceneIdx];
+  document.getElementById('sceneBig').textContent=q.pic;
+  document.getElementById('sceneQ').textContent=q.question;
+  document.getElementById('sceneFeedback').textContent='';
+  speak(q.question);
+  const opts=document.getElementById('sceneOpts');
+  opts.innerHTML='';
+  q.opts.forEach(o=>{
+    const btn=document.createElement('button');
+    btn.className='scene-opt'; btn.textContent=o;
+    btn.addEventListener('click',()=>{
+      opts.querySelectorAll('.scene-opt').forEach(b=>b.disabled=true);
+      if(o===q.correct){
+        btn.classList.add('correct');
+        sceneCorrect++; celebrate('⭐ Correct!');
+        document.getElementById('sceneFeedback').textContent='✅ Great! 🎉';
+        speak('Correct! '+o.replace('!','').replace('?',''));
+        setTimeout(()=>{ sceneIdx++; renderScene(); },1400);
+      } else {
+        btn.classList.add('wrong');
+        document.getElementById('sceneFeedback').textContent=`❌ The answer is: ${q.correct}`;
+        speak('The answer is '+q.correct.replace('!','').replace('?',''));
+        setTimeout(()=>{ sceneIdx++; renderScene(); },1800);
+      }
+    });
+    opts.appendChild(btn);
+  });
+}
+
+// ============================================================
+// ACTION GREETINGS
+// ============================================================
+const CHARACTERS=[
+  { name:'Robot 🤖',    emoji:'🤖', hint:'Stiff body, flat voice — like a machine!',    praise:['🤖 BEEP BOOP! Amazing!','🤖 Perfect robot voice!','🤖 10/10 robot!'] },
+  { name:'Baby 👶',     emoji:'👶', hint:'Tiny soft voice, maybe wobble a little!',      praise:['👶 So cute! Well done!','👶 Baby voice perfected!','🍼 Adorable!'] },
+  { name:'Monster 👹',  emoji:'👹', hint:'Deep, growly, LOUD voice — raawwrr!',          praise:['👹 ROAAAR! Scary good!','👹 Best monster ever!','💪 So scary!'] },
+  { name:'Princess 👑', emoji:'👑', hint:'Sweet, fancy, sing-song voice!',               praise:['👑 So elegant!','👑 Royal voice! Bravo!','🌸 Beautiful!'] },
+  { name:'Giant 👾',    emoji:'👾', hint:'Sloooow and very very deep voice!',            praise:['👾 BOOOM! Great giant!','👾 The earth shook!','💥 Massive voice!'] },
+  { name:'Mouse 🐭',    emoji:'🐭', hint:'Tiny, squeaky, super fast voice!',             praise:['🐭 Squeak squeak! Great!','🐭 Tiniest voice ever!','🧀 Mouse-tastic!'] },
+];
+const ACTION_WORDS=['Hello!','Hi!','Good morning!','Goodbye!','Bye!','See you!','How are you?'];
+let activeChar=null, activeWord=null, countdownTimer=null;
+
+function initAction(){
+  const grid=document.getElementById('charsGrid');
+  grid.innerHTML='';
+  CHARACTERS.forEach(c=>{
+    const card=document.createElement('div');
+    card.className='char-card';
+    card.innerHTML=`<div class="char-big">${c.emoji}</div><div class="char-name">${c.name}</div><div class="char-hint">${c.hint}</div>`;
+    card.addEventListener('click',()=>{
+      document.querySelectorAll('.char-card').forEach(x=>x.classList.remove('active-char'));
+      card.classList.add('active-char');
+      activeChar=c;
+      document.getElementById('actionStage').classList.add('visible');
+      document.getElementById('stageChar').textContent=c.emoji;
+      document.getElementById('stageInstr').textContent=c.hint;
+      document.getElementById('actionPraise').textContent='';
+      resetActionButtons();
+      if(activeWord) showActionReady();
+    });
+    grid.appendChild(card);
+  });
+  const sel=document.getElementById('wordSelector');
+  sel.innerHTML='';
+  ACTION_WORDS.forEach(w=>{
+    const btn=document.createElement('button');
+    btn.className='word-sel-btn'; btn.textContent=w;
+    btn.addEventListener('click',()=>{
+      document.querySelectorAll('.word-sel-btn').forEach(b=>b.classList.remove('active-word'));
+      btn.classList.add('active-word');
+      activeWord=w;
+      document.getElementById('stageWord').textContent=w;
+      document.getElementById('actionPraise').textContent='';
+      resetActionButtons();
+      if(activeChar) showActionReady();
+    });
+    sel.appendChild(btn);
+  });
+}
+
+function showActionReady(){
+  const ready=document.getElementById('actionReady');
+  ready.style.display='block';
+  document.getElementById('actionPrompt').innerHTML=
+    `Say it like ${activeChar.name}! 🎭<br><span style="color:#C77DFF;font-size:1.3rem">"${activeWord}"</span>`;
+  document.getElementById('actionCountdown').style.display='none';
+  document.getElementById('goBtn').style.display='inline-block';
+  document.getElementById('didItBtn').style.display='none';
+}
+
+function resetActionButtons(){
+  if(countdownTimer) clearInterval(countdownTimer);
+  document.getElementById('actionCountdown').style.display='none';
+  document.getElementById('goBtn').style.display='inline-block';
+  document.getElementById('didItBtn').style.display='none';
+}
+
+function startCountdown(){
+  document.getElementById('goBtn').style.display='none';
+  document.getElementById('actionPraise').textContent='';
+  const cd=document.getElementById('actionCountdown');
+  cd.style.display='block';
+  let n=3;
+  cd.textContent=n;
+  countdownTimer=setInterval(()=>{
+    n--;
+    if(n>0){
+      cd.textContent=n;
+      // re-trigger animation
+      cd.style.animation='none';
+      void cd.offsetWidth;
+      cd.style.animation='countPop 0.5s ease';
+    } else {
+      clearInterval(countdownTimer);
+      cd.textContent='🗣️ SAY IT!';
+      cd.style.fontSize='2.8rem';
+      cd.style.color='#FF6B6B';
+      setTimeout(()=>{
+        cd.style.display='none';
+        cd.style.fontSize='5rem';
+        cd.style.color='#C77DFF';
+        document.getElementById('didItBtn').style.display='inline-block';
+      }, 1800);
+    }
+  }, 900);
+}
+
+function didIt(){
+  const praises=activeChar.praise;
+  const msg=praises[Math.floor(Math.random()*praises.length)];
+  document.getElementById('actionPraise').textContent=msg;
+  celebrate(activeChar.emoji+'⭐');
+  document.getElementById('didItBtn').style.display='none';
+  document.getElementById('goBtn').style.display='inline-block';
+  document.getElementById('goBtn').textContent='🎬 Again!';
+}
+
+// ============================================================
+// SENTENCES
+// ============================================================
+const SENTENCES=[
+  { emoji:'🌞', before:'In the morning you say:', after:'', answer:'Good morning!',
+    options:['Good morning!','Good night!','Goodbye!'] },
+  { emoji:'🌙', before:'Before you sleep you say:', after:'', answer:'Good night!',
+    options:['Hi!','See you!','Good night!'] },
+  { emoji:'😊', before:'You see a friend. You say:', after:'', answer:'Hello!',
+    options:['Hello!','Goodbye!','Good night!'] },
+  { emoji:'🎒', before:'School is over. You say:', after:'', answer:'Goodbye!',
+    options:['Good morning!','Goodbye!','How are you?'] },
+  { emoji:'🤗', before:'You ask your friend:', after:'', answer:'How are you?',
+    options:["I'm fine!",'How are you?','Bye!'] },
+  { emoji:'😃', before:'Your friend asks you. You say:', after:'', answer:"I'm fine!",
+    options:["I'm fine!",'Good morning!','See you!'] },
+  { emoji:'✌️', before:'Your friend leaves. You say:', after:'', answer:'See you!',
+    options:['Hello!','Good morning!','See you!'] },
+  { emoji:'😄', before:'A short way to say Hello is:', after:'', answer:'Hi!',
+    options:['Bye!','Hi!','Good night!'] },
+];
+
+function initSentences(){
+  const wrap=document.getElementById('sentWrap');
+  wrap.innerHTML='';
+  document.getElementById('sentResult').textContent='';
+  SENTENCES.forEach((s,i)=>{
+    const shuffled=[...s.options].sort(()=>Math.random()-0.5);
+    const card=document.createElement('div');
+    card.className='sent-card';
+    card.innerHTML=`
+      <div class="sent-emoji">${s.emoji}</div>
+      <div class="sent-text">
+        ${s.before}
+        <select class="word-select" id="wsel-${i}">
+          <option value="">— choose —</option>
+          ${shuffled.map(o=>`<option value="${o}">${o}</option>`).join('')}
+        </select>
+        ${s.after}
+      </div>
+    `;
+    wrap.appendChild(card);
+  });
+}
+
+function checkSentences(){
+  let correct=0;
+  SENTENCES.forEach((s,i)=>{
+    const sel=document.getElementById(`wsel-${i}`);
+    if(!sel) return;
+    sel.classList.remove('correct','wrong');
+    if(sel.value===s.answer){ sel.classList.add('correct'); correct++; }
+    else if(sel.value!=='') sel.classList.add('wrong');
+  });
+  const res=document.getElementById('sentResult');
+  const total=SENTENCES.length;
+  if(correct===total){
+    res.textContent=`🎉 Perfect! ${correct}/${total}! You are a star! ⭐`;
+    res.style.color='#2ECC40';
+    celebrate('🏆 Perfect!');
+    speak('Perfect! All correct!');
+  } else {
+    res.textContent=`✅ ${correct} out of ${total}! Try again!`;
+    res.style.color='#FFB347';
+    speak(`${correct} correct! Try again!`);
+  }
+}
+
+// ============================================================
+// QUIZ
+// ============================================================
+const QUIZ_DATA=[
+  { big:'🌞', question:'What do you say in the morning?', answer:'Good morning!', opts:['Good morning!','Good night!','Goodbye!','Bye!'] },
+  { big:'🌙', question:'What do you say before sleeping?', answer:'Good night!', opts:['Good morning!','Good night!','Hello!','How are you?'] },
+  { big:'👋', question:'You see a new friend. You say…', answer:'Hi!', opts:['Bye!','Hi!','Good night!','I\'m fine!'] },
+  { big:'🎒', question:'School is over! You say…', answer:'Goodbye!', opts:['Hello!','Goodbye!','How are you?','Good morning!'] },
+  { big:'🤗', question:'You want to know how your friend feels. You ask…', answer:'How are you?', opts:['Goodbye!','See you!','How are you?','Hi!'] },
+  { big:'😄', question:'Your friend says "How are you?" You feel great!', answer:"I'm happy!", opts:["I'm fine!","I'm happy!",'Goodbye!','Good night!'] },
+  { big:'✌️', question:'Your friend is leaving. Short goodbye!', answer:'Bye!', opts:['Hi!','Bye!','Good morning!','I\'m fine!'] },
+  { big:'😃', question:'You feel good! You say…', answer:"I'm fine!", opts:["I'm fine!",'Good night!','Hello!','See you!'] },
+  { big:'👋🌞', question:'"Good morning" is a…', answer:'Greeting', opts:['Greeting','Goodbye','Question','Feeling'] },
+  { big:'🌙👋', question:'"Good night" is a…', answer:'Goodbye', opts:['Greeting','Goodbye','Question','Feeling'] },
+];
+let qIdx=0, qScore=0, qList=[];
+
+function buildQuiz(){
+  qList=[...QUIZ_DATA].sort(()=>Math.random()-0.5).slice(0,8);
+  qIdx=0; qScore=0; renderQuiz();
+}
+function renderQuiz(){
+  document.getElementById('quizFill').style.width=`${(qIdx/qList.length)*100}%`;
+  document.getElementById('quizScoreDisp').textContent=`⭐ ${qScore} correct`;
+  const content=document.getElementById('quizContent');
+  if(qIdx>=qList.length){
+    content.innerHTML=`<div class="quiz-done">
+      <div class="trophy">${qScore>=6?'🏆':qScore>=4?'⭐':'💪'}</div>
+      <h2>${qScore>=6?'Amazing!':qScore>=4?'Good job!':'Keep going!'}</h2>
+      <p>You got <strong>${qScore}</strong> out of <strong>${qList.length}</strong>!</p>
+      <button class="big-btn" style="background:linear-gradient(135deg,#FFD93D,#FF6B6B)" onclick="buildQuiz()">🔄 Play Again!</button>
+    </div>`;
+    speak(`You got ${qScore} out of ${qList.length}!`);
+    return;
+  }
+  const q=qList[qIdx];
+  content.innerHTML=`<div class="quiz-card">
+    <div class="quiz-num">Question ${qIdx+1} of ${qList.length}</div>
+    <div class="quiz-big">${q.big}</div>
+    <div class="quiz-question">${q.question}</div>
+    <div class="quiz-opts" id="qopts">
+      ${q.opts.map(o=>`<button class="quiz-opt" onclick="answerQ('${o.replace(/'/g,"\\'")}','${q.answer.replace(/'/g,"\\'")}')">${o}</button>`).join('')}
+    </div>
+  </div>`;
+  speak(q.question);
+}
+function answerQ(chosen,answer){
+  const btns=document.querySelectorAll('.quiz-opt');
+  btns.forEach(b=>{ b.disabled=true; if(b.textContent===answer) b.classList.add('correct'); else if(b.textContent===chosen&&chosen!==answer) b.classList.add('wrong'); });
+  if(chosen===answer){ qScore++; celebrate('⭐ Yes!'); speak('Correct! '+chosen.replace('!','').replace('?','')); }
+  else { speak('The answer is '+answer.replace('!','').replace('?','')); }
+  qIdx++;
+  setTimeout(renderQuiz,1300);
+}
+
+// ============================================================
+// INIT ALL
+// ============================================================
+initColours();
+initWords();
+initMatch();
+initScene();
+initAction();
+initSentences();
+buildQuiz();
+
+document.querySelector('[data-tab="scene"]').addEventListener('click',()=>{ if(sceneIdx>=SCENE_QS.length) initScene(); });
+document.querySelector('[data-tab="colours"]').addEventListener('click',()=>nextSpin());
+</script>
+</body>
+</html>

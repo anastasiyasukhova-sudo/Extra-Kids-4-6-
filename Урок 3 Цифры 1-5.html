@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Numbers 1–5 🌟</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&family=Baloo+2:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --c1: #FF6B6B; --c2: #FFD93D; --c3: #6BCB77; --c4: #4D96FF; --c5: #C77DFF;
+    --bg: #FFF8F0;
+    --radius: 24px;
+    --shadow: 0 8px 32px rgba(0,0,0,0.10);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    min-height: 100vh;
+    padding: 0 0 60px;
+  }
+
+  /* HEADER */
+  .hero {
+    background: linear-gradient(135deg, #FF6B6B 0%, #FFD93D 40%, #6BCB77 70%, #4D96FF 100%);
+    text-align: center;
+    padding: 40px 20px 56px;
+    clip-path: ellipse(100% 100% at 50% 0%);
+    margin-bottom: -16px;
+  }
+  .hero h1 {
+    font-family: 'Baloo 2', cursive;
+    font-size: clamp(2.2rem, 6vw, 4rem);
+    color: #fff;
+    text-shadow: 0 4px 16px rgba(0,0,0,0.18);
+    letter-spacing: 2px;
+  }
+  .hero p { color: rgba(255,255,255,0.92); font-size: 1.2rem; margin-top: 6px; }
+
+  /* EXERCISE CARD */
+  .card {
+    background: #fff;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    max-width: 740px;
+    margin: 32px auto 0;
+    padding: 32px 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 8px;
+    border-radius: var(--radius) 0 0 var(--radius);
+  }
+  .card:nth-child(1)::before { background: var(--c1); }
+  .card:nth-child(2)::before { background: var(--c2); }
+  .card:nth-child(3)::before { background: var(--c3); }
+  .card:nth-child(4)::before { background: var(--c4); }
+  .card:nth-child(5)::before { background: var(--c5); }
+  .card:nth-child(6)::before { background: var(--c1); }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Baloo 2', cursive;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border-radius: 99px;
+    padding: 4px 16px;
+    margin-bottom: 10px;
+    color: #fff;
+  }
+  .card:nth-child(1) .badge { background: var(--c1); }
+  .card:nth-child(2) .badge { background: var(--c2); color: #555; }
+  .card:nth-child(3) .badge { background: var(--c3); }
+  .card:nth-child(4) .badge { background: var(--c4); }
+  .card:nth-child(5) .badge { background: var(--c5); }
+  .card:nth-child(6) .badge { background: var(--c1); }
+
+  .card h2 {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.7rem;
+    margin-bottom: 6px;
+    color: #222;
+  }
+  .card .desc {
+    color: #666;
+    font-size: 1rem;
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+
+  /* ── EXERCISE 1: LISTEN & REPEAT ── */
+  .num-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: center;
+    margin-bottom: 8px;
+  }
+  .num-btn {
+    width: 90px; height: 90px;
+    border-radius: 20px;
+    border: none;
+    font-family: 'Baloo 2', cursive;
+    font-size: 2.8rem;
+    font-weight: 900;
+    cursor: pointer;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 2px;
+    transition: transform .15s, box-shadow .15s;
+    box-shadow: 0 6px 0 rgba(0,0,0,.13);
+    position: relative;
+    color: #fff;
+  }
+  .num-btn span.word {
+    font-size: 0.78rem;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    letter-spacing: 1px;
+    opacity: 0.92;
+  }
+  .num-btn:active { transform: translateY(3px); box-shadow: 0 3px 0 rgba(0,0,0,.13); }
+  .num-btn:hover { transform: scale(1.08) rotate(-2deg); }
+  .nb1 { background: var(--c1); }
+  .nb2 { background: var(--c2); color: #333; }
+  .nb3 { background: var(--c3); }
+  .nb4 { background: var(--c4); }
+  .nb5 { background: var(--c5); }
+  .speak-tip {
+    text-align: center;
+    color: #aaa;
+    font-size: 0.88rem;
+    margin-top: 8px;
+  }
+  .speak-tip span { font-size: 1.1rem; }
+
+  /* ── EXERCISE 2: MATCHING ── */
+  .match-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px 24px;
+  }
+  .match-col-header {
+    font-weight: 700;
+    font-size: 0.88rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #aaa;
+    text-align: center;
+    margin-bottom: 4px;
+  }
+  .match-item {
+    border: 3px solid #eee;
+    border-radius: 14px;
+    padding: 12px 16px;
+    text-align: center;
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.4rem;
+    cursor: pointer;
+    transition: all .2s;
+    user-select: none;
+    background: #fafafa;
+  }
+  .match-item:hover { border-color: #4D96FF; background: #eef5ff; transform: scale(1.04); }
+  .match-item.selected { border-color: #4D96FF; background: #dceeff; }
+  .match-item.matched  { border-color: #6BCB77; background: #e6f9ea; color: #2a7a3b; pointer-events: none; }
+  .match-item.wrong    { border-color: #FF6B6B; background: #ffe8e8; animation: shake .3s; }
+  @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
+  .match-result { text-align: center; margin-top: 12px; font-weight: 700; font-size: 1.1rem; color: #6BCB77; min-height: 28px; }
+
+  /* ── EXERCISE 3: JUMP AND COUNT ── */
+  .action-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .action-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: #f8f8ff;
+    border-radius: 16px;
+    padding: 16px 20px;
+    border: 2px solid #e8e8f8;
+    transition: all .2s;
+    cursor: pointer;
+    user-select: none;
+  }
+  .action-card:hover { border-color: var(--c5); background: #f3eeff; transform: translateX(4px); }
+  .action-card.done { border-color: var(--c3); background: #e8faed; }
+  .action-icon { font-size: 2.2rem; width: 48px; text-align: center; flex-shrink: 0; }
+  .action-text { font-family: 'Baloo 2', cursive; font-size: 1.35rem; color: #333; flex: 1; }
+  .action-check { font-size: 1.8rem; opacity: 0; transition: opacity .2s; }
+  .action-card.done .action-check { opacity: 1; }
+  .action-audio {
+    background: none; border: none; font-size: 1.5rem; cursor: pointer;
+    padding: 4px 6px; border-radius: 8px; transition: transform .15s;
+    flex-shrink: 0;
+  }
+  .action-audio:hover { transform: scale(1.2); }
+
+  /* ── EXERCISE 4: MISSING NUMBER ── */
+  .missing-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+  .mnum {
+    width: 72px; height: 72px;
+    border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Baloo 2', cursive;
+    font-size: 2.4rem;
+    font-weight: 900;
+    color: #fff;
+    box-shadow: 0 5px 0 rgba(0,0,0,.12);
+  }
+  .mnum.blank {
+    background: #f0f0f0;
+    border: 3px dashed #ccc;
+    color: #ccc;
+    font-size: 2rem;
+    box-shadow: none;
+  }
+  .mnum.filled {
+    animation: popIn .35s cubic-bezier(.17,.89,.32,1.28);
+  }
+  @keyframes popIn { 0%{transform:scale(0.5)} 100%{transform:scale(1)} }
+  .mn1{background:var(--c1);} .mn2{background:var(--c2);color:#333;} .mn3{background:var(--c3);}
+  .mn4{background:var(--c4);} .mn5{background:var(--c5);}
+  .answer-btns {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+  }
+  .ans-btn {
+    width: 56px; height: 56px;
+    border-radius: 14px;
+    border: none;
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.7rem;
+    cursor: pointer;
+    background: #f0f0f0;
+    color: #555;
+    transition: all .15s;
+    box-shadow: 0 4px 0 rgba(0,0,0,.1);
+  }
+  .ans-btn:hover { background: #ffe8a0; transform: scale(1.1); }
+  .ans-btn:active { transform: translateY(2px); box-shadow: 0 2px 0 rgba(0,0,0,.1); }
+  .missing-feedback { text-align: center; font-size: 1.4rem; font-weight: 700; min-height: 36px; }
+  .missing-nav {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 14px;
+  }
+  .nav-btn {
+    padding: 8px 24px;
+    border-radius: 99px;
+    border: none;
+    background: #4D96FF;
+    color: #fff;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all .15s;
+  }
+  .nav-btn:hover { background: #2a7ae6; transform: scale(1.05); }
+  .nav-btn.secondary { background: #eee; color: #555; }
+  .nav-btn.secondary:hover { background: #ddd; }
+
+  /* ── EXERCISE 5: NUMBER HUNT ── */
+  .hunt-task {
+    background: linear-gradient(135deg, #FFF3CD, #fff);
+    border-radius: 18px;
+    padding: 18px 22px;
+    margin-bottom: 16px;
+    border: 2px solid #FFD93D;
+    display: none;
+  }
+  .hunt-task.active { display: block; animation: fadeSlide .4s ease; }
+  @keyframes fadeSlide { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+  .hunt-task .task-text {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.6rem;
+    color: #444;
+    margin-bottom: 10px;
+  }
+  .hunt-task .task-icon { font-size: 2.4rem; margin-bottom: 6px; }
+  .hunt-counter-row { display: flex; align-items: center; gap: 14px; margin-top: 8px; }
+  .hunt-count-display {
+    font-family: 'Baloo 2', cursive;
+    font-size: 2.2rem;
+    color: var(--c4);
+    min-width: 48px;
+  }
+  .hunt-tap-btn {
+    padding: 10px 22px;
+    border-radius: 99px;
+    background: var(--c4);
+    color: #fff;
+    border: none;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all .15s;
+  }
+  .hunt-tap-btn:hover { filter: brightness(1.1); transform: scale(1.05); }
+  .hunt-done-btn {
+    padding: 10px 22px;
+    border-radius: 99px;
+    background: var(--c3);
+    color: #fff;
+    border: none;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all .15s;
+    margin-left: auto;
+  }
+  .hunt-progress {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 14px;
+  }
+  .hunt-dot {
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: #e0e0e0;
+    transition: background .3s;
+  }
+  .hunt-dot.done { background: var(--c3); }
+  .hunt-dot.active { background: var(--c4); }
+  .hunt-feedback { text-align: center; font-size: 1.3rem; font-weight: 700; min-height: 32px; color: var(--c3); }
+
+  /* ── EXERCISE 6: COUNT OBJECTS ── */
+  .count-stage {
+    text-align: center;
+  }
+  .emoji-display {
+    font-size: 2.6rem;
+    letter-spacing: 4px;
+    margin: 18px 0;
+    min-height: 64px;
+    animation: popIn .4s ease;
+  }
+  .count-question {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.4rem;
+    color: #444;
+    margin-bottom: 16px;
+  }
+  .count-choices {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+  }
+  .count-choice {
+    width: 68px; height: 68px;
+    border-radius: 16px;
+    border: 3px solid #eee;
+    background: #fafafa;
+    font-family: 'Baloo 2', cursive;
+    font-size: 2rem;
+    cursor: pointer;
+    transition: all .2s;
+  }
+  .count-choice:hover { border-color: var(--c4); background: #eef5ff; transform: scale(1.1); }
+  .count-choice.correct { border-color: var(--c3); background: #e4faeb; animation: popIn .3s; }
+  .count-choice.wrong   { border-color: var(--c1); background: #ffe8e8; animation: shake .3s; }
+  .count-feedback { font-size: 1.4rem; font-weight: 700; min-height: 36px; margin-bottom: 8px; }
+  .count-score {
+    font-size: 1rem;
+    color: #aaa;
+    margin-bottom: 12px;
+  }
+  .count-next {
+    padding: 10px 32px;
+    border-radius: 99px;
+    background: var(--c3);
+    color: #fff;
+    border: none;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    display: none;
+  }
+  .count-next:hover { filter: brightness(1.1); }
+
+  /* SPEECH INDICATOR */
+  .speaking .num-btn { animation: bounce .5s infinite alternate; }
+  @keyframes bounce { from{transform:scale(1)} to{transform:scale(1.13)} }
+  .audio-pulse {
+    display: inline-block;
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: currentColor;
+    animation: pulse 0.8s infinite;
+    margin-left: 4px;
+    vertical-align: middle;
+  }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(0.7)} }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: #f0ece8; }
+  ::-webkit-scrollbar-thumb { background: #FFD93D; border-radius: 4px; }
+
+  /* STAR BURST celebration */
+  .celebrate {
+    position: fixed;
+    pointer-events: none;
+    top: 0; left: 0; width: 100%; height: 100%;
+    z-index: 9999;
+    display: none;
+  }
+  .star-particle {
+    position: absolute;
+    font-size: 1.8rem;
+    animation: starFall 1.2s ease-out forwards;
+  }
+  @keyframes starFall {
+    0%   { opacity:1; transform: translateY(0) rotate(0); }
+    100% { opacity:0; transform: translateY(120px) rotate(360deg); }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>🔢 Numbers 1–5 🌟</h1>
+  <p>Fun exercises for little learners!</p>
+</div>
+
+<div style="max-width:740px;margin:0 auto;padding:0 16px;">
+
+<!-- ══════════════════════════════════
+     EXERCISE 1: LISTEN & REPEAT
+══════════════════════════════════ -->
+<div class="card">
+  <div class="badge">🎧 Exercise 1</div>
+  <h2>Listen & Repeat</h2>
+  <p class="desc">Tap each number to hear it. Then say it out loud! 🗣️</p>
+  <div class="num-grid">
+    <button class="num-btn nb1" onclick="speakNum(1,'one',this)">1<span class="word">ONE</span></button>
+    <button class="num-btn nb2" onclick="speakNum(2,'two',this)">2<span class="word">TWO</span></button>
+    <button class="num-btn nb3" onclick="speakNum(3,'three',this)">3<span class="word">THREE</span></button>
+    <button class="num-btn nb4" onclick="speakNum(4,'four',this)">4<span class="word">FOUR</span></button>
+    <button class="num-btn nb5" onclick="speakNum(5,'five',this)">5<span class="word">FIVE</span></button>
+  </div>
+  <p class="speak-tip"><span>🔊</span> Click a number and repeat after the voice!</p>
+</div>
+
+<!-- ══════════════════════════════════
+     EXERCISE 2: MATCHING
+══════════════════════════════════ -->
+<div class="card">
+  <div class="badge">🔗 Exercise 2</div>
+  <h2>Matching</h2>
+  <p class="desc">Match the number to the correct word. Tap a number, then tap its word! 🎯</p>
+  <div class="match-grid">
+    <div>
+      <div class="match-col-header">Number</div>
+      <div id="ml1" class="match-item" data-type="num" data-val="1" onclick="matchTap(this)">1</div>
+      <div id="ml2" class="match-item" style="margin-top:10px" data-type="num" data-val="3" onclick="matchTap(this)">3</div>
+      <div id="ml3" class="match-item" style="margin-top:10px" data-type="num" data-val="5" onclick="matchTap(this)">5</div>
+      <div id="ml4" class="match-item" style="margin-top:10px" data-type="num" data-val="2" onclick="matchTap(this)">2</div>
+      <div id="ml5" class="match-item" style="margin-top:10px" data-type="num" data-val="4" onclick="matchTap(this)">4</div>
+    </div>
+    <div>
+      <div class="match-col-header">Word</div>
+      <div id="mr1" class="match-item" data-type="word" data-val="3" onclick="matchTap(this)">Three</div>
+      <div id="mr2" class="match-item" style="margin-top:10px" data-type="word" data-val="1" onclick="matchTap(this)">One</div>
+      <div id="mr3" class="match-item" style="margin-top:10px" data-type="word" data-val="4" onclick="matchTap(this)">Four</div>
+      <div id="mr4" class="match-item" style="margin-top:10px" data-type="word" data-val="5" onclick="matchTap(this)">Five</div>
+      <div id="mr5" class="match-item" style="margin-top:10px" data-type="word" data-val="2" onclick="matchTap(this)">Two</div>
+    </div>
+  </div>
+  <div class="match-result" id="matchResult"></div>
+</div>
+
+<!-- ══════════════════════════════════
+     EXERCISE 3: JUMP AND COUNT
+══════════════════════════════════ -->
+<div class="card">
+  <div class="badge">🏃 Exercise 3</div>
+  <h2>Jump & Count!</h2>
+  <p class="desc">Read the instruction, do it, then tap ✅ when you're done! Get moving! 💪</p>
+  <div class="action-cards">
+    <div class="action-card" onclick="toggleDone(this)">
+      <div class="action-icon">🦘</div>
+      <div class="action-text">Jump <strong>4</strong> times!</div>
+      <button class="action-audio" onclick="event.stopPropagation();playTTS('Jump 4 times!')">🔊</button>
+      <div class="action-check">✅</div>
+    </div>
+    <div class="action-card" onclick="toggleDone(this)">
+      <div class="action-icon">👏</div>
+      <div class="action-text">Clap <strong>2</strong> times!</div>
+      <button class="action-audio" onclick="event.stopPropagation();playTTS('Clap 2 times!')">🔊</button>
+      <div class="action-check">✅</div>
+    </div>
+    <div class="action-card" onclick="toggleDone(this)">
+      <div class="action-icon">🔄</div>
+      <div class="action-text">Turn around <strong>5</strong> times!</div>
+      <button class="action-audio" onclick="event.stopPropagation();playTTS('Turn around 5 times!')">🔊</button>
+      <div class="action-check">✅</div>
+    </div>
+    <div class="action-card" onclick="toggleDone(this)">
+      <div class="action-icon">🦶</div>
+      <div class="action-text">Stomp <strong>3</strong> times!</div>
+      <button class="action-audio" onclick="event.stopPropagation();playTTS('Stomp 3 times!')">🔊</button>
+      <div class="action-check">✅</div>
+    </div>
+    <div class="action-card" onclick="toggleDone(this)">
+      <div class="action-icon">⭐</div>
+      <div class="action-text">Star jump <strong>1</strong> time!</div>
+      <button class="action-audio" onclick="event.stopPropagation();playTTS('Star jump 1 time!')">🔊</button>
+      <div class="action-check">✅</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     EXERCISE 4: MISSING NUMBER
+══════════════════════════════════ -->
+<div class="card">
+  <div class="badge">❓ Exercise 4</div>
+  <h2>Missing Number!</h2>
+  <p class="desc">What number is missing? Tap the right answer! 🕵️</p>
+  <div class="missing-row" id="missingRow"></div>
+  <div class="answer-btns" id="answerBtns"></div>
+  <div class="missing-feedback" id="missingFeedback"></div>
+  <div class="missing-nav">
+    <button class="nav-btn secondary" onclick="prevMissing()">← Back</button>
+    <span id="missingProgress" style="font-weight:700;color:#aaa;align-self:center;"></span>
+    <button class="nav-btn" onclick="nextMissing()">Next →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     EXERCISE 5: NUMBER HUNT
+══════════════════════════════════ -->
+<div class="card">
+  <div class="badge">🔍 Exercise 5</div>
+  <h2>Number Hunt!</h2>
+  <p class="desc">Find or bring the objects! Count them and tap ✔ for each one you found. 🏠</p>
+  <div class="hunt-progress" id="huntProgress"></div>
+  <div id="huntTaskArea"></div>
+  <div class="hunt-feedback" id="huntFeedback"></div>
+</div>
+
+<!-- ══════════════════════════════════
+     EXERCISE 6: COUNT OBJECTS
+══════════════════════════════════ -->
+<div class="card">
+  <div class="badge">🍎 Exercise 6</div>
+  <h2>Count Objects!</h2>
+  <p class="desc">Look at the pictures and count! How many do you see? 👀</p>
+  <div class="count-stage">
+    <div class="count-score" id="countScore">Score: 0 / 0</div>
+    <div class="emoji-display" id="emojiDisplay"></div>
+    <div class="count-question" id="countQuestion"></div>
+    <div class="count-choices" id="countChoices"></div>
+    <div class="count-feedback" id="countFeedback"></div>
+    <button class="count-next" id="countNext" onclick="nextCountQ()">Next ➡️</button>
+  </div>
+</div>
+
+</div><!-- end wrapper -->
+
+<!-- CELEBRATION OVERLAY -->
+<div class="celebrate" id="celebrate"></div>
+
+<script>
+/* ──────────────────────────────────
+   AUDIO via Google TTS (real English)
+────────────────────────────────── */
+let currentAudio = null;
+function playTTS(text, onEnd) {
+  if (currentAudio) { currentAudio.pause(); currentAudio = null; }
+  const url = `https://translate.google.com/translate_tts?ie=UTF-8&tl=en-US&client=tw-ob&q=${encodeURIComponent(text)}`;
+  const audio = new Audio(url);
+  audio.volume = 1;
+  currentAudio = audio;
+  if (onEnd) audio.addEventListener('ended', onEnd, { once: true });
+  audio.play().catch(() => {
+    // fallback to Web Speech API if CORS blocks
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = 'en-US'; u.rate = 0.85; u.pitch = 1.05;
+      if (onEnd) u.onend = onEnd;
+      window.speechSynthesis.speak(u);
+    }
+  });
+}
+
+/* ──────────────────────────────────
+   EXERCISE 1: SPEECH
+────────────────────────────────── */
+function speakNum(n, word, btn) {
+  btn.style.transform = 'scale(1.2) rotate(-3deg)';
+  setTimeout(() => btn.style.transform = '', 400);
+  playTTS(word);
+}
+
+/* ──────────────────────────────────
+   EXERCISE 2: MATCHING
+────────────────────────────────── */
+let matchSelected = null;
+let matchScore = 0, matchTotal = 5;
+function matchTap(el) {
+  if (el.classList.contains('matched')) return;
+  if (!matchSelected) {
+    if (matchSelected === el) { el.classList.remove('selected'); matchSelected = null; return; }
+    if (matchSelected) matchSelected.classList.remove('selected');
+    el.classList.add('selected');
+    matchSelected = el;
+  } else {
+    if (el === matchSelected) { el.classList.remove('selected'); matchSelected = null; return; }
+    if (el.dataset.type === matchSelected.dataset.type) {
+      matchSelected.classList.remove('selected');
+      matchSelected = el;
+      el.classList.add('selected');
+      return;
+    }
+    if (el.dataset.val === matchSelected.dataset.val) {
+      el.classList.remove('selected'); el.classList.add('matched');
+      matchSelected.classList.remove('selected'); matchSelected.classList.add('matched');
+      matchScore++;
+      const fb = document.getElementById('matchResult');
+      if (matchScore === matchTotal) {
+        fb.textContent = '🎉 Perfect! All matched!';
+        celebrate();
+      } else {
+        fb.textContent = `✅ Great! ${matchTotal - matchScore} left!`;
+      }
+    } else {
+      el.classList.add('wrong'); matchSelected.classList.add('wrong');
+      const a = el, b = matchSelected;
+      setTimeout(() => { a.classList.remove('wrong','selected'); b.classList.remove('wrong','selected'); }, 500);
+    }
+    matchSelected = null;
+  }
+}
+
+/* ──────────────────────────────────
+   EXERCISE 3: JUMP & COUNT
+────────────────────────────────── */
+function toggleDone(el) {
+  el.classList.toggle('done');
+}
+
+/* ──────────────────────────────────
+   EXERCISE 4: MISSING NUMBER
+────────────────────────────────── */
+const missingPuzzles = [
+  { seq: [1,2,null,4,5], answer: 3 },
+  { seq: [null,2,3,4,5], answer: 1 },
+  { seq: [1,2,3,4,null], answer: 5 },
+  { seq: [1,null,3,4,5], answer: 2 },
+  { seq: [1,2,3,null,5], answer: 4 },
+];
+const numColors = ['mn1','mn2','mn3','mn4','mn5'];
+const numWords  = ['','one','two','three','four','five'];
+let mIdx = 0, mAnswered = false;
+
+function renderMissing() {
+  const p = missingPuzzles[mIdx];
+  const row = document.getElementById('missingRow');
+  const btns = document.getElementById('answerBtns');
+  const fb   = document.getElementById('missingFeedback');
+  fb.textContent = '';
+  mAnswered = false;
+  row.innerHTML = p.seq.map(n => {
+    if (n === null) return `<div class="mnum blank" id="blankBox">?</div>`;
+    return `<div class="mnum ${numColors[n-1]}">${n}</div>`;
+  }).join('');
+  // answer choices: shuffled 1–5
+  const choices = [1,2,3,4,5].sort(() => Math.random()-.5);
+  btns.innerHTML = choices.map(c =>
+    `<button class="ans-btn" onclick="checkMissing(${c},this)">${c}</button>`
+  ).join('');
+  document.getElementById('missingProgress').textContent = `${mIdx+1} / ${missingPuzzles.length}`;
+}
+
+function checkMissing(val, btn) {
+  if (mAnswered) return;
+  const p = missingPuzzles[mIdx];
+  const fb = document.getElementById('missingFeedback');
+  const blank = document.getElementById('blankBox');
+  if (val === p.answer) {
+    mAnswered = true;
+    blank.textContent = val;
+    blank.className = `mnum ${numColors[val-1]} filled`;
+    fb.textContent = `🎉 Yes! It's ${numWords[val]}!`;
+    fb.style.color = '#6BCB77';
+    playTTS(numWords[val]);
+    celebrate(false);
+  } else {
+    btn.classList.add('wrong');
+    setTimeout(() => btn.classList.remove('wrong'), 400);
+    fb.textContent = `❌ Try again!`;
+    fb.style.color = '#FF6B6B';
+  }
+}
+
+function nextMissing() {
+  if (mIdx < missingPuzzles.length - 1) { mIdx++; renderMissing(); }
+}
+function prevMissing() {
+  if (mIdx > 0) { mIdx--; renderMissing(); }
+}
+
+/* ──────────────────────────────────
+   EXERCISE 5: NUMBER HUNT
+────────────────────────────────── */
+const huntTasks = [
+  { icon: '✏️', text: 'Bring me <strong>2</strong> pencils!', num: 2 },
+  { icon: '🧸', text: 'Find <strong>5</strong> toys!', num: 5 },
+  { icon: '📚', text: 'Bring <strong>3</strong> books!', num: 3 },
+  { icon: '🧦', text: 'Find <strong>1</strong> sock!', num: 1 },
+  { icon: '🍬', text: 'Bring <strong>4</strong> sweets!', num: 4 },
+];
+let hIdx = 0, hCount = 0, hDone = [];
+
+function renderHunt() {
+  const prog = document.getElementById('huntProgress');
+  prog.innerHTML = huntTasks.map((t,i) =>
+    `<div class="hunt-dot ${hDone.includes(i)?'done':i===hIdx?'active':''}"></div>`
+  ).join('');
+  const area = document.getElementById('huntTaskArea');
+  area.innerHTML = '';
+  const t = huntTasks[hIdx];
+  hCount = 0;
+  document.getElementById('huntFeedback').textContent = '';
+  area.innerHTML = `
+    <div class="hunt-task active">
+      <div class="task-icon">${t.icon}</div>
+      <div class="task-text">${t.text}</div>
+      <div class="hunt-counter-row">
+        <div>
+          <div style="font-size:0.85rem;color:#888;margin-bottom:2px">Counted:</div>
+          <div class="hunt-count-display" id="hCountDisplay">0 / ${t.num}</div>
+        </div>
+        <button class="hunt-tap-btn" onclick="huntTap()">+1 Found!</button>
+        <button class="hunt-done-btn" onclick="huntFinish()">✔ Done!</button>
+      </div>
+    </div>`;
+  // speak the task aloud
+  const spoken = t.text.replace(/<[^>]+>/g, '');
+  playTTS(spoken);
+}
+
+function huntTap() {
+  const t = huntTasks[hIdx];
+  if (hCount < t.num) {
+    hCount++;
+    document.getElementById('hCountDisplay').textContent = `${hCount} / ${t.num}`;
+    if (hCount === t.num) {
+      document.getElementById('huntFeedback').textContent = `🎉 You found all ${t.num}! Tap Done!`;
+    }
+  }
+}
+
+function huntFinish() {
+  const t = huntTasks[hIdx];
+  const fb = document.getElementById('huntFeedback');
+  if (hCount < t.num) {
+    fb.textContent = `You need ${t.num - hCount} more! Keep looking! 🔍`;
+    fb.style.color = '#FF6B6B';
+    return;
+  }
+  fb.style.color = '#6BCB77';
+  hDone.push(hIdx);
+  celebrate(false);
+  if (hIdx < huntTasks.length - 1) {
+    setTimeout(() => { hIdx++; renderHunt(); }, 900);
+  } else {
+    setTimeout(() => {
+      document.getElementById('huntTaskArea').innerHTML =
+        `<div style="text-align:center;font-size:2rem;padding:20px">🏆 Amazing! All tasks done!</div>`;
+      celebrate();
+    }, 600);
+  }
+}
+
+/* ──────────────────────────────────
+   EXERCISE 6: COUNT OBJECTS
+────────────────────────────────── */
+const countQs = [
+  { emoji: '🍎', count: 3, label: 'apples' },
+  { emoji: '🐶', count: 2, label: 'dogs' },
+  { emoji: '⭐', count: 5, label: 'stars' },
+  { emoji: '🐱', count: 1, label: 'cat' },
+  { emoji: '🌸', count: 4, label: 'flowers' },
+  { emoji: '🍪', count: 2, label: 'cookies' },
+  { emoji: '🎈', count: 5, label: 'balloons' },
+  { emoji: '🐸', count: 3, label: 'frogs' },
+];
+let cIdx = 0, cScore = 0, cAnswered = false;
+
+function renderCountQ() {
+  const q = countQs[cIdx];
+  document.getElementById('emojiDisplay').textContent = q.emoji.repeat(q.count);
+  const questionText = `How many ${q.label}?`;
+  document.getElementById('countQuestion').innerHTML =
+    `${questionText} <button onclick="playTTS('${questionText}')" style="background:none;border:none;font-size:1.2rem;cursor:pointer;vertical-align:middle">🔊</button>`;
+  document.getElementById('countFeedback').textContent = '';
+  document.getElementById('countNext').style.display = 'none';
+  cAnswered = false;
+  const choices = [1,2,3,4,5].sort(() => Math.random()-.5);
+  document.getElementById('countChoices').innerHTML = choices.map(c =>
+    `<button class="count-choice" onclick="checkCount(${c},this)">${c}</button>`
+  ).join('');
+  document.getElementById('countScore').textContent = `Score: ${cScore} / ${cIdx}`;
+  // auto-speak the question
+  playTTS(questionText);
+}
+
+function checkCount(val, btn) {
+  if (cAnswered) return;
+  cAnswered = true;
+  const q = countQs[cIdx];
+  const fb = document.getElementById('countFeedback');
+  if (val === q.count) {
+    btn.classList.add('correct');
+    fb.textContent = `🌟 Yes! ${q.count} ${q.label}!`;
+    fb.style.color = '#6BCB77';
+    cScore++;
+    celebrate(false);
+    playTTS(`${numWords[q.count]}. ${q.count} ${q.label}!`);
+  } else {
+    btn.classList.add('wrong');
+    // highlight correct
+    document.querySelectorAll('.count-choice').forEach(b => {
+      if (parseInt(b.textContent) === q.count) b.classList.add('correct');
+    });
+    fb.textContent = `❌ It's ${q.count}! Try next time!`;
+    fb.style.color = '#FF6B6B';
+  }
+  document.getElementById('countScore').textContent = `Score: ${cScore} / ${cIdx+1}`;
+  document.getElementById('countNext').style.display = 'inline-block';
+}
+
+function nextCountQ() {
+  cIdx = (cIdx + 1) % countQs.length;
+  renderCountQ();
+}
+
+/* ──────────────────────────────────
+   CELEBRATION BURST
+────────────────────────────────── */
+function celebrate(big = true) {
+  const overlay = document.getElementById('celebrate');
+  overlay.innerHTML = '';
+  overlay.style.display = 'block';
+  const items = big
+    ? ['⭐','🌟','🎉','✨','🎊','💫','🏆','🎈']
+    : ['⭐','✨','🎉'];
+  const count = big ? 30 : 10;
+  for (let i = 0; i < count; i++) {
+    const el = document.createElement('div');
+    el.className = 'star-particle';
+    el.style.left = Math.random()*100 + 'vw';
+    el.style.top  = (Math.random()*60 + 5) + 'vh';
+    el.style.animationDelay = (Math.random()*0.6) + 's';
+    el.style.fontSize = (1.2 + Math.random()*1.5) + 'rem';
+    el.textContent = items[Math.floor(Math.random()*items.length)];
+    overlay.appendChild(el);
+  }
+  setTimeout(() => { overlay.style.display = 'none'; }, 2000);
+}
+
+/* ──────────────────────────────────
+   INIT
+────────────────────────────────── */
+renderMissing();
+renderHunt();
+renderCountQ();
+</script>
+</body>
+</html>

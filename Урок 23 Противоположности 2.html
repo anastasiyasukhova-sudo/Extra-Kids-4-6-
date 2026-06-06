@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Opposites 3 🌟 English Fun</title>
+<link href="https://fonts.googleapis.com/css2?family=Boogaloo&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F7F3EE;
+  --card: #FFFFFF;
+  --card2: #F0EBE3;
+  --ink: #1C1C1C;
+  --muted: #888;
+  --c1: #E63946;  /* red */
+  --c2: #2A9D8F;  /* teal */
+  --c3: #E9C46A;  /* yellow */
+  --c4: #F4A261;  /* orange */
+  --c5: #6A4C93;  /* purple */
+  --c6: #264653;  /* dark teal */
+  --radius: 18px;
+  --shadow: 0 4px 20px rgba(0,0,0,0.09);
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+/* wavy header */
+header {
+  background: var(--c6);
+  padding: 40px 20px 56px;
+  text-align: center;
+  position: relative;
+}
+header::after {
+  content: '';
+  position: absolute; bottom: -2px; left: 0; right: 0;
+  height: 48px;
+  background: var(--bg);
+  clip-path: ellipse(55% 100% at 50% 100%);
+}
+.header-tag {
+  display: inline-block;
+  background: var(--c3);
+  color: var(--ink);
+  font-size: 0.78rem; font-weight: 900; letter-spacing: 2.5px;
+  text-transform: uppercase; padding: 4px 14px; border-radius: 50px;
+  margin-bottom: 14px;
+}
+header h1 {
+  font-family: 'Boogaloo', cursive;
+  font-size: clamp(2.6rem, 8vw, 4.4rem);
+  color: #fff; letter-spacing: 1px;
+  text-shadow: 3px 3px 0 rgba(0,0,0,0.25);
+}
+header p { color: rgba(255,255,255,0.75); font-size: 1.05rem; font-weight: 700; margin-top: 6px; }
+
+/* nav */
+nav {
+  display: flex; justify-content: center; flex-wrap: wrap;
+  gap: 6px; padding: 16px 16px 8px;
+  max-width: 860px; margin: 0 auto;
+}
+nav a {
+  padding: 6px 14px; border-radius: 50px;
+  font-size: 0.8rem; font-weight: 900;
+  text-decoration: none; color: var(--muted);
+  border: 2px solid #DDD; background: #fff;
+  transition: all .2s;
+}
+nav a:hover { border-color: var(--c1); color: var(--c1); transform: translateY(-2px); }
+
+/* main */
+main { max-width: 880px; margin: 0 auto; padding: 28px 16px 70px; }
+
+/* section */
+.section {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 26px 22px;
+  margin-bottom: 34px;
+  border-left: 6px solid var(--c1);
+  animation: up .5s ease both;
+}
+.section:nth-child(2) { border-color: var(--c2); }
+.section:nth-child(3) { border-color: var(--c3); }
+.section:nth-child(4) { border-color: var(--c4); }
+.section:nth-child(5) { border-color: var(--c5); }
+.section:nth-child(6) { border-color: var(--c6); }
+@keyframes up { from{opacity:0;transform:translateY(22px)} to{opacity:1;transform:translateY(0)} }
+
+.sec-num { font-size:.7rem; font-weight:900; letter-spacing:3px; text-transform:uppercase; color:var(--muted); margin-bottom:3px; }
+.sec-title { font-family:'Boogaloo',cursive; font-size:clamp(1.4rem,4vw,2rem); color:var(--ink); margin-bottom:5px; }
+.sec-sub { color:var(--muted); font-size:.9rem; font-weight:700; margin-bottom:18px; }
+
+/* ═══ EX1: WORD CARDS ═══ */
+.wgrid { display:grid; grid-template-columns:repeat(auto-fill,minmax(105px,1fr)); gap:10px; }
+.wcard {
+  background:var(--card2); border-radius:14px; padding:14px 8px 11px;
+  text-align:center; cursor:pointer; border:2.5px solid transparent;
+  transition:all .2s; user-select:none;
+}
+.wcard:hover { transform:translateY(-4px) scale(1.04); border-color:var(--c3); box-shadow:0 6px 18px rgba(233,196,106,0.35); }
+.wcard.playing { animation:pop .4s ease; border-color:var(--c1); }
+@keyframes pop { 0%,100%{transform:scale(1)} 50%{transform:scale(1.13)} }
+.wcard .wi { font-size:2.3rem; display:block; margin-bottom:7px; }
+.wcard .wl { font-size:.88rem; font-weight:900; }
+.wcard .wp { display:inline-block; margin-top:6px; background:rgba(230,57,70,0.12); color:var(--c1); border-radius:50px; padding:2px 10px; font-size:.7rem; font-weight:900; }
+/* group label */
+.wgroup-label { font-size:.75rem; font-weight:900; letter-spacing:2px; text-transform:uppercase; color:var(--muted); margin:14px 0 8px; }
+
+/* ═══ EX2: MATCH ═══ */
+.match-wrap { display:flex; gap:14px; flex-wrap:wrap; }
+.match-col { flex:1; min-width:130px; display:flex; flex-direction:column; gap:9px; }
+.mi {
+  padding:11px 16px; border-radius:13px; font-size:.97rem; font-weight:900;
+  cursor:pointer; border:2.5px solid #E5DDD5; background:var(--card2);
+  transition:all .2s; text-align:center; user-select:none;
+}
+.mi:hover { transform:scale(1.04); border-color:var(--c2); }
+.mi.sel { border-color:var(--c3); background:rgba(233,196,106,.15); color:#9A6F00; }
+.mi.ok  { border-color:var(--c2)!important; background:rgba(42,157,143,.12)!important; color:var(--c2)!important; pointer-events:none; }
+.mi.bad { border-color:var(--c1)!important; background:rgba(230,57,70,.12)!important; animation:shake .4s; }
+.match-score { text-align:right; font-size:.85rem; font-weight:800; color:var(--c2); margin-bottom:12px; }
+@keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-7px)} 75%{transform:translateX(7px)} }
+
+/* ═══ EX3: TO BE TABLE + FILL ═══ */
+.tobe-table {
+  width:100%; border-collapse:collapse; margin-bottom:22px;
+  font-size:.95rem; border-radius:12px; overflow:hidden;
+  box-shadow:0 2px 12px rgba(0,0,0,.08);
+}
+.tobe-table th {
+  background:var(--c6); color:#fff; padding:9px 14px;
+  font-family:'Boogaloo',cursive; font-size:1rem; text-align:left;
+}
+.tobe-table td { padding:9px 14px; border-bottom:1px solid #EEE; }
+.tobe-table tr:last-child td { border-bottom:none; }
+.tobe-table tr:nth-child(even) td { background:#F7F3EE; }
+.tobe-table .subj { font-weight:900; color:var(--c6); }
+.tobe-table .verb { font-weight:900; color:var(--c1); font-size:1.05rem; }
+.tobe-table .ex   { color:var(--muted); font-size:.85rem; }
+
+.fill-list { display:flex; flex-direction:column; gap:12px; }
+.fill-row {
+  background:var(--card2); border-radius:13px; padding:14px 16px;
+  display:flex; align-items:center; flex-wrap:wrap; gap:8px;
+  font-size:1rem; font-weight:800;
+}
+.fill-blank {
+  display:inline-block; border-bottom:3px solid var(--c3);
+  min-width:50px; text-align:center; padding:0 4px;
+  font-size:1rem; font-weight:900; color:var(--c4);
+}
+.fill-blank.ok  { color:var(--c2); border-color:var(--c2); border-bottom:none; background:rgba(42,157,143,.1); border-radius:7px; padding:0 8px; }
+.fill-blank.bad { color:var(--c1); background:rgba(230,57,70,.1); border-radius:7px; animation:shake .4s; }
+.fill-opts { display:flex; gap:6px; flex-wrap:wrap; }
+.fill-btn {
+  padding:4px 13px; border-radius:50px;
+  border:2px solid #DDD; background:#fff;
+  font-size:.86rem; font-weight:900; color:var(--ink); cursor:pointer; transition:all .2s;
+}
+.fill-btn:hover { border-color:var(--c3); background:rgba(233,196,106,.15); transform:scale(1.05); }
+.fill-btn.used { opacity:.35; pointer-events:none; }
+
+/* ═══ EX4: DESCRIBE PEOPLE ═══ */
+.people-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:14px; }
+.person-card {
+  background:var(--card2); border-radius:16px; padding:16px 12px 14px;
+  text-align:center; border:2.5px solid #E5DDD5;
+  transition:all .2s;
+}
+.person-card:hover { transform:translateY(-3px); box-shadow:0 6px 20px rgba(0,0,0,.1); }
+.person-avatar { font-size:3.4rem; display:block; margin-bottom:10px; }
+.person-name { font-weight:900; font-size:.88rem; color:var(--muted); margin-bottom:10px; }
+.person-opts { display:flex; flex-wrap:wrap; gap:5px; justify-content:center; }
+.po-btn {
+  padding:4px 11px; border-radius:50px; border:2px solid #DDD;
+  background:#fff; font-size:.8rem; font-weight:900; cursor:pointer; transition:all .2s;
+}
+.po-btn:hover { border-color:var(--c4); background:rgba(244,162,97,.15); }
+.po-btn.ok  { background:var(--c2); color:#fff; border-color:var(--c2); pointer-events:none; }
+.po-btn.bad { background:rgba(230,57,70,.15); border-color:var(--c1); animation:shake .35s; }
+.person-result { font-size:1.2rem; margin-top:8px; min-height:26px; }
+
+/* ═══ EX5: LISTEN & CHOOSE ═══ */
+.listen-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:14px; }
+.lc-card { background:var(--card2); border-radius:16px; padding:18px 16px; border:2.5px solid #E5DDD5; }
+.lc-card .lc-play {
+  display:block; width:100%; margin-bottom:14px;
+  padding:11px; border-radius:12px; border:none;
+  background:var(--c5); color:#fff;
+  font-family:'Boogaloo',cursive; font-size:1.1rem;
+  cursor:pointer; transition:all .2s; text-align:center;
+}
+.lc-card .lc-play:hover { background:#4A2C73; transform:scale(1.04); }
+.lc-card .lc-play.playing { animation:pop .4s; }
+.lc-options { display:grid; grid-template-columns:1fr 1fr; gap:6px; }
+.lc-opt {
+  padding:9px 6px; border-radius:11px; border:2.5px solid #DDD;
+  background:#fff; font-size:.92rem; font-weight:900;
+  cursor:pointer; text-align:center; transition:all .2s;
+}
+.lc-opt:hover { border-color:var(--c5); background:rgba(106,76,147,.1); }
+.lc-opt.ok  { background:var(--c2); color:#fff; border-color:var(--c2); pointer-events:none; }
+.lc-opt.bad { background:rgba(230,57,70,.12); border-color:var(--c1); animation:shake .35s; }
+
+/* ═══ EX6: PAIR UP ═══ */
+.pair-pool {
+  display:flex; flex-wrap:wrap; gap:8px; margin-bottom:18px;
+}
+.pair-chip {
+  padding:8px 18px; border-radius:50px;
+  font-size:.95rem; font-weight:900;
+  border:2.5px solid #DDD; background:#fff; color:var(--ink);
+  cursor:pointer; transition:all .2s; user-select:none;
+}
+.pair-chip:hover { border-color:var(--c6); background:rgba(38,70,83,.08); }
+.pair-chip.sel  { border-color:var(--c3); background:rgba(233,196,106,.2); color:#9A6F00; }
+.pair-chip.used { opacity:.3; pointer-events:none; }
+.pair-slots { display:flex; flex-direction:column; gap:10px; }
+.pair-slot-row {
+  display:flex; align-items:center; gap:10px;
+  background:var(--card2); border-radius:13px; padding:12px 16px;
+  flex-wrap:wrap;
+}
+.pair-word { font-weight:900; font-size:1rem; min-width:70px; }
+.arrow { color:var(--muted); font-size:1.2rem; }
+.pair-drop {
+  min-width:100px; border-bottom:3px dashed #CCC; padding:2px 8px;
+  font-weight:900; font-size:1rem; color:var(--c4); cursor:pointer;
+  transition:all .2s; border-radius:0;
+}
+.pair-drop:hover { background:rgba(233,196,106,.15); border-radius:7px; }
+.pair-drop.ok  { color:var(--c2); border-bottom:3px solid var(--c2); background:rgba(42,157,143,.1); border-radius:7px; cursor:default; }
+.pair-drop.bad { color:var(--c1); animation:shake .4s; }
+
+/* toast */
+.toast {
+  position:fixed; bottom:26px; left:50%; transform:translateX(-50%) translateY(80px);
+  background:#1C1C1C; color:#fff; padding:10px 26px; border-radius:50px;
+  font-size:.95rem; font-weight:800; box-shadow:0 8px 28px rgba(0,0,0,.3);
+  transition:transform .35s cubic-bezier(.17,.67,.4,1.3); z-index:9999; pointer-events:none;
+}
+.toast.good { background:#2A9D8F; }
+.toast.bad  { background:#E63946; }
+.toast.show { transform:translateX(-50%) translateY(0); }
+
+@media(max-width:520px){
+  .section{padding:18px 13px;}
+  .match-wrap{flex-direction:column;}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="header-tag">Lesson 3 · Opposites</div>
+  <h1>🔄 More Opposites!</h1>
+  <p>fat &amp; thin · loud &amp; quiet · young &amp; old — and more!</p>
+</header>
+
+<nav>
+  <a href="#ex1">🔊 Words</a>
+  <a href="#ex2">🧩 Match</a>
+  <a href="#ex3">📝 To Be</a>
+  <a href="#ex4">👥 Describe</a>
+  <a href="#ex5">👂 Listen</a>
+  <a href="#ex6">🃏 Pairs</a>
+</nav>
+
+<main>
+
+<!-- ══════════ EX 1 ══════════ -->
+<section class="section" id="ex1">
+  <div class="sec-num">Exercise 1</div>
+  <div class="sec-title">🔊 Listen &amp; Learn</div>
+  <div class="sec-sub">Click any card to hear the word in British English!</div>
+  <div id="ex1-inner"></div>
+</section>
+
+<!-- ══════════ EX 2 ══════════ -->
+<section class="section" id="ex2">
+  <div class="sec-num">Exercise 2</div>
+  <div class="sec-title">🧩 Match the Opposites</div>
+  <div class="sec-sub">Click a word on the left, then its opposite on the right!</div>
+  <div class="match-score" id="m2-score">⭐ 0 / 8</div>
+  <div class="match-wrap">
+    <div class="match-col" id="m2-left"></div>
+    <div class="match-col" id="m2-right"></div>
+  </div>
+</section>
+
+<!-- ══════════ EX 3 ══════════ -->
+<section class="section" id="ex3">
+  <div class="sec-num">Exercise 3</div>
+  <div class="sec-title">📝 Fill in "to be"</div>
+  <div class="sec-sub">First study the table, then complete the sentences!</div>
+
+  <table class="tobe-table">
+    <thead>
+      <tr><th>Subject</th><th>Verb "to be"</th><th>Example</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="subj">I</td><td class="verb">am</td><td class="ex">I am young.</td></tr>
+      <tr><td class="subj">He / She / It</td><td class="verb">is</td><td class="ex">She is thin. He is old.</td></tr>
+      <tr><td class="subj">We / You / They</td><td class="verb">are</td><td class="ex">They are loud. We are quiet.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="fill-list" id="fill-list"></div>
+</section>
+
+<!-- ══════════ EX 4 ══════════ -->
+<section class="section" id="ex4">
+  <div class="sec-num">Exercise 4</div>
+  <div class="sec-title">👥 Describe These People!</div>
+  <div class="sec-sub">Look at each character — choose the correct word to describe them!</div>
+  <div class="people-grid" id="people-grid"></div>
+</section>
+
+<!-- ══════════ EX 5 ══════════ -->
+<section class="section" id="ex5">
+  <div class="sec-num">Exercise 5</div>
+  <div class="sec-title">👂 Listen and Choose!</div>
+  <div class="sec-sub">Press the speaker 🔊 and click the word you hear!</div>
+  <div class="listen-grid" id="listen-grid"></div>
+</section>
+
+<!-- ══════════ EX 6 ══════════ -->
+<section class="section" id="ex6">
+  <div class="sec-num">Exercise 6</div>
+  <div class="sec-title">🃏 Find the Opposite Pair!</div>
+  <div class="sec-sub">Click a word from the box, then click the blank next to its opposite!</div>
+  <div class="pair-pool" id="pair-pool"></div>
+  <div class="pair-slots" id="pair-slots"></div>
+</section>
+
+</main>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ═══════════ UTILS ═══════════ */
+const shuffle = a => [...a].sort(() => Math.random() - .5);
+let _toastT;
+function toast(msg, type='') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show' + (type ? ' '+type : '');
+  clearTimeout(_toastT);
+  _toastT = setTimeout(() => t.className = 'toast', 2000);
+}
+function speak(word, onEnd) {
+  const u = new SpeechSynthesisUtterance(word);
+  u.lang = 'en-GB'; u.rate = 0.82; u.pitch = 1.05;
+  const vv = speechSynthesis.getVoices();
+  const gb = vv.find(v => v.lang === 'en-GB') || vv.find(v => v.lang.startsWith('en'));
+  if (gb) u.voice = gb;
+  if (onEnd) u.onend = onEnd;
+  speechSynthesis.cancel();
+  speechSynthesis.speak(u);
+}
+window.speechSynthesis.onvoiceschanged = () => speechSynthesis.getVoices();
+
+/* ═══════════ EX 1 ═══════════ */
+const ex1Groups = [
+  {
+    label: '🔁 Review words',
+    words: [
+      {w:'big', e:'🐘'}, {w:'small', e:'🐭'}, {w:'fast', e:'🚀'},
+      {w:'slow', e:'🐢'}, {w:'high', e:'🏔️'}, {w:'low', e:'🌊'},
+    ]
+  },
+  {
+    label: '✨ New words',
+    words: [
+      {w:'fat',   e:'🐷'}, {w:'thin',  e:'🦒'},
+      {w:'quiet', e:'🤫'}, {w:'loud',  e:'📣'},
+      {w:'young', e:'👶'}, {w:'old',   e:'👴'},
+    ]
+  }
+];
+
+(function buildEx1() {
+  const wrap = document.getElementById('ex1-inner');
+  ex1Groups.forEach(g => {
+    const lbl = document.createElement('div');
+    lbl.className = 'wgroup-label'; lbl.textContent = g.label;
+    wrap.appendChild(lbl);
+    const grid = document.createElement('div'); grid.className = 'wgrid';
+    g.words.forEach(({w,e}) => {
+      const c = document.createElement('div');
+      c.className = 'wcard';
+      c.innerHTML = `<span class="wi">${e}</span><div class="wl">${w}</div><span class="wp">▶ play</span>`;
+      c.onclick = () => { speak(w); c.classList.add('playing'); setTimeout(()=>c.classList.remove('playing'),600); };
+      grid.appendChild(c);
+    });
+    wrap.appendChild(grid);
+  });
+})();
+
+/* ═══════════ EX 2 ═══════════ */
+const ex2Pairs = [
+  ['big','small'], ['fast','slow'], ['high','low'],
+  ['fat','thin'],  ['quiet','loud'], ['young','old'],
+  ['happy','sad'], ['hot','cold'],
+];
+let ex2Sel = null, ex2Score = 0;
+function pairOf2(w) {
+  for (const [a,b] of ex2Pairs) { if(a===w) return b; if(b===w) return a; }
+}
+(function buildEx2() {
+  const L = document.getElementById('m2-left'), R = document.getElementById('m2-right');
+  shuffle(ex2Pairs.map(p=>p[0])).forEach(w => L.appendChild(makeMI(w,'L')));
+  shuffle(ex2Pairs.map(p=>p[1])).forEach(w => R.appendChild(makeMI(w,'R')));
+})();
+function makeMI(word, side) {
+  const el = document.createElement('div');
+  el.className = 'mi'; el.dataset.word = word; el.dataset.side = side;
+  el.textContent = word; el.onclick = () => selMI(el); return el;
+}
+function selMI(el) {
+  if (el.classList.contains('ok')) return;
+  if (!ex2Sel) { el.classList.add('sel'); ex2Sel = el; return; }
+  if (ex2Sel === el) { el.classList.remove('sel'); ex2Sel = null; return; }
+  if (ex2Sel.dataset.side === el.dataset.side) {
+    ex2Sel.classList.remove('sel'); el.classList.add('sel'); ex2Sel = el; return;
+  }
+  const a = ex2Sel, b = el; ex2Sel = null;
+  if (pairOf2(a.dataset.word) === b.dataset.word) {
+    a.classList.remove('sel'); b.classList.remove('sel');
+    a.classList.add('ok'); b.classList.add('ok');
+    speak(a.dataset.word + ' — ' + b.dataset.word);
+    ex2Score++;
+    document.getElementById('m2-score').textContent = `⭐ ${ex2Score} / 8`;
+    toast(ex2Score===8 ? '🎉 All matched!' : '✅ Correct pair!', 'good');
+  } else {
+    a.classList.add('bad'); b.classList.add('bad');
+    setTimeout(() => { a.classList.remove('bad','sel'); b.classList.remove('bad','sel'); }, 700);
+    toast('❌ Try again!', 'bad');
+  }
+}
+
+/* ═══════════ EX 3 ═══════════ */
+const fillData = [
+  { parts:['I _____ young.'],          blank:0, answer:'am',  opts:['am','is','are'] },
+  { parts:['She _____ thin.'],         blank:0, answer:'is',  opts:['am','is','are'] },
+  { parts:['They _____ loud.'],        blank:0, answer:'are', opts:['am','is','are'] },
+  { parts:['He _____ fat.'],           blank:0, answer:'is',  opts:['am','is','are'] },
+  { parts:['We _____ quiet.'],         blank:0, answer:'are', opts:['am','is','are'] },
+  { parts:['The elephant _____ big.'], blank:0, answer:'is',  opts:['am','is','are'] },
+  { parts:['You _____ fast!'],         blank:0, answer:'are', opts:['am','is','are'] },
+];
+(function buildFill() {
+  const list = document.getElementById('fill-list');
+  fillData.forEach((d,i) => {
+    const row = document.createElement('div'); row.className = 'fill-row';
+    const sentence = d.parts[0].replace('_____', `<span class="fill-blank" id="fb-${i}">___</span>`);
+    const optHTML = d.opts.map(o =>
+      `<button class="fill-btn" onclick="checkFill(${i},'${o}','${d.answer}')">${o}</button>`
+    ).join('');
+    row.innerHTML = `<span>${sentence}</span><div class="fill-opts">${optHTML}</div>`;
+    list.appendChild(row);
+  });
+})();
+function checkFill(i, chosen, correct) {
+  const blank = document.getElementById(`fb-${i}`);
+  if (blank.classList.contains('ok')) return;
+  if (chosen === correct) {
+    blank.textContent = chosen; blank.classList.add('ok');
+    blank.closest('.fill-row').querySelectorAll('.fill-btn').forEach(b => { if(b.textContent!==chosen) b.style.display='none'; b.classList.add('used'); });
+    speak(chosen); toast('✅ Correct!', 'good');
+  } else {
+    blank.classList.add('bad');
+    setTimeout(() => blank.classList.remove('bad'), 700);
+    toast('❌ Try again!', 'bad');
+  }
+}
+
+/* ═══════════ EX 4 ═══════════ */
+const peopleData = [
+  { name:'Ben',   avatar:'👦', hint:'He is very young — just 5 years old!', correct:'young', opts:['young','old','quiet'] },
+  { name:'Grandma Rose', avatar:'👵', hint:'She has white hair and is 80 years old.', correct:'old', opts:['young','old','fast'] },
+  { name:'Tom',  avatar:'🎅', hint:'Tom eats a LOT and has a big tummy!', correct:'fat', opts:['fat','thin','loud'] },
+  { name:'Sara', avatar:'🧘', hint:'Sara never eats much — she is very slim.', correct:'thin', opts:['thin','fat','slow'] },
+  { name:'DJ Max', avatar:'🎧', hint:'DJ Max plays music very, very LOUD!', correct:'loud', opts:['loud','quiet','young'] },
+  { name:'Lily',  avatar:'🤫', hint:'Lily speaks very softly in the library.', correct:'quiet', opts:['quiet','loud','old'] },
+];
+(function buildPeople() {
+  const grid = document.getElementById('people-grid');
+  peopleData.forEach((p,i) => {
+    const card = document.createElement('div'); card.className = 'person-card';
+    const optBtns = shuffle(p.opts).map(o =>
+      `<button class="po-btn" onclick="checkPerson(this,'${o}','${p.correct}',${i})">${o}</button>`
+    ).join('');
+    card.innerHTML = `
+      <span class="person-avatar">${p.avatar}</span>
+      <div class="person-name">${p.name}</div>
+      <div style="font-size:.82rem;color:var(--muted);font-weight:700;margin-bottom:10px;font-style:italic">"${p.hint}"</div>
+      <div class="person-opts">${optBtns}</div>
+      <div class="person-result" id="pr-${i}"></div>`;
+    grid.appendChild(card);
+  });
+})();
+function checkPerson(btn, chosen, correct, i) {
+  const res = document.getElementById(`pr-${i}`);
+  if (btn.classList.contains('ok')) return;
+  if (chosen === correct) {
+    btn.classList.add('ok'); res.textContent = '⭐';
+    speak(correct); toast('✅ Correct!', 'good');
+  } else {
+    btn.classList.add('bad');
+    setTimeout(() => btn.classList.remove('bad'), 600);
+    toast('❌ Look again!', 'bad');
+  }
+}
+
+/* ═══════════ EX 5: LISTEN & CHOOSE ═══════════ */
+const listenData = [
+  { target:'quiet', distractors:['loud','fast','old']   },
+  { target:'fat',   distractors:['thin','slow','young'] },
+  { target:'loud',  distractors:['quiet','big','old']   },
+  { target:'young', distractors:['old','thin','quiet']  },
+  { target:'thin',  distractors:['fat','loud','high']   },
+  { target:'old',   distractors:['young','fast','loud'] },
+];
+(function buildListen() {
+  const grid = document.getElementById('listen-grid');
+  listenData.forEach((d,i) => {
+    const opts = shuffle([d.target, ...d.distractors]);
+    const card = document.createElement('div'); card.className = 'lc-card';
+    const optBtns = opts.map(o =>
+      `<div class="lc-opt" onclick="checkListen(this,'${o}','${d.target}',${i})">${o}</div>`
+    ).join('');
+    card.innerHTML = `
+      <button class="lc-play" id="lp-${i}" onclick="playListen(${i},'${d.target}')">🔊 Listen!</button>
+      <div class="lc-options">${optBtns}</div>`;
+    grid.appendChild(card);
+  });
+})();
+function playListen(i, word) {
+  const btn = document.getElementById(`lp-${i}`);
+  btn.classList.add('playing');
+  speak(word, () => btn.classList.remove('playing'));
+  setTimeout(() => btn.classList.remove('playing'), 1200);
+}
+function checkListen(el, chosen, correct, i) {
+  const opts = el.closest('.lc-options').querySelectorAll('.lc-opt');
+  opts.forEach(o => { if(o.classList.contains('ok')) return; });
+  if (el.classList.contains('ok') || el.classList.contains('bad')) return;
+  if (chosen === correct) {
+    el.classList.add('ok');
+    toast('✅ That\'s it!', 'good');
+  } else {
+    el.classList.add('bad');
+    setTimeout(() => el.classList.remove('bad'), 700);
+    toast('❌ Listen again!', 'bad');
+  }
+}
+
+/* ═══════════ EX 6: PAIR UP ═══════════ */
+const pairData = [
+  { word:'big',   opposite:'small' },
+  { word:'fast',  opposite:'slow'  },
+  { word:'young', opposite:'old'   },
+  { word:'loud',  opposite:'quiet' },
+  { word:'fat',   opposite:'thin'  },
+  { word:'high',  opposite:'low'   },
+];
+let pairSel = null;
+(function buildPairs() {
+  const pool = document.getElementById('pair-pool');
+  const slots = document.getElementById('pair-slots');
+  const poolWords = shuffle(pairData.map(p => p.opposite));
+  poolWords.forEach(w => {
+    const chip = document.createElement('div');
+    chip.className = 'pair-chip'; chip.dataset.word = w; chip.textContent = w;
+    chip.onclick = () => {
+      document.querySelectorAll('.pair-chip').forEach(c => c.classList.remove('sel'));
+      chip.classList.add('sel'); pairSel = w;
+      toast(`"${w}" selected — click a blank!`);
+    };
+    pool.appendChild(chip);
+  });
+  pairData.forEach((p,i) => {
+    const row = document.createElement('div'); row.className = 'pair-slot-row';
+    row.innerHTML = `
+      <span class="pair-word">${p.word}</span>
+      <span class="arrow">↔</span>
+      <span class="pair-drop" id="pd-${i}" data-ans="${p.opposite}" onclick="fillPair(${i})">____</span>`;
+    slots.appendChild(row);
+  });
+})();
+function fillPair(i) {
+  if (!pairSel) { toast('First pick a word above! 👆', 'bad'); return; }
+  const drop = document.getElementById(`pd-${i}`);
+  if (drop.classList.contains('ok')) return;
+  if (pairSel === drop.dataset.ans) {
+    drop.textContent = pairSel; drop.classList.add('ok');
+    // mark chip used
+    document.querySelectorAll('.pair-chip').forEach(c => {
+      if (c.dataset.word === pairSel) { c.classList.remove('sel'); c.classList.add('used'); }
+    });
+    speak(pairSel); toast('✅ Perfect pair!', 'good');
+    pairSel = null;
+  } else {
+    drop.classList.add('bad');
+    drop.textContent = pairSel + '?';
+    setTimeout(() => { drop.classList.remove('bad'); drop.textContent='____'; }, 800);
+    document.querySelectorAll('.pair-chip').forEach(c=>c.classList.remove('sel'));
+    pairSel = null;
+    toast('❌ Not right — try again!', 'bad');
+  }
+}
+</script>
+</body>
+</html>

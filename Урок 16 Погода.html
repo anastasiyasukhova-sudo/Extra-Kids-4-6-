@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌦️ Weather English!</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --sky-top: #4facfe;
+  --sky-bot: #a8edea;
+  --sunny: #FFD93D;
+  --cloudy: #b0c4de;
+  --rainy: #6fa8dc;
+  --windy: #82e0aa;
+  --snowy: #d6eaf8;
+  --foggy: #aab7b8;
+  --card-bg: rgba(255,255,255,0.92);
+  --text: #1a3c5e;
+  --green: #27ae60;
+  --red: #e74c3c;
+  --radius: 22px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Quicksand', sans-serif;
+  min-height: 100vh;
+  background: linear-gradient(160deg, #4facfe 0%, #a8edea 50%, #d0f0fd 100%);
+  padding-bottom: 3rem;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* animated clouds bg */
+.bg-cloud {
+  position: fixed; pointer-events: none; z-index: 0;
+  font-size: 3rem; opacity: .18;
+  animation: floatCloud linear infinite;
+}
+.bg-cloud:nth-child(1) { top: 5%;  animation-duration: 28s; animation-delay: 0s; }
+.bg-cloud:nth-child(2) { top: 20%; animation-duration: 36s; animation-delay: -10s; font-size:5rem; }
+.bg-cloud:nth-child(3) { top: 55%; animation-duration: 22s; animation-delay: -5s; font-size:2.5rem; }
+.bg-cloud:nth-child(4) { top: 75%; animation-duration: 40s; animation-delay: -18s; font-size:4rem; }
+@keyframes floatCloud {
+  from { transform: translateX(-120px); }
+  to   { transform: translateX(calc(100vw + 120px)); }
+}
+
+/* ===== HEADER ===== */
+header {
+  position: relative; z-index: 1;
+  text-align: center;
+  padding: 2.2rem 1rem 1.2rem;
+}
+header h1 {
+  font-family: 'Fredoka One', cursive;
+  font-size: clamp(2.2rem, 7vw, 3.8rem);
+  color: #fff;
+  text-shadow: 0 4px 16px rgba(0,80,160,.25), 0 2px 0 rgba(0,0,0,.08);
+  letter-spacing: .03em;
+}
+header p {
+  color: rgba(255,255,255,.9);
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin-top: .3rem;
+}
+
+/* ===== TASKS ===== */
+.tasks {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: .5rem 1rem;
+  display: flex; flex-direction: column; gap: 1.8rem;
+  position: relative; z-index: 1;
+}
+
+.card {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  padding: 1.8rem;
+  box-shadow: 0 8px 32px rgba(30,80,140,.15), 0 2px 8px rgba(30,80,140,.1);
+  backdrop-filter: blur(8px);
+  border: 2.5px solid rgba(255,255,255,.7);
+  position: relative;
+  overflow: hidden;
+  transition: transform .25s;
+}
+.card:hover { transform: translateY(-2px); }
+.card::after {
+  content:'';
+  position:absolute; top:0; left:0; right:0; height:5px;
+  border-radius: var(--radius) var(--radius) 0 0;
+}
+.card:nth-child(1)::after { background: linear-gradient(90deg,#FFD93D,#ff6b6b); }
+.card:nth-child(2)::after { background: linear-gradient(90deg,#4facfe,#00f2fe); }
+.card:nth-child(3)::after { background: linear-gradient(90deg,#f093fb,#f5576c); }
+.card:nth-child(4)::after { background: linear-gradient(90deg,#43e97b,#38f9d7); }
+.card:nth-child(5)::after { background: linear-gradient(90deg,#fa709a,#fee140); }
+.card:nth-child(6)::after { background: linear-gradient(90deg,#a18cd1,#fbc2eb); }
+
+.task-head {
+  display: flex; align-items: center; gap: .8rem; margin-bottom: 1rem;
+}
+.task-num {
+  width:38px; height:38px; border-radius:50%;
+  background: var(--text); color:#fff;
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Fredoka One',cursive; font-size:1.1rem; flex-shrink:0;
+}
+.task-title {
+  font-family:'Fredoka One',cursive; font-size:1.35rem; color:var(--text);
+}
+.task-tip {
+  font-size:.9rem; color:#5a7a9a; font-weight:600;
+  background:#f0f8ff; border-radius:10px; padding:.55rem 1rem;
+  margin-bottom:1.1rem; border-left:4px solid #4facfe;
+}
+
+/* btn shared */
+.btn-reset {
+  display:block; margin:.8rem auto 0;
+  background:var(--text); color:#fff; border:none;
+  border-radius:50px; padding:.5rem 1.6rem;
+  cursor:pointer; font-family:'Quicksand',sans-serif;
+  font-weight:700; font-size:.9rem; transition:opacity .2s;
+}
+.btn-reset:hover { opacity:.8; }
+
+/* feedback */
+.fb { text-align:center; font-weight:700; font-size:1.05rem; min-height:1.6rem; margin-top:.6rem; }
+
+/* ===== TASK 1: Listen & Repeat ===== */
+.listen-grid {
+  display: flex; flex-wrap: wrap; gap: .85rem; justify-content: center;
+}
+.listen-card {
+  background: linear-gradient(135deg,#f0fbff,#e8f8ff);
+  border: 2.5px solid #cce8ff;
+  border-radius: 16px;
+  padding: .9rem 1.1rem;
+  min-width: 110px;
+  text-align: center;
+  cursor: pointer;
+  transition: all .2s;
+  user-select: none;
+}
+.listen-card:hover, .listen-card:active { transform: scale(1.09); border-color: #4facfe; }
+.listen-card.play {
+  background: linear-gradient(135deg,#d0f0ff,#d8f8ff);
+  border-color:#4facfe; animation:pop .35s ease;
+}
+.listen-card .lc-emoji { font-size: 2.6rem; display:block; }
+.listen-card .lc-word { font-weight:700; font-size:.92rem; color:var(--text); margin-top:.3rem; }
+@keyframes pop { 0%{transform:scale(1)} 50%{transform:scale(1.14)} 100%{transform:scale(1.09)} }
+
+/* ===== TASK 2: Matching ===== */
+.match-wrap { display:grid; grid-template-columns:1fr 1fr; gap:1.2rem; }
+.match-col-title { font-size:.8rem; text-transform:uppercase; letter-spacing:.1em; color:#aaa; font-weight:700; text-align:center; margin-bottom:.4rem; }
+.match-col { display:flex; flex-direction:column; gap:.55rem; }
+.mi {
+  padding:.7rem .9rem; border-radius:12px;
+  cursor:pointer; font-weight:700; font-size:.95rem;
+  text-align:center; border:2.5px solid; transition:all .2s;
+  user-select:none;
+}
+.mi-em  { font-size:1.9rem; background:#fffbe8; border-color:#ffe0a0; }
+.mi-wd  { background:#f0f8ff; border-color:#b0d4f0; color:var(--text); }
+.mi.sel { transform:scale(1.07); box-shadow:0 4px 14px rgba(0,0,0,.14); }
+.mi.ok  { background:#d4fce4!important; border-color:var(--green)!important; color:var(--green); cursor:default; }
+.mi.err { background:#ffe0e0; border-color:var(--red); animation:shake .3s; }
+@keyframes shake { 0%,100%{transform:translateX(0)} 30%{transform:translateX(-6px)} 70%{transform:translateX(6px)} }
+
+/* ===== TASK 3: It's … ===== */
+.its-center { text-align:center; }
+.its-big { font-size:6.5rem; display:block; animation:wiggle 1s ease infinite alternate; cursor:pointer; line-height:1; margin:.2rem auto; }
+@keyframes wiggle { from{transform:rotate(-6deg)scale(.95)} to{transform:rotate(6deg)scale(1.05)} }
+.its-sentence {
+  font-size:1.5rem; font-weight:800; display:inline-block;
+  background:linear-gradient(135deg,#e8f8ff,#f0e8ff);
+  border-radius:14px; padding:.65rem 1.5rem; margin:.6rem 0 1rem;
+  box-shadow:0 2px 8px rgba(0,0,0,.08);
+  color:var(--text);
+}
+.its-sentence span { color:#e91e8c; }
+.its-choices { display:flex; flex-wrap:wrap; gap:.7rem; justify-content:center; }
+.its-btn {
+  padding:.65rem 1.4rem; border-radius:50px;
+  border:2.5px solid #ddd; background:#fff;
+  cursor:pointer; font-family:'Quicksand',sans-serif;
+  font-weight:700; font-size:.95rem; transition:all .2s;
+}
+.its-btn:hover { transform:scale(1.06); border-color:#f093fb; }
+.its-btn.correct { background:#d4fce4; border-color:var(--green); color:var(--green); }
+.its-btn.wrong   { background:#ffe0e0; border-color:var(--red); color:var(--red); }
+.score-line { font-size:.88rem; color:#999; margin-top:.35rem; }
+
+/* ===== TASK 4: What's Missing ===== */
+.missing-row {
+  display:flex; justify-content:center; align-items:center;
+  gap:1rem; flex-wrap:wrap; margin:.5rem 0 1.2rem;
+}
+.miss-slot {
+  width:90px; height:90px; border-radius:18px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:3.5rem;
+  background:linear-gradient(135deg,#f0fbff,#e8f0ff);
+  border:3px solid #cce0ff;
+  transition:all .3s;
+  position:relative;
+}
+.miss-slot.hidden {
+  background:linear-gradient(135deg,#e0e8ff,#d8e0ff);
+  border:3px dashed #99aacc;
+  animation:pulse-slot 1.2s ease infinite;
+}
+.miss-slot.hidden::after { content:'?'; font-size:2.5rem; color:#7090c0; }
+@keyframes pulse-slot { 0%,100%{opacity:1} 50%{opacity:.6} }
+.miss-choices { display:flex; flex-wrap:wrap; gap:.7rem; justify-content:center; }
+.miss-btn {
+  padding:.7rem 1.2rem; border-radius:14px;
+  border:2.5px solid #ddd; background:#fff;
+  cursor:pointer; font-size:2.2rem;
+  transition:all .2s; user-select:none;
+}
+.miss-btn:hover { transform:scale(1.12); border-color:#4facfe; }
+.miss-btn.correct { background:#d4fce4; border-color:var(--green); }
+.miss-btn.wrong   { background:#ffe0e0; border-color:var(--red); animation:shake .3s; }
+#miss-next {
+  display:none; margin:.6rem auto 0;
+  background:linear-gradient(135deg,#4facfe,#00c6fb);
+  color:#fff; border:none; border-radius:50px;
+  padding:.55rem 1.8rem; cursor:pointer;
+  font-family:'Quicksand',sans-serif; font-weight:700; font-size:.95rem;
+}
+
+/* ===== TASK 5: Weather Dress Up ===== */
+.dress-scene {
+  display:flex; gap:1.2rem; flex-wrap:wrap; justify-content:center;
+  align-items:flex-start; margin-bottom:1rem;
+}
+.dress-weather {
+  background: linear-gradient(160deg,#87ceeb,#d0f0fd);
+  border-radius:18px; padding:1.2rem 1.5rem;
+  text-align:center; flex:0 0 auto;
+  border:3px solid #a0d8ef;
+  box-shadow:0 4px 12px rgba(0,100,200,.1);
+}
+.dress-weather .dw-emoji { font-size:4.5rem; display:block; animation:wiggle 1.4s ease infinite alternate; }
+.dress-weather .dw-text { font-family:'Fredoka One',cursive; font-size:1.2rem; color:#1a3c5e; margin-top:.4rem; }
+.dress-items {
+  display:flex; flex-wrap:wrap; gap:.7rem; justify-content:center;
+  flex:1 1 200px;
+}
+.dress-item {
+  background:#fff; border:2.5px solid #ddd; border-radius:14px;
+  padding:.65rem 1rem; cursor:pointer;
+  font-size:1.8rem; text-align:center;
+  transition:all .2s; user-select:none;
+}
+.dress-item:hover { transform:scale(1.1); border-color:#4facfe; }
+.dress-item.selected-ok { background:#d4fce4; border-color:var(--green); transform:scale(1.08); }
+.dress-item.selected-err { background:#ffe0e0; border-color:var(--red); animation:shake .3s; }
+.dress-item .di-label { font-size:.72rem; font-weight:700; color:#888; display:block; margin-top:.15rem; }
+#dress-next {
+  display:none; margin:.5rem auto 0;
+  background:linear-gradient(135deg,#43e97b,#38f9d7);
+  color:#fff; border:none; border-radius:50px;
+  padding:.55rem 1.8rem; cursor:pointer;
+  font-family:'Quicksand',sans-serif; font-weight:700; font-size:.95rem;
+}
+
+/* ===== TASK 6: Weather Song ===== */
+.song-container { text-align:center; }
+.song-card {
+  background:linear-gradient(135deg,#ffecd2,#fcb69f);
+  border-radius:18px; padding:1.4rem 1.6rem;
+  display:inline-block; max-width:100%;
+  box-shadow:0 4px 16px rgba(252,100,50,.2);
+  margin-bottom:1rem;
+}
+.song-line {
+  font-family:'Fredoka One',cursive;
+  font-size:1.3rem; color:#5a1f00;
+  margin:.2rem 0; letter-spacing:.02em;
+}
+.song-emoji { font-size:2rem; }
+.karaoke-btns { display:flex; flex-wrap:wrap; gap:.8rem; justify-content:center; margin-top:.7rem; }
+.karaoke-btn {
+  background:#fff; border:2.5px solid #ddd; border-radius:50px;
+  padding:.6rem 1.4rem; cursor:pointer;
+  font-family:'Quicksand',sans-serif; font-weight:700; font-size:.92rem;
+  transition:all .2s;
+}
+.karaoke-btn:hover { transform:scale(1.07); border-color:#fa709a; }
+.karaoke-btn.active { background:linear-gradient(135deg,#fa709a,#fee140); color:#fff; border-color:transparent; }
+.sing-prompt {
+  background:linear-gradient(135deg,#fff9c4,#fff3e0);
+  border-radius:14px; padding:.9rem 1.2rem;
+  font-size:1rem; font-weight:700; color:var(--text);
+  margin-top:.8rem; min-height:3rem;
+  box-shadow:0 2px 8px rgba(0,0,0,.06);
+}
+
+@media(max-width:500px){
+  .match-wrap { grid-template-columns:1fr; }
+  .miss-slot  { width:72px; height:72px; font-size:2.8rem; }
+  .miss-slot.hidden::after { font-size:2rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="bg-cloud">☁️</div>
+<div class="bg-cloud">⛅</div>
+<div class="bg-cloud">🌤️</div>
+<div class="bg-cloud">☁️</div>
+
+<header>
+  <h1>🌦️ Weather English!</h1>
+  <p>What's the weather like today? ☀️🌧️❄️</p>
+</header>
+
+<div class="tasks">
+
+  <!-- ===== TASK 1 ===== -->
+  <div class="card">
+    <div class="task-head">
+      <div class="task-num">1</div>
+      <div class="task-title">👂 Listen & Repeat!</div>
+    </div>
+    <p class="task-tip">🔊 Click each weather card to hear the word — then say it out loud!</p>
+    <div class="listen-grid" id="listen-grid"></div>
+  </div>
+
+  <!-- ===== TASK 2 ===== -->
+  <div class="card">
+    <div class="task-head">
+      <div class="task-num">2</div>
+      <div class="task-title">🔗 Match the Weather!</div>
+    </div>
+    <p class="task-tip">Click a picture, then click the matching word!</p>
+    <div class="match-wrap">
+      <div class="match-col">
+        <div class="match-col-title">Pictures</div>
+        <div id="match-emojis"></div>
+      </div>
+      <div class="match-col">
+        <div class="match-col-title">Words</div>
+        <div id="match-words"></div>
+      </div>
+    </div>
+    <div class="fb" id="match-fb"></div>
+    <button class="btn-reset" id="match-reset">🔄 Play Again</button>
+  </div>
+
+  <!-- ===== TASK 3 ===== -->
+  <div class="card">
+    <div class="task-head">
+      <div class="task-num">3</div>
+      <div class="task-title">🗣️ It's … !</div>
+    </div>
+    <p class="task-tip">Look at the weather — complete the sentence: "It's ___"</p>
+    <div class="its-center">
+      <span class="its-big" id="its-emoji" onclick="speakWord(currentIts.phrase)">☀️</span>
+      <div class="its-sentence">It's <span id="its-blank">____</span></div>
+      <div class="its-choices" id="its-choices"></div>
+      <div class="fb" id="its-fb"></div>
+      <div class="score-line" id="its-score"></div>
+    </div>
+  </div>
+
+  <!-- ===== TASK 4 ===== -->
+  <div class="card">
+    <div class="task-head">
+      <div class="task-num">4</div>
+      <div class="task-title">❓ What's Missing?</div>
+    </div>
+    <p class="task-tip">Look at the weather pictures — one is hiding! Can you find it?</p>
+    <div class="missing-row" id="miss-row"></div>
+    <div class="miss-choices" id="miss-choices"></div>
+    <div class="fb" id="miss-fb"></div>
+    <button id="miss-next" onclick="nextMissing()">Next ➡️</button>
+    <div class="score-line" id="miss-score"></div>
+  </div>
+
+  <!-- ===== TASK 5 ===== -->
+  <div class="card">
+    <div class="task-head">
+      <div class="task-num">5</div>
+      <div class="task-title">👕 What to Wear?</div>
+    </div>
+    <p class="task-tip">Look at the weather — pick the RIGHT clothes to wear!</p>
+    <div class="dress-scene">
+      <div class="dress-weather">
+        <span class="dw-emoji" id="dress-emoji">☀️</span>
+        <div class="dw-text" id="dress-label">It's sunny!</div>
+      </div>
+      <div class="dress-items" id="dress-items"></div>
+    </div>
+    <div class="fb" id="dress-fb"></div>
+    <button id="dress-next" onclick="nextDress()">Next ➡️</button>
+    <div class="score-line" id="dress-score"></div>
+  </div>
+
+  <!-- ===== TASK 6 ===== -->
+  <div class="card">
+    <div class="task-head">
+      <div class="task-num">6</div>
+      <div class="task-title">🎵 Weather Song!</div>
+    </div>
+    <p class="task-tip">Choose the weather — sing or say the rhyme! 🎤</p>
+    <div class="song-container">
+      <div class="karaoke-btns" id="song-btns"></div>
+      <div class="sing-prompt" id="sing-prompt">👆 Pick a weather above to see your song!</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ===================== DATA =====================
+const weather = [
+  { word:'sunny',   phrase:'sunny',  emoji:'☀️',  article:'It\'s sunny!' },
+  { word:'cloudy',  phrase:'cloudy', emoji:'☁️',  article:'It\'s cloudy!' },
+  { word:'rainy',   phrase:'rainy',  emoji:'🌧️', article:'It\'s rainy!' },
+  { word:'windy',   phrase:'windy',  emoji:'💨',  article:'It\'s windy!' },
+  { word:'snowy',   phrase:'snowy',  emoji:'❄️',  article:'It\'s snowy!' },
+  { word:'foggy',   phrase:'foggy',  emoji:'🌫️', article:'It\'s foggy!' },
+];
+
+// dress-up data: correct answers per weather
+const dressData = [
+  { wIdx:0, label:'sunny', items:[
+    {e:'🕶️',l:'sunglasses',ok:true},{e:'🧥',l:'big coat',ok:false},
+    {e:'👒',l:'sun hat',ok:true},{e:'🧤',l:'gloves',ok:false},{e:'🧴',l:'sunscreen',ok:true},
+  ]},
+  { wIdx:4, label:'snowy', items:[
+    {e:'🧥',l:'big coat',ok:true},{e:'🧤',l:'gloves',ok:true},
+    {e:'🩴',l:'flip-flops',ok:false},{e:'🎿',l:'snowboots',ok:true},{e:'🕶️',l:'sunglasses',ok:false},
+  ]},
+  { wIdx:2, label:'rainy', items:[
+    {e:'☂️',l:'umbrella',ok:true},{e:'🥾',l:'rain boots',ok:true},
+    {e:'👒',l:'sun hat',ok:false},{e:'🧥',l:'raincoat',ok:true},{e:'🩴',l:'flip-flops',ok:false},
+  ]},
+  { wIdx:3, label:'windy', items:[
+    {e:'🧣',l:'scarf',ok:true},{e:'🧢',l:'cap',ok:false},
+    {e:'🧥',l:'jacket',ok:true},{e:'🕶️',l:'sunglasses',ok:false},{e:'🧤',l:'gloves',ok:true},
+  ]},
+];
+
+// song rhymes
+const songRhymes = {
+  sunny:  { lines:['☀️ It\'s sunny, sunny, sunny!','The sun is out today!','Put on your sunglasses,','And go outside to play! 🎉'] },
+  cloudy: { lines:['☁️ It\'s cloudy, cloudy, cloudy!','The sky is grey and white!','The clouds are all so fluffy,','Oh what a funny sight! 😄'] },
+  rainy:  { lines:['🌧️ It\'s rainy, rainy, rainy!','I hear the raindrops fall!','I grab my big umbrella,','And put on boots — that\'s all! ☂️'] },
+  windy:  { lines:['💨 It\'s windy, windy, windy!','The wind is blowing strong!','It lifts my hat up high, high, high!','And blows it right along! 🎩'] },
+  snowy:  { lines:['❄️ It\'s snowy, snowy, snowy!','The world is white and bright!','We make a funny snowman,','And have a snowball fight! ⛄'] },
+  foggy:  { lines:['🌫️ It\'s foggy, foggy, foggy!','I can\'t see very far!','I walk so slowly, slowly,','And wonder where we are! 🔦'] },
+};
+
+// ===================== HELPERS =====================
+function speakWord(text) {
+  if(!window.speechSynthesis) return;
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang='en-GB'; u.rate=.85; u.pitch=1.2;
+  speechSynthesis.cancel(); speechSynthesis.speak(u);
+}
+function shuffle(arr){ return [...arr].sort(()=>Math.random()-.5); }
+
+// ===================== TASK 1 =====================
+const listenGrid = document.getElementById('listen-grid');
+weather.forEach(w => {
+  const div = document.createElement('div');
+  div.className='listen-card';
+  div.innerHTML=`<span class="lc-emoji">${w.emoji}</span><span class="lc-word">${w.word}</span>`;
+  div.onclick=()=>{
+    div.classList.add('play'); speakWord(w.word);
+    setTimeout(()=>div.classList.remove('play'),700);
+  };
+  listenGrid.appendChild(div);
+});
+
+// ===================== TASK 2 =====================
+let selMatch=null, matchDone=0;
+function buildMatch(){
+  selMatch=null; matchDone=0;
+  document.getElementById('match-fb').textContent='';
+  const ec=document.getElementById('match-emojis');
+  const wc=document.getElementById('match-words');
+  ec.innerHTML=''; wc.innerHTML='';
+  shuffle(weather).forEach(w=>{
+    const d=document.createElement('div');
+    d.className='mi mi-em'; d.dataset.id=w.word; d.dataset.type='e';
+    d.textContent=w.emoji; d.onclick=()=>handleMatch(d);
+    ec.appendChild(d);
+  });
+  shuffle(weather).forEach(w=>{
+    const d=document.createElement('div');
+    d.className='mi mi-wd'; d.dataset.id=w.word; d.dataset.type='w';
+    d.textContent=w.word; d.onclick=()=>handleMatch(d);
+    wc.appendChild(d);
+  });
+}
+function handleMatch(el){
+  if(el.classList.contains('ok')) return;
+  const fb=document.getElementById('match-fb');
+  if(!selMatch){ selMatch=el; el.classList.add('sel'); return; }
+  if(selMatch===el){ el.classList.remove('sel'); selMatch=null; return; }
+  if(selMatch.dataset.type===el.dataset.type){
+    selMatch.classList.remove('sel'); selMatch=el;
+    document.querySelectorAll('.mi.sel').forEach(x=>{ if(x!==el) x.classList.remove('sel'); });
+    el.classList.add('sel'); return;
+  }
+  if(selMatch.dataset.id===el.dataset.id){
+    [selMatch,el].forEach(x=>{ x.classList.remove('sel'); x.classList.add('ok'); x.style.pointerEvents='none'; });
+    matchDone++;
+    speakWord(el.dataset.id);
+    fb.style.color='var(--green)';
+    fb.textContent= matchDone===weather.length ? '🎉 All matched! Amazing!' : '✅ Correct!';
+    selMatch=null;
+  } else {
+    [selMatch,el].forEach(x=>{ x.classList.remove('sel'); x.classList.add('err'); setTimeout(()=>x.classList.remove('err'),500); });
+    fb.style.color='var(--red)'; fb.textContent='❌ Try again!';
+    selMatch=null;
+  }
+}
+document.getElementById('match-reset').onclick=buildMatch;
+buildMatch();
+
+// ===================== TASK 3 =====================
+let itsIdx=0, itsScore=0, itsTotal=0;
+const itsOrder=shuffle(weather);
+let currentIts=itsOrder[0];
+function loadIts(){
+  currentIts=itsOrder[itsIdx%itsOrder.length];
+  document.getElementById('its-emoji').textContent=currentIts.emoji;
+  document.getElementById('its-blank').textContent='____';
+  document.getElementById('its-fb').textContent='';
+  const wrong=shuffle(weather.filter(x=>x!==currentIts)).slice(0,3);
+  const choices=shuffle([currentIts,...wrong]);
+  const cd=document.getElementById('its-choices'); cd.innerHTML='';
+  choices.forEach(w=>{
+    const btn=document.createElement('button');
+    btn.className='its-btn'; btn.textContent=w.word;
+    btn.onclick=()=>checkIts(btn,w); cd.appendChild(btn);
+  });
+  updateItsScore();
+}
+function checkIts(btn,w){
+  if(document.getElementById('its-fb').textContent) return;
+  itsTotal++;
+  if(w===currentIts){
+    btn.classList.add('correct');
+    document.getElementById('its-blank').textContent=w.word;
+    document.getElementById('its-fb').style.color='var(--green)';
+    document.getElementById('its-fb').textContent='⭐ It\'s '+w.word+'!';
+    speakWord("It's "+w.word); itsScore++;
+    setTimeout(()=>{ itsIdx++; loadIts(); },1600);
+  } else {
+    btn.classList.add('wrong');
+    document.getElementById('its-fb').style.color='var(--red)';
+    document.getElementById('its-fb').textContent='❌ Try again!';
+    setTimeout(()=>{ btn.classList.remove('wrong'); document.getElementById('its-fb').textContent=''; },700);
+    itsTotal--;
+  }
+  updateItsScore();
+}
+function updateItsScore(){ document.getElementById('its-score').textContent=itsTotal>0?`⭐ ${itsScore} / ${itsTotal}`:''; }
+loadIts();
+
+// ===================== TASK 4 =====================
+const MISS_SET = [
+  [weather[0],weather[1],weather[2],weather[4]], // sun cloud rain snow
+  [weather[0],weather[1],weather[3],weather[5]], // sun cloud wind fog
+  [weather[1],weather[2],weather[4],weather[5]], // cloud rain snow fog
+  [weather[0],weather[2],weather[3],weather[4]], // sun rain wind snow
+  [weather[0],weather[1],weather[2],weather[3]], // sun cloud rain wind
+];
+let missIdx=0, missScore=0, missTotal=0, missLocked=false;
+function loadMissing(){
+  missLocked=false;
+  document.getElementById('miss-fb').textContent='';
+  document.getElementById('miss-next').style.display='none';
+  const set=MISS_SET[missIdx%MISS_SET.length];
+  const hiddenIdx=Math.floor(Math.random()*set.length);
+  const hidden=set[hiddenIdx];
+  // row
+  const row=document.getElementById('miss-row'); row.innerHTML='';
+  set.forEach((w,i)=>{
+    const sl=document.createElement('div');
+    sl.className='miss-slot'+(i===hiddenIdx?' hidden':'');
+    if(i!==hiddenIdx) sl.textContent=w.emoji;
+    row.appendChild(sl);
+  });
+  // choices (hidden + 2 wrong from outside set)
+  const outside=shuffle(weather.filter(x=>!set.includes(x)));
+  const opts=shuffle([hidden,...outside.slice(0,2)]);
+  const cd=document.getElementById('miss-choices'); cd.innerHTML='';
+  opts.forEach(w=>{
+    const btn=document.createElement('button');
+    btn.className='miss-btn'; btn.textContent=w.emoji;
+    btn.title=w.word;
+    btn.onclick=()=>checkMissing(btn,w,hidden);
+    cd.appendChild(btn);
+  });
+  updateMissScore();
+}
+function checkMissing(btn,w,hidden){
+  if(missLocked) return;
+  missTotal++;
+  if(w===hidden){
+    btn.classList.add('correct');
+    document.getElementById('miss-fb').style.color='var(--green)';
+    document.getElementById('miss-fb').textContent=`✅ Yes! It was ${hidden.emoji} ${hidden.word}!`;
+    speakWord('Yes! It was '+hidden.word); missScore++; missLocked=true;
+    document.getElementById('miss-next').style.display='inline-block';
+  } else {
+    btn.classList.add('wrong');
+    document.getElementById('miss-fb').style.color='var(--red)';
+    document.getElementById('miss-fb').textContent='❌ Not that one — look again!';
+    setTimeout(()=>{ btn.classList.remove('wrong'); document.getElementById('miss-fb').textContent=''; missTotal--; },800);
+  }
+  updateMissScore();
+}
+function nextMissing(){ missIdx++; loadMissing(); }
+function updateMissScore(){ document.getElementById('miss-score').textContent=missTotal>0?`⭐ ${missScore} / ${missTotal}`:''; }
+loadMissing();
+
+// ===================== TASK 5 =====================
+let dressIdx=0, dressScore=0, dressPicked=0, dressCorrect=0, dressLocked=false;
+function loadDress(){
+  dressLocked=false; dressPicked=0;
+  const d=dressData[dressIdx%dressData.length];
+  const w=weather[d.wIdx];
+  document.getElementById('dress-emoji').textContent=w.emoji;
+  document.getElementById('dress-label').textContent="It's "+d.label+"!";
+  document.getElementById('dress-fb').textContent='';
+  document.getElementById('dress-next').style.display='none';
+  dressCorrect=d.items.filter(x=>x.ok).length;
+  const items=shuffle(d.items);
+  const di=document.getElementById('dress-items'); di.innerHTML='';
+  items.forEach(item=>{
+    const btn=document.createElement('div');
+    btn.className='dress-item'; btn.dataset.ok=item.ok;
+    btn.innerHTML=`${item.e}<span class="di-label">${item.l}</span>`;
+    btn.onclick=()=>checkDress(btn,item,d);
+    di.appendChild(btn);
+  });
+  speakWord("It's "+d.label);
+  updateDressScore();
+}
+function checkDress(btn,item,d){
+  if(btn.classList.contains('selected-ok')||btn.classList.contains('selected-err')||dressLocked) return;
+  if(item.ok){
+    btn.classList.add('selected-ok'); speakWord(item.l); dressPicked++;
+    if(dressPicked===dressCorrect){
+      document.getElementById('dress-fb').style.color='var(--green)';
+      document.getElementById('dress-fb').textContent='🎉 Perfect outfit!';
+      dressScore++; dressLocked=true;
+      document.getElementById('dress-next').style.display='inline-block';
+    } else {
+      document.getElementById('dress-fb').style.color='var(--green)';
+      document.getElementById('dress-fb').textContent='✅ Good choice! Find more!';
+    }
+  } else {
+    btn.classList.add('selected-err');
+    document.getElementById('dress-fb').style.color='var(--red)';
+    document.getElementById('dress-fb').textContent='❌ Not for this weather!';
+    setTimeout(()=>{ btn.classList.remove('selected-err'); document.getElementById('dress-fb').textContent=''; },900);
+  }
+  updateDressScore();
+}
+function nextDress(){ dressIdx++; loadDress(); }
+function updateDressScore(){ document.getElementById('dress-score').textContent=dressScore>0?`⭐ ${dressScore} outfits correct!`:''; }
+loadDress();
+
+// ===================== TASK 6 =====================
+const songBtns=document.getElementById('song-btns');
+weather.forEach(w=>{
+  const btn=document.createElement('button');
+  btn.className='karaoke-btn';
+  btn.innerHTML=`${w.emoji} ${w.word}`;
+  btn.onclick=()=>showSong(w,btn);
+  songBtns.appendChild(btn);
+});
+function showSong(w,btn){
+  document.querySelectorAll('.karaoke-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const r=songRhymes[w.word];
+  const sp=document.getElementById('sing-prompt');
+  sp.innerHTML=r.lines.map(l=>`<div style="margin:.2rem 0">${l}</div>`).join('');
+  speakWord(r.lines.map(l=>l.replace(/[🎉😄☂️🎩⛄🔦]/g,'')).join(' '));
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,1102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Food! 🍽️ Let's Learn!</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
+<style>
+:root {
+  --yellow: #FFD93D;
+  --orange: #FF6B35;
+  --pink:   #FF6B9D;
+  --green:  #6BCB77;
+  --blue:   #4D96FF;
+  --purple: #C77DFF;
+  --red:    #FF4D4D;
+  --cream:  #FFFBF0;
+  --dark:   #2D2D2D;
+  --light:  #FFFFFF;
+  --shadow: rgba(0,0,0,0.12);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--cream);
+  font-family: 'Nunito', sans-serif;
+  color: var(--dark);
+  overflow-x: hidden;
+}
+
+/* Animated background dots */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 10% 20%, rgba(255,217,61,0.25) 0%, transparent 40%),
+    radial-gradient(circle at 90% 10%, rgba(107,203,119,0.2) 0%, transparent 35%),
+    radial-gradient(circle at 80% 80%, rgba(77,150,255,0.2) 0%, transparent 40%),
+    radial-gradient(circle at 20% 85%, rgba(255,107,157,0.2) 0%, transparent 35%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.page { max-width: 860px; margin: 0 auto; padding: 20px 16px 80px; position: relative; z-index: 1; }
+
+/* ===== HEADER ===== */
+header {
+  text-align: center;
+  padding: 36px 20px 32px;
+  background: linear-gradient(135deg, #FFD93D, #FF6B35);
+  border-radius: 28px;
+  margin-bottom: 36px;
+  box-shadow: 0 8px 30px rgba(255,107,53,0.3);
+  position: relative;
+  overflow: hidden;
+}
+header::before {
+  content: '🍕🥛🧀🍞🐟🥩🍚';
+  position: absolute;
+  top: -10px; left: 0; right: 0;
+  font-size: 28px;
+  letter-spacing: 8px;
+  opacity: 0.18;
+  white-space: nowrap;
+  overflow: hidden;
+}
+header h1 {
+  font-family: 'Fredoka One', cursive;
+  font-size: clamp(36px, 7vw, 64px);
+  color: white;
+  text-shadow: 3px 3px 0 rgba(0,0,0,0.15);
+  position: relative;
+}
+header p {
+  color: rgba(255,255,255,0.9);
+  font-size: 18px;
+  font-weight: 700;
+  margin-top: 6px;
+  position: relative;
+}
+
+/* ===== SECTION CARD ===== */
+.section {
+  background: white;
+  border-radius: 24px;
+  padding: 28px 24px;
+  margin-bottom: 28px;
+  box-shadow: 0 6px 24px var(--shadow);
+  border: 3px solid transparent;
+  position: relative;
+  overflow: hidden;
+}
+.section::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 6px;
+  border-radius: 24px 24px 0 0;
+}
+.s1::before { background: linear-gradient(90deg,#FFD93D,#FF6B35); }
+.s2::before { background: linear-gradient(90deg,#6BCB77,#4D96FF); }
+.s3::before { background: linear-gradient(90deg,#C77DFF,#FF6B9D); }
+.s4::before { background: linear-gradient(90deg,#FF6B35,#FF6B9D); }
+.s5::before { background: linear-gradient(90deg,#4D96FF,#C77DFF); }
+.s6::before { background: linear-gradient(90deg,#6BCB77,#FFD93D); }
+
+.sec-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--yellow);
+  color: var(--dark);
+  font-family: 'Fredoka One', cursive;
+  font-size: 14px;
+  letter-spacing: 1px;
+  padding: 4px 14px;
+  border-radius: 20px;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+.sec-title {
+  font-family: 'Fredoka One', cursive;
+  font-size: 26px;
+  color: var(--dark);
+  margin-bottom: 6px;
+}
+.sec-note {
+  font-size: 14px;
+  color: #888;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+/* ===== VOCAB CARDS (Section 1) ===== */
+.vocab-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(108px, 1fr));
+  gap: 14px;
+}
+.vocab-card {
+  background: var(--cream);
+  border-radius: 20px;
+  padding: 16px 10px 12px;
+  text-align: center;
+  border: 3px solid #F0E8D0;
+  cursor: pointer;
+  transition: transform .2s, box-shadow .2s, border-color .2s;
+  user-select: none;
+  position: relative;
+}
+.vocab-card:hover { transform: translateY(-4px) scale(1.04); box-shadow: 0 8px 24px rgba(0,0,0,0.12); }
+.vocab-card.playing { border-color: var(--orange); background: #FFF3E0; }
+.vocab-card .emoji { font-size: 44px; display: block; margin-bottom: 8px; line-height: 1; }
+.vocab-card .word {
+  font-family: 'Fredoka One', cursive;
+  font-size: 15px;
+  color: var(--dark);
+}
+.vocab-card .sound-icon {
+  position: absolute;
+  top: 8px; right: 8px;
+  font-size: 14px;
+  opacity: 0.5;
+}
+.vocab-card:hover .sound-icon { opacity: 1; }
+
+/* Tip */
+.tip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #FFF8E7;
+  border: 2px dashed var(--yellow);
+  border-radius: 14px;
+  padding: 10px 14px;
+  font-size: 14px;
+  color: #B07800;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+/* ===== MATCH (Section 2) ===== */
+.match-wrap {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px 32px;
+  align-items: start;
+}
+.match-col-title {
+  font-family: 'Fredoka One', cursive;
+  font-size: 16px;
+  color: #888;
+  margin-bottom: 10px;
+  text-align: center;
+}
+.match-emojis, .match-words { display: flex; flex-direction: column; gap: 10px; }
+.match-emoji-item, .match-word-item {
+  border-radius: 16px;
+  padding: 12px 16px;
+  font-size: 15px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all .2s;
+  text-align: center;
+  user-select: none;
+  border: 3px solid transparent;
+}
+.match-emoji-item {
+  background: #F8F0FF;
+  border-color: #E8D8FF;
+  font-size: 32px;
+}
+.match-word-item {
+  background: #F0F8FF;
+  border-color: #D0E8FF;
+  font-family: 'Fredoka One', cursive;
+  font-size: 17px;
+}
+.match-emoji-item:hover, .match-word-item:hover { transform: scale(1.04); }
+.match-emoji-item.selected { border-color: var(--purple); background: #F0E0FF; box-shadow: 0 0 0 3px rgba(199,125,255,0.3); }
+.match-word-item.selected  { border-color: var(--blue);   background: #E0F0FF; box-shadow: 0 0 0 3px rgba(77,150,255,0.3); }
+.match-emoji-item.matched  { border-color: var(--green); background: #E8FFE8; cursor: default; }
+.match-word-item.matched   { border-color: var(--green); background: #E8FFE8; cursor: default; }
+.match-emoji-item.wrong    { border-color: var(--red); background: #FFE8E8; }
+.match-word-item.wrong     { border-color: var(--red); background: #FFE8E8; }
+.match-score {
+  text-align: center;
+  margin-top: 16px;
+  font-family: 'Fredoka One', cursive;
+  font-size: 20px;
+  color: var(--green);
+  min-height: 28px;
+}
+
+/* ===== MEAL SORT (Section 3) ===== */
+.meal-phrase {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+.phrase-box {
+  background: linear-gradient(135deg, #FFD93D, #FF6B35);
+  color: white;
+  border-radius: 14px;
+  padding: 10px 18px;
+  font-family: 'Fredoka One', cursive;
+  font-size: 16px;
+  box-shadow: 0 4px 12px rgba(255,107,53,0.3);
+}
+
+.meal-zones {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+.meal-zone {
+  border-radius: 20px;
+  border: 3px dashed;
+  padding: 16px;
+  min-height: 140px;
+}
+.meal-zone.breakfast { border-color: #FFD93D; background: #FFFBE8; }
+.meal-zone.dinner    { border-color: #4D96FF; background: #EEF4FF; }
+.zone-title {
+  font-family: 'Fredoka One', cursive;
+  font-size: 17px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.zone-title.bk { color: #CC9900; }
+.zone-title.dn { color: #2266CC; }
+.zone-items { display: flex; flex-wrap: wrap; gap: 8px; min-height: 44px; }
+.food-pool {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+.food-tag {
+  border-radius: 50px;
+  padding: 8px 18px;
+  font-family: 'Fredoka One', cursive;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all .2s;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.food-tag.pool-tag   { background: white; border: 3px solid #DDD; color: var(--dark); }
+.food-tag.pool-tag:hover { transform: scale(1.08); border-color: var(--orange); }
+.food-tag.placed-breakfast { background: var(--yellow); border: 3px solid #EEBB00; color: #664400; }
+.food-tag.placed-dinner    { background: #AECFf0; border: 3px solid #4D96FF; color: #0A3080; }
+.food-tag.wrong-place { background: #FFE0E0; border: 3px solid var(--red); animation: shake .3s; }
+.food-tag.right-place { background: #D8FFD8; border: 3px solid var(--green); }
+
+@keyframes shake {
+  0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}
+}
+
+/* ===== FILL SENTENCE (Section 4) ===== */
+.fill-item {
+  padding: 14px 0;
+  border-bottom: 2px dashed #EEE;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Fredoka One', cursive;
+  font-size: 17px;
+}
+.fill-item:last-child { border-bottom: none; }
+.fill-num { color: var(--orange); min-width: 24px; font-size: 18px; }
+.fill-blank {
+  border: none;
+  border-bottom: 3px solid var(--purple);
+  background: transparent;
+  font-family: 'Fredoka One', cursive;
+  font-size: 17px;
+  color: var(--dark);
+  padding: 2px 8px;
+  width: 120px;
+  outline: none;
+  text-align: center;
+  border-radius: 4px 4px 0 0;
+  transition: .2s;
+}
+.fill-blank:focus { background: #F8F0FF; border-color: var(--purple); }
+.fill-blank.ok  { background: #E8FFE8; border-color: var(--green); color: var(--green); }
+.fill-blank.err { background: #FFE8E8; border-color: var(--red); color: var(--red); }
+
+/* Word chips for fill */
+.fill-bank {
+  display: flex; flex-wrap: wrap; gap: 8px;
+  padding: 12px; background: #F8F8F8; border-radius: 14px;
+  margin-bottom: 18px; border: 2px dashed #DDD;
+}
+.f-chip {
+  background: var(--dark); color: white; border-radius: 50px;
+  padding: 5px 14px; font-family: 'Fredoka One', cursive; font-size: 14px;
+  cursor: default;
+}
+.f-chip span { margin-right: 4px; }
+
+/* ===== LIKE / HATE (Section 5) ===== */
+.like-hate-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+.lh-zone {
+  border-radius: 20px;
+  border: 3px dashed;
+  padding: 16px;
+  min-height: 160px;
+}
+.lh-zone.like { border-color: var(--green); background: #F0FFF4; }
+.lh-zone.hate { border-color: var(--red);   background: #FFF0F0; }
+.lh-title {
+  font-family: 'Fredoka One', cursive;
+  font-size: 18px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.lh-title.like-t { color: #1A8A3A; }
+.lh-title.hate-t { color: #CC2222; }
+.lh-items { display: flex; flex-wrap: wrap; gap: 8px; min-height: 44px; }
+.lh-food-pool { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 10px; }
+.lh-tag {
+  border-radius: 50px;
+  padding: 8px 18px;
+  font-family: 'Fredoka One', cursive;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all .2s;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border: 3px solid;
+}
+.lh-tag.pool { background: white; border-color: #DDD; color: var(--dark); }
+.lh-tag.pool:hover { transform: scale(1.08); border-color: var(--pink); }
+.lh-tag.in-like { background: #D4FFD4; border-color: var(--green); color: #1A6A2A; }
+.lh-tag.in-hate { background: #FFD4D4; border-color: var(--red);   color: #AA1111; }
+
+/* Sentence builder */
+.sentence-preview {
+  background: linear-gradient(135deg, #6BCB77, #4D96FF);
+  color: white;
+  border-radius: 16px;
+  padding: 14px 20px;
+  font-family: 'Fredoka One', cursive;
+  font-size: 18px;
+  text-align: center;
+  margin-top: 16px;
+  min-height: 54px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  box-shadow: 0 4px 16px rgba(77,150,255,0.3);
+}
+
+/* ===== SECTION 6: Spell it ===== */
+.spell-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 14px;
+}
+.spell-item {
+  background: #F8F8FF;
+  border-radius: 16px;
+  padding: 14px;
+  border: 3px solid #E8E0FF;
+  text-align: center;
+}
+.spell-emoji { font-size: 40px; margin-bottom: 6px; display: block; }
+.spell-input {
+  border: none; border-bottom: 3px solid var(--purple);
+  background: transparent;
+  font-family: 'Fredoka One', cursive;
+  font-size: 18px;
+  color: var(--dark);
+  text-align: center;
+  width: 100%;
+  outline: none;
+  padding: 2px;
+  border-radius: 4px 4px 0 0;
+  transition: .2s;
+}
+.spell-input:focus { background: #F0E8FF; }
+.spell-input.ok  { background: #E8FFE8; border-color: var(--green); color: var(--green); }
+.spell-input.err { background: #FFE8E8; border-color: var(--red);   color: var(--red); }
+.spell-hint { font-size: 12px; color: #AAA; margin-top: 4px; font-weight: 600; }
+
+/* ===== STARS / FEEDBACK ===== */
+.feedback-pop {
+  text-align: center;
+  padding: 20px;
+  background: linear-gradient(135deg, #FFD93D, #FF6B35);
+  border-radius: 20px;
+  margin-top: 20px;
+  display: none;
+}
+.feedback-pop.show { display: block; animation: popIn .4s; }
+@keyframes popIn { 0%{transform:scale(.7);opacity:0} 100%{transform:scale(1);opacity:1} }
+.feedback-pop .big-emoji { font-size: 48px; }
+.feedback-pop .fb-text {
+  font-family: 'Fredoka One', cursive;
+  font-size: 22px;
+  color: white;
+  margin-top: 6px;
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.15);
+}
+
+/* ===== BUTTONS ===== */
+.btn-row { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 20px; }
+.btn {
+  font-family: 'Fredoka One', cursive;
+  font-size: 16px;
+  padding: 12px 28px;
+  border-radius: 50px;
+  border: none;
+  cursor: pointer;
+  transition: all .2s;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+.btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
+.btn:active { transform: scale(.97); }
+.btn-orange { background: var(--orange); color: white; }
+.btn-green  { background: var(--green);  color: white; }
+.btn-blue   { background: var(--blue);   color: white; }
+.btn-gray   { background: #DDD; color: #666; }
+.btn-gray:hover { background: #CCC; }
+.btn-purple { background: var(--purple); color: white; }
+.btn-pink   { background: var(--pink);   color: white; }
+
+/* ===== REVEAL ===== */
+.ans-reveal {
+  display: none;
+  font-size: 13px;
+  color: var(--green);
+  background: #E8FFE8;
+  padding: 3px 10px;
+  border-radius: 8px;
+  font-weight: 700;
+  margin-top: 4px;
+}
+.ans-reveal.show { display: inline-block; }
+
+/* ===== PROGRESS BAR ===== */
+.progress-bar {
+  height: 10px;
+  background: #EEE;
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 16px 0 8px;
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--green), var(--blue));
+  border-radius: 10px;
+  transition: width .5s ease;
+  width: 0%;
+}
+
+/* Stars */
+.star-row { text-align: center; font-size: 28px; letter-spacing: 4px; margin-top: 8px; }
+
+@media (max-width: 560px) {
+  .match-wrap, .meal-zones, .like-hate-layout { grid-template-columns: 1fr; }
+  .vocab-grid { grid-template-columns: repeat(4, 1fr); }
+  .spell-grid { grid-template-columns: repeat(2, 1fr); }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- HEADER -->
+<header>
+  <h1>🍽️ Let's Talk About Food!</h1>
+  <p>Учим еду по-английски • 5 заданий</p>
+</header>
+
+<!-- ===== SECTION 1: VOCAB ===== -->
+<div class="section s1">
+  <div class="sec-label">⭐ Step 1</div>
+  <div class="sec-title">Meet the food words! 🎉</div>
+  <div class="sec-note">Tap each card to hear the word! / Нажми на карточку, чтобы услышать слово!</div>
+  <div class="tip">🔊 Tap a card → hear the word → repeat it out loud! Say it 3 times!</div>
+  <div class="vocab-grid" id="vocab-grid">
+    <!-- filled by JS -->
+  </div>
+</div>
+
+<!-- ===== SECTION 2: MATCH ===== -->
+<div class="section s2">
+  <div class="sec-label">✏️ Step 2</div>
+  <div class="sec-title">Match the picture and word! 🔗</div>
+  <div class="sec-note">Tap a picture, then tap the matching word! / Нажми на картинку, потом на слово!</div>
+  <div class="match-wrap">
+    <div>
+      <div class="match-col-title">Pictures 🖼️</div>
+      <div class="match-emojis" id="match-emojis"></div>
+    </div>
+    <div>
+      <div class="match-col-title">Words 📝</div>
+      <div class="match-words" id="match-words"></div>
+    </div>
+  </div>
+  <div class="match-score" id="match-score"></div>
+  <div class="btn-row">
+    <button class="btn btn-gray" onclick="resetMatch()">↺ Reset</button>
+  </div>
+</div>
+
+<!-- ===== SECTION 3: BREAKFAST / DINNER SORT ===== -->
+<div class="section s3">
+  <div class="sec-label">🍳 Step 3</div>
+  <div class="sec-title">Breakfast or Dinner? 🌅🌙</div>
+  <div class="sec-note">Sort the food! Tap a word, then tap the correct plate! / Распредели еду по приёмам пищи!</div>
+
+  <div class="meal-phrase">
+    <div class="phrase-box">I have _____ for breakfast.</div>
+    <div class="phrase-box">I eat _____ for dinner.</div>
+  </div>
+
+  <div class="food-pool" id="meal-pool"></div>
+
+  <div class="meal-zones">
+    <div class="meal-zone breakfast" id="zone-breakfast" onclick="dropToZone('breakfast')">
+      <div class="zone-title bk">🌅 Breakfast</div>
+      <div class="zone-items" id="items-breakfast"></div>
+    </div>
+    <div class="meal-zone dinner" id="zone-dinner" onclick="dropToZone('dinner')">
+      <div class="zone-title dn">🌙 Dinner</div>
+      <div class="zone-items" id="items-dinner"></div>
+    </div>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn btn-purple" onclick="checkMeal()">✓ Check!</button>
+    <button class="btn btn-gray"   onclick="resetMeal()">↺ Reset</button>
+  </div>
+  <div class="feedback-pop" id="meal-fb"></div>
+</div>
+
+<!-- ===== SECTION 4: FILL IN SENTENCES ===== -->
+<div class="section s4">
+  <div class="sec-label">✍️ Step 4</div>
+  <div class="sec-title">Fill in the sentence! 📝</div>
+  <div class="sec-note">Write the correct food word! / Напиши правильное слово!</div>
+
+  <div class="fill-bank" id="fill-bank"></div>
+
+  <div id="fill-sentences"></div>
+
+  <div class="btn-row">
+    <button class="btn btn-orange" onclick="checkFill()">✓ Check!</button>
+    <button class="btn btn-blue"   onclick="showFill()">👁 Show answers</button>
+    <button class="btn btn-gray"   onclick="resetFill()">↺ Reset</button>
+  </div>
+  <div class="feedback-pop" id="fill-fb"></div>
+</div>
+
+<!-- ===== SECTION 5: I LIKE / I HATE ===== -->
+<div class="section s5">
+  <div class="sec-label">❤️ Step 5</div>
+  <div class="sec-title">I like it or I hate it? 😍🤢</div>
+  <div class="sec-note">Sort the food into groups! Tap a food, then tap the group! / Распредели еду!</div>
+
+  <div class="like-hate-layout">
+    <div class="lh-zone like" id="zone-like" onclick="dropToLH('like')">
+      <div class="lh-title like-t">😍 I like...</div>
+      <div class="lh-items" id="items-like"></div>
+    </div>
+    <div class="lh-zone hate" id="zone-hate" onclick="dropToLH('hate')">
+      <div class="lh-title hate-t">🤢 I hate...</div>
+      <div class="lh-items" id="items-hate"></div>
+    </div>
+  </div>
+
+  <div class="lh-food-pool" id="lh-pool"></div>
+
+  <div class="sentence-preview" id="lh-sentence">
+    👆 Tap any food to build a sentence!
+  </div>
+
+  <div class="btn-row">
+    <button class="btn btn-pink" onclick="resetLH()">↺ Reset</button>
+  </div>
+</div>
+
+<!-- ===== SECTION 6: SPELL IT ===== -->
+<div class="section s6">
+  <div class="sec-label">🔤 Step 6 — BONUS!</div>
+  <div class="sec-title">Can you spell it? ✨</div>
+  <div class="sec-note">Look at the picture and type the word! / Посмотри на картинку и напиши слово!</div>
+
+  <div class="spell-grid" id="spell-grid"></div>
+
+  <div class="progress-bar"><div class="progress-fill" id="spell-progress"></div></div>
+  <div class="star-row" id="spell-stars"></div>
+
+  <div class="btn-row">
+    <button class="btn btn-green"  onclick="checkSpell()">✓ Check!</button>
+    <button class="btn btn-blue"   onclick="showSpell()">👁 Show</button>
+    <button class="btn btn-gray"   onclick="resetSpell()">↺ Reset</button>
+  </div>
+  <div class="feedback-pop" id="spell-fb"></div>
+</div>
+
+</div><!-- /page -->
+
+<script>
+// ============================================================
+//  DATA
+// ============================================================
+var FOOD = [
+  { word: 'cheese',   emoji: '🧀', meal: 'breakfast', color: '#FFD93D' },
+  { word: 'milk',     emoji: '🥛', meal: 'breakfast', color: '#DDEEFF' },
+  { word: 'bread',    emoji: '🍞', meal: 'breakfast', color: '#F5CBA7' },
+  { word: 'porridge', emoji: '🥣', meal: 'breakfast', color: '#F0E0C0' },
+  { word: 'fish',     emoji: '🐟', meal: 'dinner',    color: '#AED6F1' },
+  { word: 'meat',     emoji: '🥩', meal: 'dinner',    color: '#FADBD8' },
+  { word: 'rice',     emoji: '🍚', meal: 'dinner',    color: '#EAFAF1' },
+];
+
+// Extra food for like/hate
+var EXTRA_FOOD = [
+  { word: 'pizza',   emoji: '🍕' },
+  { word: 'cake',    emoji: '🎂' },
+  { word: 'soup',    emoji: '🍲' },
+  { word: 'apple',   emoji: '🍎' },
+  { word: 'eggs',    emoji: '🍳' },
+];
+
+var ALL_FOOD = FOOD.concat(EXTRA_FOOD);
+
+// ============================================================
+//  SECTION 1: VOCAB + TTS
+// ============================================================
+var vocabGrid = document.getElementById('vocab-grid');
+FOOD.forEach(function(f) {
+  var card = document.createElement('div');
+  card.className = 'vocab-card';
+  card.innerHTML = '<span class="sound-icon">🔊</span><span class="emoji">' + f.emoji + '</span><div class="word">' + f.word + '</div>';
+  card.addEventListener('click', function() {
+    speakWord(f.word);
+    card.classList.add('playing');
+    setTimeout(function(){ card.classList.remove('playing'); }, 1200);
+  });
+  vocabGrid.appendChild(card);
+});
+
+function speakWord(word) {
+  if (!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  var u = new SpeechSynthesisUtterance(word);
+  u.lang = 'en-GB';
+  u.rate = 0.85;
+  u.pitch = 1.1;
+  window.speechSynthesis.speak(u);
+}
+
+// ============================================================
+//  SECTION 2: MATCH
+// ============================================================
+var matchSelected = { emoji: null, word: null };
+var matchCount = 0;
+
+function shuffle(arr) {
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var t = a[i]; a[i] = a[j]; a[j] = t;
+  }
+  return a;
+}
+
+function buildMatch() {
+  matchCount = 0;
+  matchSelected = { emoji: null, word: null };
+  var emojiCol = document.getElementById('match-emojis');
+  var wordCol  = document.getElementById('match-words');
+  emojiCol.innerHTML = '';
+  wordCol.innerHTML  = '';
+  document.getElementById('match-score').textContent = '';
+
+  var shuffledE = shuffle(FOOD);
+  var shuffledW = shuffle(FOOD);
+
+  shuffledE.forEach(function(f) {
+    var el = document.createElement('div');
+    el.className = 'match-emoji-item';
+    el.textContent = f.emoji;
+    el.dataset.word = f.word;
+    el.addEventListener('click', function(){ onMatchClick('emoji', el); });
+    emojiCol.appendChild(el);
+  });
+
+  shuffledW.forEach(function(f) {
+    var el = document.createElement('div');
+    el.className = 'match-word-item';
+    el.textContent = f.word;
+    el.dataset.word = f.word;
+    el.addEventListener('click', function(){ onMatchClick('word', el); });
+    wordCol.appendChild(el);
+  });
+}
+
+function onMatchClick(type, el) {
+  if (el.classList.contains('matched')) return;
+
+  if (type === 'emoji') {
+    document.querySelectorAll('.match-emoji-item').forEach(function(e){ e.classList.remove('selected','wrong'); });
+    el.classList.add('selected');
+    matchSelected.emoji = el;
+  } else {
+    document.querySelectorAll('.match-word-item').forEach(function(e){ e.classList.remove('selected','wrong'); });
+    el.classList.add('selected');
+    matchSelected.word = el;
+  }
+
+  if (matchSelected.emoji && matchSelected.word) {
+    if (matchSelected.emoji.dataset.word === matchSelected.word.dataset.word) {
+      matchSelected.emoji.classList.remove('selected'); matchSelected.emoji.classList.add('matched');
+      matchSelected.word.classList.remove('selected');  matchSelected.word.classList.add('matched');
+      speakWord(matchSelected.word.dataset.word);
+      matchCount++;
+      matchSelected = { emoji: null, word: null };
+      if (matchCount === FOOD.length) {
+        document.getElementById('match-score').textContent = '🎉 Amazing! All matched! ⭐⭐⭐';
+      }
+    } else {
+      matchSelected.emoji.classList.add('wrong');
+      matchSelected.word.classList.add('wrong');
+      var e = matchSelected.emoji, w = matchSelected.word;
+      setTimeout(function(){
+        e.classList.remove('wrong','selected');
+        w.classList.remove('wrong','selected');
+      }, 600);
+      matchSelected = { emoji: null, word: null };
+    }
+  }
+}
+
+function resetMatch() { buildMatch(); }
+
+buildMatch();
+
+// ============================================================
+//  SECTION 3: MEAL SORT
+// ============================================================
+var mealSelected = null;
+
+function buildMealPool() {
+  var pool = document.getElementById('meal-pool');
+  pool.innerHTML = '';
+  ['items-breakfast','items-dinner'].forEach(function(id){ document.getElementById(id).innerHTML=''; });
+  mealSelected = null;
+  document.getElementById('meal-fb').className = 'feedback-pop';
+
+  shuffle(FOOD).forEach(function(f) {
+    var tag = document.createElement('div');
+    tag.className = 'food-tag pool-tag';
+    tag.dataset.word = f.word;
+    tag.dataset.meal = f.meal;
+    tag.innerHTML = f.emoji + ' ' + f.word;
+    tag.addEventListener('click', function() { selectMealTag(tag); });
+    pool.appendChild(tag);
+  });
+}
+
+function selectMealTag(tag) {
+  document.querySelectorAll('.food-tag').forEach(function(t){ t.style.outline=''; });
+  mealSelected = tag;
+  tag.style.outline = '3px solid ' + '#FF6B35';
+}
+
+function dropToZone(zone) {
+  if (!mealSelected) return;
+  var target = document.getElementById('items-' + zone);
+  mealSelected.style.outline = '';
+
+  // Clone for zone
+  var placed = document.createElement('div');
+  placed.className = 'food-tag placed-' + zone;
+  placed.dataset.word = mealSelected.dataset.word;
+  placed.dataset.meal = mealSelected.dataset.meal;
+  placed.innerHTML = mealSelected.innerHTML;
+  placed.addEventListener('click', function() {
+    // click to return to pool
+    var pool = document.getElementById('meal-pool');
+    mealSelected = null;
+    var orig = document.createElement('div');
+    orig.className = 'food-tag pool-tag';
+    orig.dataset.word = placed.dataset.word;
+    orig.dataset.meal = placed.dataset.meal;
+    orig.innerHTML = placed.innerHTML;
+    orig.addEventListener('click', function(){ selectMealTag(orig); });
+    pool.appendChild(orig);
+    placed.remove();
+  });
+  target.appendChild(placed);
+  mealSelected.remove();
+  mealSelected = null;
+}
+
+function checkMeal() {
+  var correct = 0; var total = 0;
+  ['breakfast','dinner'].forEach(function(zone) {
+    document.querySelectorAll('#items-' + zone + ' .food-tag').forEach(function(tag) {
+      total++;
+      if (tag.dataset.meal === zone) { tag.classList.add('right-place'); correct++; }
+      else { tag.classList.add('wrong-place'); }
+    });
+  });
+  var fb = document.getElementById('meal-fb');
+  if (correct === total && total > 0) {
+    fb.innerHTML = '<div class="big-emoji">🌟</div><div class="fb-text">Perfect! ' + correct + '/' + total + ' correct!</div>';
+  } else {
+    fb.innerHTML = '<div class="big-emoji">💪</div><div class="fb-text">' + correct + '/' + total + ' — Try again!</div>';
+  }
+  fb.className = 'feedback-pop show';
+}
+
+function resetMeal() { buildMealPool(); }
+buildMealPool();
+
+// ============================================================
+//  SECTION 4: FILL IN SENTENCES
+// ============================================================
+var FILL_SENTENCES = [
+  { text: 'I have ___ for breakfast. I love it with butter!',     ans: 'bread',    emoji: '🍞' },
+  { text: 'Every morning I drink a glass of ___.', ans: 'milk',    emoji: '🥛' },
+  { text: 'I eat ___ for dinner with vegetables.', ans: 'rice',    emoji: '🍚' },
+  { text: 'We have ___ and toast for breakfast.',  ans: 'cheese',  emoji: '🧀' },
+  { text: 'I eat ___ for dinner. It is delicious!', ans: 'fish',   emoji: '🐟' },
+  { text: 'Mum makes warm ___ every morning.',      ans: 'porridge', emoji: '🥣' },
+  { text: 'We have ___ with gravy for dinner.',     ans: 'meat',   emoji: '🥩' },
+];
+
+function buildFill() {
+  var bank = document.getElementById('fill-bank');
+  bank.innerHTML = '';
+  shuffle(FOOD).forEach(function(f) {
+    var c = document.createElement('span');
+    c.className = 'f-chip';
+    c.innerHTML = '<span>' + f.emoji + '</span>' + f.word;
+    bank.appendChild(c);
+  });
+
+  var container = document.getElementById('fill-sentences');
+  container.innerHTML = '';
+  document.getElementById('fill-fb').className = 'feedback-pop';
+
+  FILL_SENTENCES.forEach(function(s, i) {
+    var parts = s.text.split('___');
+    var row = document.createElement('div');
+    row.className = 'fill-item';
+    row.innerHTML =
+      '<span class="fill-num">' + (i+1) + '.</span>' +
+      '<span>' + s.emoji + '</span>' +
+      '<span>' + parts[0] + '</span>' +
+      '<input class="fill-blank" data-ans="' + s.ans + '" placeholder="___" />' +
+      '<span>' + (parts[1]||'') + '</span>';
+    container.appendChild(row);
+  });
+}
+
+function checkFill() {
+  var correct = 0, total = 0;
+  document.querySelectorAll('.fill-blank').forEach(function(inp) {
+    var ans = inp.dataset.ans.toLowerCase();
+    var val = inp.value.trim().toLowerCase();
+    inp.classList.remove('ok','err');
+    if (!val) return;
+    total++;
+    if (val === ans) { inp.classList.add('ok'); correct++; }
+    else { inp.classList.add('err'); }
+  });
+  var fb = document.getElementById('fill-fb');
+  if (correct === total && total > 0) {
+    fb.innerHTML = '<div class="big-emoji">🏆</div><div class="fb-text">Brilliant! All correct! ⭐⭐⭐</div>';
+  } else {
+    fb.innerHTML = '<div class="big-emoji">✏️</div><div class="fb-text">' + correct + '/' + total + ' correct — keep going!</div>';
+  }
+  fb.className = 'feedback-pop show';
+}
+
+function showFill() {
+  document.querySelectorAll('.fill-blank').forEach(function(inp) {
+    inp.value = inp.dataset.ans;
+    inp.classList.remove('err'); inp.classList.add('ok');
+  });
+}
+
+function resetFill() { buildFill(); }
+buildFill();
+
+// ============================================================
+//  SECTION 5: I LIKE / I HATE
+// ============================================================
+var lhSelected = null;
+
+function buildLH() {
+  var pool = document.getElementById('lh-pool');
+  pool.innerHTML = '';
+  ['items-like','items-hate'].forEach(function(id){ document.getElementById(id).innerHTML=''; });
+  lhSelected = null;
+  document.getElementById('lh-sentence').innerHTML = '👆 Tap any food to build a sentence!';
+
+  shuffle(ALL_FOOD).forEach(function(f) {
+    var tag = document.createElement('div');
+    tag.className = 'lh-tag pool';
+    tag.dataset.word = f.word;
+    tag.dataset.emoji = f.emoji;
+    tag.innerHTML = f.emoji + ' ' + f.word;
+    tag.addEventListener('click', function(){ selectLH(tag); });
+    pool.appendChild(tag);
+  });
+}
+
+function selectLH(tag) {
+  document.querySelectorAll('.lh-tag').forEach(function(t){ t.style.outline=''; });
+  lhSelected = tag;
+  tag.style.outline = '3px solid ' + '#FF6B9D';
+  // preview sentence
+  document.getElementById('lh-sentence').innerHTML = '👆 Now tap 😍 <b>I like</b> or 🤢 <b>I hate</b>!';
+}
+
+function dropToLH(group) {
+  if (!lhSelected) return;
+  var target = document.getElementById('items-' + group);
+  lhSelected.style.outline = '';
+
+  var placed = document.createElement('div');
+  placed.className = 'lh-tag in-' + group;
+  placed.dataset.word = lhSelected.dataset.word;
+  placed.dataset.emoji = lhSelected.dataset.emoji;
+  placed.innerHTML = lhSelected.innerHTML;
+  placed.addEventListener('click', function() {
+    // return to pool
+    var pool = document.getElementById('lh-pool');
+    var orig = document.createElement('div');
+    orig.className = 'lh-tag pool';
+    orig.dataset.word = placed.dataset.word;
+    orig.dataset.emoji = placed.dataset.emoji;
+    orig.innerHTML = placed.innerHTML;
+    orig.addEventListener('click', function(){ selectLH(orig); });
+    pool.appendChild(orig);
+    placed.remove();
+    lhSelected = null;
+    document.getElementById('lh-sentence').innerHTML = '👆 Tap any food to build a sentence!';
+  });
+  target.appendChild(placed);
+  lhSelected.remove();
+  lhSelected = null;
+
+  // Show sentence
+  var items = document.querySelectorAll('#items-' + group + ' .lh-tag');
+  var words = Array.from(items).map(function(t){ return t.dataset.emoji + ' ' + t.dataset.word; });
+  var phrase = (group === 'like') ? 'I like ' : 'I hate ';
+  if (words.length === 1) {
+    document.getElementById('lh-sentence').innerHTML = '💬 ' + phrase + words[0] + '!';
+  } else {
+    document.getElementById('lh-sentence').innerHTML = '💬 ' + phrase + words.join(', ') + '!';
+  }
+  speakWord(phrase + placed.dataset.word);
+}
+
+function resetLH() { buildLH(); }
+buildLH();
+
+// ============================================================
+//  SECTION 6: SPELL IT
+// ============================================================
+function buildSpell() {
+  var grid = document.getElementById('spell-grid');
+  grid.innerHTML = '';
+  document.getElementById('spell-fb').className = 'feedback-pop';
+  document.getElementById('spell-stars').textContent = '';
+  document.getElementById('spell-progress').style.width = '0%';
+
+  shuffle(FOOD).forEach(function(f) {
+    var el = document.createElement('div');
+    el.className = 'spell-item';
+    el.innerHTML =
+      '<span class="spell-emoji">' + f.emoji + '</span>' +
+      '<input class="spell-input" data-ans="' + f.word + '" placeholder="type here..." />' +
+      '<div class="spell-hint">(' + f.word.length + ' letters)</div>';
+    grid.appendChild(el);
+  });
+
+  document.querySelectorAll('.spell-input').forEach(function(inp) {
+    inp.addEventListener('input', function() {
+      inp.classList.remove('ok','err');
+    });
+    inp.addEventListener('keyup', function() {
+      // auto-check as they type if word is complete length
+      var ans = inp.dataset.ans;
+      if (inp.value.trim().toLowerCase() === ans) {
+        inp.classList.add('ok');
+        speakWord(ans);
+        updateSpellProgress();
+      }
+    });
+  });
+}
+
+function updateSpellProgress() {
+  var total = document.querySelectorAll('.spell-input').length;
+  var correct = document.querySelectorAll('.spell-input.ok').length;
+  var pct = total > 0 ? (correct / total * 100) : 0;
+  document.getElementById('spell-progress').style.width = pct + '%';
+  var stars = correct >= total ? '⭐⭐⭐' : correct >= Math.ceil(total/2) ? '⭐⭐' : correct > 0 ? '⭐' : '';
+  document.getElementById('spell-stars').textContent = stars;
+}
+
+function checkSpell() {
+  var correct = 0, total = 0;
+  document.querySelectorAll('.spell-input').forEach(function(inp) {
+    var ans = inp.dataset.ans.toLowerCase();
+    var val = inp.value.trim().toLowerCase();
+    inp.classList.remove('ok','err');
+    if (!val) return;
+    total++;
+    if (val === ans) { inp.classList.add('ok'); correct++; }
+    else { inp.classList.add('err'); }
+  });
+  updateSpellProgress();
+  var fb = document.getElementById('spell-fb');
+  if (correct === total && total > 0) {
+    fb.innerHTML = '<div class="big-emoji">🌈</div><div class="fb-text">WOW! You can spell all the words! ⭐⭐⭐</div>';
+  } else {
+    fb.innerHTML = '<div class="big-emoji">✏️</div><div class="fb-text">' + correct + '/' + total + ' — Great effort!</div>';
+  }
+  fb.className = 'feedback-pop show';
+}
+
+function showSpell() {
+  document.querySelectorAll('.spell-input').forEach(function(inp) {
+    inp.value = inp.dataset.ans;
+    inp.classList.remove('err'); inp.classList.add('ok');
+  });
+  updateSpellProgress();
+}
+
+function resetSpell() { buildSpell(); }
+buildSpell();
+</script>
+</body>
+</html>

@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🐾 Animal Adventures! Learn Animals in English</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --sky: #E3F2FD;
+  --deep: #1565C0;
+  --teal: #00897B;
+  --teal-light: #B2DFDB;
+  --amber: #FF8F00;
+  --amber-light: #FFE082;
+  --coral: #F4511E;
+  --lilac: #7E57C2;
+  --grass: #43A047;
+  --sand: #FFF8E1;
+  --bg: #EEF7F0;
+  --card: #FFFFFF;
+  --text: #1A2E1A;
+  --shadow: 0 6px 24px rgba(0,0,0,0.10);
+  --radius: 22px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background: var(--bg);
+  background-image:
+    radial-gradient(ellipse at 0% 0%, rgba(0,137,123,0.18) 0%, transparent 55%),
+    radial-gradient(ellipse at 100% 100%, rgba(255,143,0,0.15) 0%, transparent 55%),
+    radial-gradient(ellipse at 60% 30%, rgba(21,101,192,0.08) 0%, transparent 50%);
+  min-height: 100vh;
+  color: var(--text);
+}
+
+/* ── Header ── */
+header {
+  background: linear-gradient(135deg, #00695C 0%, #00897B 50%, #26A69A 100%);
+  color: white;
+  padding: 28px 20px 0;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 6px 28px rgba(0,105,92,0.45);
+}
+header::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.06'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+.header-paws {
+  font-size: 1.6rem; letter-spacing: 8px; opacity: 0.25; margin-bottom: 6px;
+}
+header h1 {
+  font-family: 'Baloo 2', cursive;
+  font-size: clamp(2rem, 7vw, 3.6rem);
+  font-weight: 800;
+  text-shadow: 3px 4px 0 rgba(0,0,0,0.18);
+  position: relative;
+}
+header p {
+  font-size: 1rem; opacity: 0.9; margin-top: 4px; font-weight: 600; position: relative;
+}
+
+/* Progress strip */
+.progress-strip {
+  display: flex; gap: 0; margin-top: 20px; border-radius: 0;
+}
+.prog-seg {
+  flex: 1; height: 7px;
+  background: rgba(255,255,255,0.22);
+  transition: background 0.4s;
+}
+.prog-seg.done { background: rgba(255,255,255,0.9); }
+
+/* ── Nav dots ── */
+.nav-dots {
+  display: flex; justify-content: center; gap: 10px;
+  padding: 18px 16px 12px; flex-wrap: wrap;
+}
+.nav-dot {
+  width: 46px; height: 46px; border-radius: 50%;
+  font-family: 'Baloo 2', cursive; font-size: 1.05rem; font-weight: 800;
+  border: 3px solid white; cursor: pointer; transition: all 0.22s;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.18); color: white;
+}
+.nd1 { background: #00897B; }
+.nd2 { background: #7E57C2; }
+.nd3 { background: #F4511E; }
+.nd4 { background: #FF8F00; }
+.nd5 { background: #1565C0; }
+.nd6 { background: #43A047; }
+.nav-dot.active { transform: scale(1.28); border-color: #fff; outline: 3px solid rgba(0,0,0,0.18); }
+.nav-dot:hover:not(.active) { transform: scale(1.12); }
+
+/* ── Section wrappers ── */
+.section { display: none; max-width: 880px; margin: 0 auto; padding: 22px 16px 70px; animation: fadeUp 0.38s ease; }
+.section.active { display: block; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: translateY(0); } }
+
+.sec-head { display: flex; align-items: center; gap: 14px; margin-bottom: 28px; }
+.sec-badge {
+  width: 56px; height: 56px; border-radius: 16px; flex-shrink: 0;
+  font-family: 'Baloo 2', cursive; font-size: 1.55rem; font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+  color: white; box-shadow: 0 5px 16px rgba(0,0,0,0.22);
+}
+.s1 .sec-badge { background: linear-gradient(135deg,#00897B,#004D40); }
+.s2 .sec-badge { background: linear-gradient(135deg,#7E57C2,#4527A0); }
+.s3 .sec-badge { background: linear-gradient(135deg,#F4511E,#BF360C); }
+.s4 .sec-badge { background: linear-gradient(135deg,#FF8F00,#E65100); }
+.s5 .sec-badge { background: linear-gradient(135deg,#1565C0,#0D47A1); }
+.s6 .sec-badge { background: linear-gradient(135deg,#43A047,#1B5E20); }
+
+.sec-title { font-family: 'Baloo 2', cursive; font-size: clamp(1.35rem,4vw,2rem); font-weight: 800; line-height:1.2; }
+.sec-sub   { font-size: 0.9rem; color: #555; margin-top: 3px; font-weight: 600; }
+
+/* ── Shared result banner ── */
+.result-banner {
+  background: linear-gradient(135deg,#FF8F00,#F57F17);
+  border-radius: 16px; padding: 15px 24px; text-align: center;
+  margin: 22px auto 0; max-width: 400px;
+  font-family: 'Baloo 2', cursive; font-size: 1.35rem; color: white;
+  box-shadow: 0 5px 18px rgba(255,143,0,0.4); display: none;
+}
+.result-banner.show { display: block; animation: pop 0.42s cubic-bezier(.34,1.56,.64,1); }
+@keyframes pop { from { transform: scale(0.65); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+/* ── Nav buttons ── */
+.nav-btns { display: flex; justify-content: center; gap: 14px; margin-top: 32px; flex-wrap: wrap; }
+.nav-btn {
+  padding: 13px 30px; border-radius: 30px; border: none;
+  font-family: 'Baloo 2', cursive; font-size: 1.1rem; font-weight: 700;
+  cursor: pointer; transition: all 0.22s; box-shadow: 0 4px 14px rgba(0,0,0,0.14);
+}
+.btn-next { background: linear-gradient(135deg,#00897B,#004D40); color: white; }
+.btn-prev { background: #ECEFF1; color: #455A64; }
+.nav-btn:hover { transform: translateY(-2px); box-shadow: 0 7px 20px rgba(0,0,0,0.18); }
+
+/* ══════════════════════════════════════════ */
+/*  S1 — Vocabulary                          */
+/* ══════════════════════════════════════════ */
+.vocab-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px;
+}
+.vocab-card {
+  background: white; border-radius: 20px; padding: 22px 16px;
+  text-align: center; box-shadow: var(--shadow);
+  border: 3px solid transparent; cursor: pointer;
+  transition: all 0.25s; position: relative; overflow: hidden;
+}
+.vocab-card::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg,rgba(0,137,123,0.06),rgba(0,137,123,0));
+  pointer-events: none;
+}
+.vocab-card:hover { transform: translateY(-5px); box-shadow: 0 10px 32px rgba(0,0,0,0.14); }
+.vocab-card.playing { border-color: #00897B; background: #E0F2F1; }
+.vocab-card .anim-emoji { font-size: 3.5rem; display: block; margin-bottom: 8px; line-height:1; transition: transform 0.3s; }
+.vocab-card.playing .anim-emoji { animation: bounce 0.5s ease infinite alternate; }
+@keyframes bounce { from { transform: translateY(0) scale(1); } to { transform: translateY(-8px) scale(1.1); } }
+.vocab-card .aword { font-family: 'Baloo 2', cursive; font-size: 1.2rem; font-weight: 800; color: #1A2E1A; }
+.play-btn {
+  display: inline-flex; align-items: center; gap: 5px;
+  margin-top: 10px; padding: 7px 16px; border-radius: 20px;
+  background: linear-gradient(135deg,#26A69A,#00695C);
+  color: white; font-size: 0.83rem; font-weight: 700;
+  border: none; cursor: pointer; font-family: 'Poppins', sans-serif;
+  box-shadow: 0 3px 10px rgba(0,137,123,0.35); transition: all 0.2s;
+}
+.play-btn:hover { transform: scale(1.08); }
+
+/* ══════════════════════════════════════════ */
+/*  S2 — Match                               */
+/* ══════════════════════════════════════════ */
+.match-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.match-col  { display: flex; flex-direction: column; gap: 9px; }
+.match-head {
+  font-family: 'Baloo 2', cursive; font-size: 1.05rem; font-weight: 800;
+  text-align: center; padding: 8px; border-radius: 12px;
+  background: #EDE7F6; color: #4527A0; margin-bottom: 4px;
+}
+.mi {
+  padding: 11px 16px; border-radius: 14px; border: 3px solid #D1C4E9;
+  background: white; font-size: 1rem; font-weight: 700;
+  cursor: pointer; transition: all 0.2s; text-align: center;
+  user-select: none; box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+  min-height: 50px; display: flex; align-items: center; justify-content: center;
+}
+.mi:hover  { border-color: #7E57C2; transform: scale(1.03); }
+.mi.sel    { background: #CE93D8; border-color: #7B1FA2; color: white; }
+.mi.hit    { background: #A5D6A7; border-color: #388E3C; color: #1B5E20; pointer-events: none; }
+.mi.miss   { background: #FFCDD2; border-color: #E53935; animation: wag 0.4s; }
+@keyframes wag { 0%,100%{transform:rotate(0)} 25%{transform:rotate(-5deg)} 75%{transform:rotate(5deg)} }
+.match-score { text-align:center; margin-top:16px; font-family:'Baloo 2',cursive; font-size:1.3rem; color:#4527A0; }
+
+/* ══════════════════════════════════════════ */
+/*  S3 — Animal Actions                      */
+/* ══════════════════════════════════════════ */
+.actions-grid { display: flex; flex-direction: column; gap: 16px; }
+.action-card {
+  background: white; border-radius: 20px; padding: 0; overflow: hidden;
+  box-shadow: var(--shadow); border: 3px solid #FFCCBC; display: flex;
+  align-items: stretch; cursor: pointer; transition: all 0.25s;
+}
+.action-card:hover { transform: translateY(-3px); box-shadow: 0 10px 28px rgba(0,0,0,0.13); }
+.action-strip {
+  width: 72px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 2.2rem;
+}
+.action-body { padding: 16px 18px; flex: 1; }
+.action-cmd  { font-family: 'Baloo 2', cursive; font-size: 1.25rem; font-weight: 800; color: #BF360C; }
+.action-desc { font-size: 0.9rem; color: #777; margin-top: 3px; font-weight: 600; }
+.action-card .try-btn {
+  margin: 0 16px 0 0; align-self: center; flex-shrink: 0;
+  padding: 9px 18px; border-radius: 20px; border: none;
+  background: linear-gradient(135deg,#FF7043,#BF360C);
+  color: white; font-family: 'Baloo 2', cursive; font-size: 1rem; font-weight: 700;
+  cursor: pointer; box-shadow: 0 3px 10px rgba(244,81,30,0.35); transition: all 0.2s;
+}
+.try-btn:hover { transform: scale(1.08); }
+.action-card.doing { border-color: #F4511E; background: #FBE9E7; animation: throb 0.6s ease infinite alternate; }
+@keyframes throb { from{transform:scale(1)} to{transform:scale(1.02)} }
+.action-strip .strip-bg {
+  border-radius: 0; width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center; font-size: 2.4rem;
+}
+.done-stamp {
+  font-size: 0.78rem; font-weight: 700; color: #388E3C;
+  background: #C8E6C9; border-radius: 10px; padding: 3px 10px;
+  display: inline-block; margin-top: 5px;
+}
+
+/* ══════════════════════════════════════════ */
+/*  S4 — Count the Animals                   */
+/* ══════════════════════════════════════════ */
+.count-grid { display: flex; flex-direction: column; gap: 20px; }
+.count-card {
+  background: white; border-radius: 20px; padding: 24px;
+  box-shadow: var(--shadow); border: 3px solid #FFE082;
+}
+.count-emojis { font-size: 2.2rem; letter-spacing: 4px; margin-bottom: 14px; display: block; line-height: 1.4; }
+.count-q { font-family: 'Baloo 2', cursive; font-size: 1.2rem; font-weight: 800; color: #E65100; margin-bottom: 12px; }
+.count-opts { display: flex; gap: 10px; flex-wrap: wrap; }
+.count-opt {
+  padding: 10px 22px; border-radius: 14px; border: 3px solid #FFD54F;
+  background: #FFF8E1; font-family: 'Baloo 2', cursive; font-size: 1.2rem; font-weight: 800;
+  cursor: pointer; transition: all 0.22s; color: #E65100;
+}
+.count-opt:hover { transform: scale(1.08); border-color: #FF8F00; }
+.count-opt.correct { background: #A5D6A7; border-color: #388E3C; color: #1B5E20; }
+.count-opt.wrong   { background: #FFCDD2; border-color: #E53935; color: #B71C1C; animation: wag 0.4s; }
+.count-fb { margin-top: 10px; font-weight: 700; font-size: 1rem; min-height: 22px; }
+
+/* ══════════════════════════════════════════ */
+/*  S5 — Listen and Colour (SVG animals)     */
+/* ══════════════════════════════════════════ */
+.colour-intro {
+  background: #E3F2FD; border-radius: 16px; padding: 14px 20px;
+  font-weight: 700; color: #0D47A1; margin-bottom: 20px; font-size: 0.95rem;
+  border: 2px solid #90CAF9;
+}
+.colour-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 18px; }
+.colour-card {
+  background: white; border-radius: 20px; padding: 16px 12px;
+  box-shadow: var(--shadow); text-align: center; border: 3px solid #BBDEFB;
+  transition: border-color 0.4s;
+}
+.colour-card.coloured { border-color: #1976D2; }
+.svg-animal { width: 120px; height: 120px; display: block; margin: 0 auto 6px; overflow: visible; }
+.svg-animal .body   { fill: #f5f5f5; stroke: #555; stroke-width: 2.5; transition: fill 0.45s ease; }
+.svg-animal .ear    { fill: #f5f5f5; stroke: #555; stroke-width: 2;   transition: fill 0.45s ease; }
+.svg-animal .belly  { fill: #ebebeb; stroke: #888; stroke-width: 1.5; transition: fill 0.45s ease; }
+.svg-animal .fin    { fill: #f5f5f5; stroke: #555; stroke-width: 2;   transition: fill 0.45s ease; }
+.svg-animal .tail   { fill: none;    stroke: #555; stroke-width: 2.5; }
+.svg-animal .eye    { fill: #222; }
+.svg-animal .pupil  { fill: #fff; }
+.svg-animal .nose   { fill: #f9a8b0; stroke: #c97; stroke-width: 1; }
+.svg-animal .mouth  { fill: none; stroke: #555; stroke-width: 1.5; stroke-linecap: round; }
+.svg-animal .stripe { fill: #ddd; stroke: none; opacity: 0.6; transition: fill 0.45s ease; }
+.colour-instr { font-family: 'Baloo 2', cursive; font-size: 1rem; font-weight: 800; color: #0D47A1; margin-bottom: 10px; }
+.colour-palette { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 8px; }
+.col-swatch {
+  width: 34px; height: 34px; border-radius: 50%; border: 3px solid #ccc;
+  cursor: pointer; transition: all 0.2s; box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+}
+.col-swatch:hover { transform: scale(1.2); border-color: #333; }
+.col-swatch.active { border-color: #000; transform: scale(1.22); box-shadow: 0 0 0 3px rgba(0,0,0,0.22); }
+.listen-btn {
+  padding: 8px 18px; border-radius: 20px; border: none;
+  background: linear-gradient(135deg,#42A5F5,#1565C0);
+  color: white; font-family: 'Baloo 2', cursive; font-size: 0.95rem; font-weight: 700;
+  cursor: pointer; box-shadow: 0 3px 10px rgba(21,101,192,0.35); transition: all 0.2s;
+  margin-bottom: 10px; display: block; margin-left: auto; margin-right: auto;
+}
+.listen-btn:hover { transform: scale(1.07); }
+.colour-result { font-size: 0.88rem; font-weight: 700; min-height: 22px; margin-top: 4px; }
+
+/* ══════════════════════════════════════════ */
+/*  S6 — Pet or Wild                         */
+/* ══════════════════════════════════════════ */
+.sort-bank {
+  background: #F1F8E9; border-radius: 18px; padding: 16px;
+  margin-bottom: 20px; box-shadow: inset 0 2px 8px rgba(0,0,0,0.05);
+  border: 2px dashed #AED581;
+}
+.sort-bank-title { font-family:'Baloo 2',cursive; font-size: 1rem; color:#558B2F; text-align:center; margin-bottom: 12px; font-weight:800; }
+.sort-bank-items { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; min-height: 56px; }
+
+.sort-zones { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.sort-zone {
+  background: white; border-radius: 20px; padding: 18px;
+  min-height: 190px; box-shadow: var(--shadow);
+  border: 3px dashed #ccc; transition: all 0.2s;
+}
+.sz-pet  { border-color: #F48FB1; background: #FCE4EC; }
+.sz-wild { border-color: #FFCC80; background: #FFF3E0; }
+.sz-over { background: #FFF9C4; border-style: solid; transform: scale(1.02); }
+.sz-title { font-family:'Baloo 2',cursive; font-size: 1.25rem; font-weight: 800; text-align: center; margin-bottom: 12px; }
+.sz-pet  .sz-title { color: #AD1457; }
+.sz-wild .sz-title { color: #E65100; }
+.sz-items { display: flex; flex-wrap: wrap; gap: 8px; min-height: 60px; }
+
+.sort-chip {
+  background: white; border-radius: 12px; padding: 9px 14px;
+  font-size: 0.92rem; font-weight: 700; box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  cursor: grab; user-select: none; transition: all 0.2s;
+  border: 2px solid transparent; font-family: 'Poppins', sans-serif;
+}
+.sort-chip:hover { transform: scale(1.07); border-color: #ccc; }
+.sort-chip.both { border-color: #66BB6A; background: #F1F8E9; }
+
+.sort-note {
+  background: #E8F5E9; border-radius: 12px; padding: 11px 16px;
+  font-size: 0.85rem; font-weight: 600; color: #2E7D32;
+  margin-bottom: 16px; border: 2px solid #A5D6A7;
+}
+#sortDoneMsg { background: linear-gradient(135deg,#43A047,#1B5E20); }
+
+@media(max-width:540px) {
+  .match-wrap { grid-template-columns: 1fr 1fr; }
+  .sort-zones { grid-template-columns: 1fr; }
+  .vocab-grid { grid-template-columns: repeat(2,1fr); }
+  .colour-grid { grid-template-columns: 1fr 1fr; }
+  .action-card { flex-direction: column; }
+  .action-strip { width: 100%; height: 60px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-paws">🐾🐾🐾🐾🐾🐾</div>
+  <h1>🐾 Animal Adventures!</h1>
+  <p>Learn animals in English 🌍</p>
+  <div class="progress-strip" id="progStrip">
+    <div class="prog-seg done" id="ps0"></div>
+    <div class="prog-seg" id="ps1"></div>
+    <div class="prog-seg" id="ps2"></div>
+    <div class="prog-seg" id="ps3"></div>
+    <div class="prog-seg" id="ps4"></div>
+    <div class="prog-seg" id="ps5"></div>
+  </div>
+</header>
+
+<div class="nav-dots">
+  <button class="nav-dot nd1 active" onclick="goTo(0)">1</button>
+  <button class="nav-dot nd2" onclick="goTo(1)">2</button>
+  <button class="nav-dot nd3" onclick="goTo(2)">3</button>
+  <button class="nav-dot nd4" onclick="goTo(3)">4</button>
+  <button class="nav-dot nd5" onclick="goTo(4)">5</button>
+  <button class="nav-dot nd6" onclick="goTo(5)">6</button>
+</div>
+
+<!-- ══ S1 — Vocabulary ══ -->
+<div class="section s1 active" id="sec0">
+  <div class="sec-head">
+    <div class="sec-badge">1</div>
+    <div>
+      <div class="sec-title">🐶 Learn the Words!</div>
+      <div class="sec-sub">Tap 🔊 to hear each animal's name in British English</div>
+    </div>
+  </div>
+  <div class="vocab-grid" id="vocabGrid"></div>
+  <div class="nav-btns">
+    <button class="nav-btn btn-next" onclick="goTo(1)">Next Exercise ➡️</button>
+  </div>
+</div>
+
+<!-- ══ S2 — Match ══ -->
+<div class="section s2" id="sec1">
+  <div class="sec-head">
+    <div class="sec-badge">2</div>
+    <div>
+      <div class="sec-title">🔗 Match the Words!</div>
+      <div class="sec-sub">Tap a word on the left, then the matching picture on the right</div>
+    </div>
+  </div>
+  <div class="match-wrap">
+    <div class="match-col">
+      <div class="match-head">📝 Words</div>
+      <div id="matchWords"></div>
+    </div>
+    <div class="match-col">
+      <div class="match-head">🖼️ Pictures</div>
+      <div id="matchPics"></div>
+    </div>
+  </div>
+  <div class="match-score" id="matchScore"></div>
+  <div class="result-banner" id="matchResult">🎉 Amazing! All matched!</div>
+  <div class="nav-btns">
+    <button class="nav-btn btn-prev" onclick="goTo(0)">⬅️ Back</button>
+    <button class="nav-btn btn-next" onclick="goTo(2)">Next Exercise ➡️</button>
+  </div>
+</div>
+
+<!-- ══ S3 — Animal Actions ══ -->
+<div class="section s3" id="sec2">
+  <div class="sec-head">
+    <div class="sec-badge">3</div>
+    <div>
+      <div class="sec-title">🕺 Animal Actions!</div>
+      <div class="sec-sub">Read the command, press GO, and do it! 🎉</div>
+    </div>
+  </div>
+  <div class="actions-grid" id="actionsGrid"></div>
+  <div class="result-banner" id="actionResult" style="background:linear-gradient(135deg,#F4511E,#BF360C)">🎊 Brilliant! You did all the actions!</div>
+  <div class="nav-btns">
+    <button class="nav-btn btn-prev" onclick="goTo(1)">⬅️ Back</button>
+    <button class="nav-btn btn-next" onclick="goTo(3)">Next Exercise ➡️</button>
+  </div>
+</div>
+
+<!-- ══ S4 — Count ══ -->
+<div class="section s4" id="sec3">
+  <div class="sec-head">
+    <div class="sec-badge">4</div>
+    <div>
+      <div class="sec-title">🔢 Count the Animals!</div>
+      <div class="sec-sub">Count and tap the right number</div>
+    </div>
+  </div>
+  <div class="count-grid" id="countGrid"></div>
+  <div class="result-banner" id="countResult" style="background:linear-gradient(135deg,#FF8F00,#E65100)"></div>
+  <div class="nav-btns">
+    <button class="nav-btn btn-prev" onclick="goTo(2)">⬅️ Back</button>
+    <button class="nav-btn btn-next" onclick="goTo(4)">Next Exercise ➡️</button>
+  </div>
+</div>
+
+<!-- ══ S5 — Listen and Colour ══ -->
+<div class="section s5" id="sec4">
+  <div class="sec-head">
+    <div class="sec-badge">5</div>
+    <div>
+      <div class="sec-title">🎨 Listen and Colour!</div>
+      <div class="sec-sub">Press 🔊 to hear the instruction, then pick the right colour!</div>
+    </div>
+  </div>
+  <div class="colour-intro">
+    💡 Press the <strong>🔊 Listen</strong> button, hear the colour, then tap it in the palette below the animal!
+  </div>
+  <div class="colour-grid" id="colourGrid"></div>
+  <div class="result-banner" id="colourResult" style="background:linear-gradient(135deg,#1565C0,#0D47A1)"></div>
+  <div class="nav-btns">
+    <button class="nav-btn btn-prev" onclick="goTo(3)">⬅️ Back</button>
+    <button class="nav-btn btn-next" onclick="goTo(5)">Next Exercise ➡️</button>
+  </div>
+</div>
+
+<!-- ══ S6 — Pet or Wild ══ -->
+<div class="section s6" id="sec5">
+  <div class="sec-head">
+    <div class="sec-badge">6</div>
+    <div>
+      <div class="sec-title">🐕 Pet or Wild? 🦁</div>
+      <div class="sec-sub">Drag each animal into the right group!</div>
+    </div>
+  </div>
+  <div class="sort-note">
+    💡 <strong>a snake 🐍, a mouse 🐭, a fish 🐠</strong> — these can go in <em>either</em> box!
+  </div>
+  <div class="sort-bank">
+    <div class="sort-bank-title">🧺 Animals to sort:</div>
+    <div class="sort-bank-items" id="sortBank"></div>
+  </div>
+  <div class="sort-zones">
+    <div class="sort-zone sz-pet" id="zonePet"
+         ondragover="allowDrop(event)" ondrop="dropChip(event,'pet')"
+         ondragenter="this.classList.add('sz-over')" ondragleave="this.classList.remove('sz-over')">
+      <div class="sz-title">🏠 PETS</div>
+      <div class="sz-items" id="zonePetItems"></div>
+    </div>
+    <div class="sort-zone sz-wild" id="zoneWild"
+         ondragover="allowDrop(event)" ondrop="dropChip(event,'wild')"
+         ondragenter="this.classList.add('sz-over')" ondragleave="this.classList.remove('sz-over')">
+      <div class="sz-title">🌿 WILD ANIMALS</div>
+      <div class="sz-items" id="zoneWildItems"></div>
+    </div>
+  </div>
+  <div class="result-banner" id="sortDoneMsg" style="display:none;">
+    🎉 Great job! You sorted all the animals!
+  </div>
+  <div class="nav-btns">
+    <button class="nav-btn btn-prev" onclick="goTo(4)">⬅️ Back</button>
+    <button class="nav-btn btn-next" onclick="goTo(0)" style="background:linear-gradient(135deg,#00897B,#004D40)">🔁 Start Again!</button>
+  </div>
+</div>
+
+<script>
+/* ─── Data ─── */
+const animals = [
+  { word:'dog',    article:'a',  emoji:'🐶' },
+  { word:'cat',    article:'a',  emoji:'🐱' },
+  { word:'parrot', article:'a',  emoji:'🦜' },
+  { word:'fish',   article:'a',  emoji:'🐠' },
+  { word:'snake',  article:'a',  emoji:'🐍' },
+  { word:'mouse',  article:'a',  emoji:'🐭' },
+];
+
+/* ─── TTS ─── */
+function speak(text, onDone) {
+  if (!('speechSynthesis' in window)) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'en-GB'; u.rate = 0.8; u.pitch = 1.1;
+  const voices = speechSynthesis.getVoices();
+  const brit = voices.find(v =>
+    ['en-GB','en_GB'].includes(v.lang) ||
+    ['Daniel','Kate','Serena','Oliver','Arthur','en-GB'].some(n => v.name.includes(n))
+  );
+  if (brit) u.voice = brit;
+  if (onDone) u.onend = onDone;
+  speechSynthesis.speak(u);
+}
+if ('speechSynthesis' in window) {
+  speechSynthesis.getVoices();
+  speechSynthesis.onvoiceschanged = () => speechSynthesis.getVoices();
+}
+
+/* ─── Navigation ─── */
+function goTo(idx) {
+  document.querySelectorAll('.section').forEach((s,i) => s.classList.toggle('active', i===idx));
+  document.querySelectorAll('.nav-dot').forEach((d,i) => d.classList.toggle('active', i===idx));
+  for(let i=0;i<6;i++) document.getElementById('ps'+i).classList.toggle('done', i<=idx);
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+/* ══════════════════════════════════════════ */
+/*  S1 — Vocabulary                          */
+/* ══════════════════════════════════════════ */
+(function(){
+  const g = document.getElementById('vocabGrid');
+  animals.forEach(a => {
+    const full = a.article+' '+a.word;
+    const id = 'vc_'+a.word;
+    const c = document.createElement('div');
+    c.className = 'vocab-card'; c.id = id;
+    c.innerHTML = `
+      <span class="anim-emoji">${a.emoji}</span>
+      <div class="aword">${full}</div>
+      <button class="play-btn" onclick="speakVocab('${full}','${id}')">🔊 Listen</button>`;
+    g.appendChild(c);
+  });
+})();
+
+function speakVocab(text, id) {
+  const card = document.getElementById(id);
+  card.classList.add('playing');
+  speak(text, () => card.classList.remove('playing'));
+}
+
+/* ══════════════════════════════════════════ */
+/*  S2 — Match                               */
+/* ══════════════════════════════════════════ */
+let mSel = {w:null, p:null}, mCount = 0;
+(function(){
+  const sw = [...animals].sort(()=>Math.random()-.5);
+  const sp = [...animals].sort(()=>Math.random()-.5);
+  const wc = document.getElementById('matchWords');
+  const pc = document.getElementById('matchPics');
+  sw.forEach(a=>{
+    const el = document.createElement('div');
+    el.className='mi'; el.dataset.k=a.word;
+    el.textContent=a.article+' '+a.word;
+    el.onclick=()=>pickMatch(el,'w');
+    wc.appendChild(el);
+  });
+  sp.forEach(a=>{
+    const el = document.createElement('div');
+    el.className='mi'; el.dataset.k=a.word;
+    el.textContent=a.emoji; el.style.fontSize='1.9rem';
+    el.onclick=()=>pickMatch(el,'p');
+    pc.appendChild(el);
+  });
+  document.getElementById('matchScore').textContent=`0 / ${animals.length} matched`;
+})();
+
+function pickMatch(el, side) {
+  if(el.classList.contains('hit')) return;
+  document.querySelectorAll('.mi.sel').forEach(s=>{
+    const inWords = s.closest('#matchWords');
+    if(side==='w' && inWords) s.classList.remove('sel');
+    if(side==='p' && !inWords) s.classList.remove('sel');
+  });
+  el.classList.add('sel');
+  mSel[side] = el;
+  if(mSel.w && mSel.p){
+    const ok = mSel.w.dataset.k === mSel.p.dataset.k;
+    [mSel.w, mSel.p].forEach(e=>{ e.classList.remove('sel'); e.classList.add(ok?'hit':'miss'); });
+    if(ok){
+      mCount++;
+      document.getElementById('matchScore').textContent=`${mCount} / ${animals.length} matched`;
+      if(mCount===animals.length) document.getElementById('matchResult').classList.add('show');
+      mSel={w:null,p:null};
+    } else {
+      setTimeout(()=>{ [mSel.w,mSel.p].forEach(e=>e.classList.remove('miss')); mSel={w:null,p:null}; }, 800);
+    }
+  }
+}
+
+/* ══════════════════════════════════════════ */
+/*  S3 — Animal Actions                      */
+/* ══════════════════════════════════════════ */
+const actions = [
+  { emoji:'🐰', cmd:'Jump like a rabbit!',       desc:'Hop hop hop! Jump up and down!',           tts:'Jump like a rabbit!', secs:5  },
+  { emoji:'🐘', cmd:'Walk like an elephant!',    desc:'Move slow and heavy, swing your arms!',    tts:'Walk like an elephant!', secs:6 },
+  { emoji:'🐦', cmd:'Fly like a bird!',          desc:'Spread your arms and flap them!',          tts:'Fly like a bird!', secs:5    },
+  { emoji:'🐍', cmd:'Slither like a snake!',     desc:'Wiggle your body side to side!',           tts:'Slither like a snake!', secs:6 },
+  { emoji:'🐟', cmd:'Swim like a fish!',         desc:'Wave your hands and move like you swim!',  tts:'Swim like a fish!', secs:5   },
+  { emoji:'🐱', cmd:'Stretch like a cat!',       desc:'Stretch your arms high up and yawn!',      tts:'Stretch like a cat!', secs:5  },
+];
+let actionDone = 0;
+(function(){
+  const g = document.getElementById('actionsGrid');
+  actions.forEach((a,i)=>{
+    const colors = ['#FF8A65','#7E57C2','#29B6F6','#66BB6A','#FFA726','#EC407A'];
+    const card = document.createElement('div');
+    card.className='action-card'; card.id='ac'+i;
+    card.innerHTML=`
+      <div class="action-strip"><div class="strip-bg" style="background:${colors[i]}22">${a.emoji}</div></div>
+      <div class="action-body">
+        <div class="action-cmd">${a.cmd}</div>
+        <div class="action-desc">${a.desc}</div>
+        <div id="adone${i}"></div>
+      </div>
+      <button class="try-btn" id="abtn${i}" onclick="doAction(${i})">GO! 🎯</button>`;
+    g.appendChild(card);
+  });
+})();
+
+function doAction(i) {
+  const card = document.getElementById('ac'+i);
+  const btn  = document.getElementById('abtn'+i);
+  const done = document.getElementById('adone'+i);
+  if(card.dataset.did) return;
+  card.classList.add('doing');
+  btn.disabled = true; btn.textContent = '⏳';
+  speak(actions[i].tts);
+  setTimeout(()=>{
+    card.classList.remove('doing');
+    card.dataset.did = '1';
+    done.innerHTML = '<span class="done-stamp">✅ Done!</span>';
+    btn.textContent = '✅'; btn.style.background = '#A5D6A7'; btn.style.color = '#1B5E20';
+    actionDone++;
+    if(actionDone===actions.length) document.getElementById('actionResult').classList.add('show');
+  }, actions[i].secs * 1000);
+}
+
+/* ══════════════════════════════════════════ */
+/*  S4 — Count the Animals                   */
+/* ══════════════════════════════════════════ */
+const countQs = [
+  { animal:animals[0], count:3, wrong:[1,4,2]  },
+  { animal:animals[1], count:5, wrong:[3,7,2]  },
+  { animal:animals[2], count:2, wrong:[4,1,6]  },
+  { animal:animals[3], count:6, wrong:[3,8,4]  },
+  { animal:animals[4], count:4, wrong:[2,6,5]  },
+  { animal:animals[5], count:7, wrong:[4,3,9]  },
+];
+let countScore=0;
+(function(){
+  const g = document.getElementById('countGrid');
+  countQs.forEach((q,i)=>{
+    const emos = q.animal.emoji.repeat(q.count);
+    const opts = [q.count,...q.wrong.slice(0,3)].sort(()=>Math.random()-.5);
+    const card = document.createElement('div');
+    card.className='count-card';
+    card.innerHTML=`
+      <span class="count-emojis">${emos}</span>
+      <div class="count-q">How many ${q.animal.word}s?</div>
+      <div class="count-opts" id="copts${i}">
+        ${opts.map(o=>`<button class="count-opt" onclick="pickCount(this,${i},${o},${q.count})">${o}</button>`).join('')}
+      </div>
+      <div class="count-fb" id="cfb${i}"></div>`;
+    g.appendChild(card);
+  });
+})();
+
+function pickCount(btn,i,chosen,correct){
+  const row = document.getElementById('copts'+i);
+  if(row.dataset.done) return;
+  row.dataset.done='1';
+  const ok = chosen===correct;
+  btn.classList.add(ok?'correct':'wrong');
+  document.getElementById('cfb'+i).textContent = ok ? '🌟 Yes! '+correct+'!' : '😊 Not quite! It\'s '+correct+'!';
+  document.getElementById('cfb'+i).style.color = ok?'#2E7D32':'#C62828';
+  if(ok) countScore++;
+  const allDone = document.querySelectorAll('#countGrid .count-opts[data-done]').length;
+  if(allDone===countQs.length){
+    const r=document.getElementById('countResult');
+    r.textContent = countScore===countQs.length ? '🏆 Perfect! All correct!' : `You got ${countScore}/${countQs.length}! Well done! 💪`;
+    r.classList.add('show');
+  }
+}
+
+/* ══════════════════════════════════════════ */
+/*  S5 — Listen and Colour (SVG animals)     */
+/* ══════════════════════════════════════════ */
+
+// SVG markup for each animal — all shapes use class="body"/"ear"/"belly"/etc.
+// so we can recolour them by setting fill on those classes via JS.
+const animalSVGs = {
+  cat: `<svg class="svg-animal" id="svg-cat" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+    <!-- ears -->
+    <polygon class="ear" points="22,48 10,18 38,36"/>
+    <polygon class="ear" points="98,48 110,18 82,36"/>
+    <!-- head -->
+    <ellipse class="body" cx="60" cy="62" rx="38" ry="36"/>
+    <!-- inner ear -->
+    <polygon class="belly" points="25,45 16,25 36,37"/>
+    <polygon class="belly" points="95,45 104,25 84,37"/>
+    <!-- eyes -->
+    <ellipse class="eye" cx="46" cy="58" rx="6" ry="7"/>
+    <ellipse class="eye" cx="74" cy="58" rx="6" ry="7"/>
+    <ellipse class="pupil" cx="47" cy="57" rx="2" ry="3"/>
+    <ellipse class="pupil" cx="75" cy="57" rx="2" ry="3"/>
+    <!-- nose -->
+    <ellipse class="nose" cx="60" cy="70" rx="5" ry="3.5"/>
+    <!-- mouth -->
+    <path class="mouth" d="M55,73 Q60,78 65,73"/>
+    <!-- whiskers -->
+    <line stroke="#999" stroke-width="1.2" x1="20" y1="68" x2="50" y2="70"/>
+    <line stroke="#999" stroke-width="1.2" x1="20" y1="74" x2="50" y2="73"/>
+    <line stroke="#999" stroke-width="1.2" x1="100" y1="68" x2="70" y2="70"/>
+    <line stroke="#999" stroke-width="1.2" x1="100" y1="74" x2="70" y2="73"/>
+    <!-- body -->
+    <ellipse class="body" cx="60" cy="100" rx="30" ry="20"/>
+  </svg>`,
+
+  fish: `<svg class="svg-animal" id="svg-fish" viewBox="0 0 120 80" xmlns="http://www.w3.org/2000/svg">
+    <!-- tail -->
+    <polygon class="fin" points="10,20 10,60 32,40"/>
+    <!-- body -->
+    <ellipse class="body" cx="72" cy="40" rx="42" ry="28"/>
+    <!-- top fin -->
+    <path class="fin" d="M55,14 Q72,4 88,14 Q72,20 55,14Z"/>
+    <!-- belly highlight -->
+    <ellipse class="belly" cx="72" cy="46" rx="28" ry="14"/>
+    <!-- eye -->
+    <circle class="eye" cx="96" cy="35" r="7"/>
+    <circle class="pupil" cx="98" cy="34" r="2.5"/>
+    <!-- scales -->
+    <path class="mouth" d="M60,28 Q72,24 84,28"/>
+    <path class="mouth" d="M54,35 Q66,30 78,35"/>
+    <!-- mouth -->
+    <path class="mouth" d="M112,40 Q116,44 112,48"/>
+  </svg>`,
+
+  dog: `<svg class="svg-animal" id="svg-dog" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+    <!-- floppy ears -->
+    <ellipse class="ear" cx="28" cy="54" rx="14" ry="22" transform="rotate(-15,28,54)"/>
+    <ellipse class="ear" cx="92" cy="54" rx="14" ry="22" transform="rotate(15,92,54)"/>
+    <!-- head -->
+    <ellipse class="body" cx="60" cy="58" rx="38" ry="36"/>
+    <!-- snout -->
+    <ellipse class="belly" cx="60" cy="74" rx="18" ry="13"/>
+    <!-- eyes -->
+    <circle class="eye" cx="46" cy="52" r="6"/>
+    <circle class="eye" cx="74" cy="52" r="6"/>
+    <circle class="pupil" cx="47.5" cy="51" r="2.2"/>
+    <circle class="pupil" cx="75.5" cy="51" r="2.2"/>
+    <!-- nose -->
+    <ellipse class="nose" cx="60" cy="69" rx="6" ry="4"/>
+    <!-- mouth -->
+    <path class="mouth" d="M52,75 Q60,82 68,75"/>
+    <!-- body -->
+    <ellipse class="body" cx="60" cy="104" rx="32" ry="18"/>
+    <!-- tail -->
+    <path class="tail" d="M90,100 Q110,86 108,72" stroke-linecap="round"/>
+  </svg>`,
+
+  snake: `<svg class="svg-animal" id="svg-snake" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg">
+    <!-- snake body coil -->
+    <path class="body" d="M10,70 Q30,30 60,50 Q90,70 100,40 Q110,20 95,15 Q80,10 75,25"
+          fill="none" stroke="#555" stroke-width="18" stroke-linecap="round"/>
+    <path class="body" d="M10,70 Q30,30 60,50 Q90,70 100,40 Q110,20 95,15 Q80,10 75,25"
+          fill="none" stroke="#f5f5f5" stroke-width="14" stroke-linecap="round" class="body-inner"/>
+    <!-- stripe pattern -->
+    <path class="stripe" d="M10,70 Q30,30 60,50 Q90,70 100,40 Q110,20 95,15 Q80,10 75,25"
+          fill="none" stroke-width="5" stroke-linecap="round" stroke-dasharray="12,10"/>
+    <!-- head -->
+    <ellipse class="body" cx="75" cy="25" rx="16" ry="11" transform="rotate(-20,75,25)"/>
+    <!-- eye -->
+    <ellipse class="eye" cx="83" cy="19" rx="4" ry="4"/>
+    <circle class="pupil" cx="84" cy="19" r="1.5"/>
+    <!-- tongue -->
+    <path fill="none" stroke="#e53935" stroke-width="1.5" d="M89,25 L96,22 M96,22 L99,19 M96,22 L99,25"/>
+  </svg>`,
+
+  mouse: `<svg class="svg-animal" id="svg-mouse" viewBox="0 0 120 110" xmlns="http://www.w3.org/2000/svg">
+    <!-- ears -->
+    <circle class="ear" cx="36" cy="36" r="18"/>
+    <circle class="ear" cx="84" cy="36" r="18"/>
+    <circle class="belly" cx="36" cy="36" r="11"/>
+    <circle class="belly" cx="84" cy="36" r="11"/>
+    <!-- body -->
+    <ellipse class="body" cx="60" cy="76" rx="36" ry="30"/>
+    <!-- head -->
+    <ellipse class="body" cx="60" cy="52" rx="30" ry="26"/>
+    <!-- belly -->
+    <ellipse class="belly" cx="60" cy="82" rx="22" ry="18"/>
+    <!-- eyes -->
+    <circle class="eye" cx="48" cy="48" r="5.5"/>
+    <circle class="eye" cx="72" cy="48" r="5.5"/>
+    <circle class="pupil" cx="49" cy="47" r="2"/>
+    <circle class="pupil" cx="73" cy="47" r="2"/>
+    <!-- nose -->
+    <ellipse class="nose" cx="60" cy="62" rx="4.5" ry="3"/>
+    <!-- mouth -->
+    <path class="mouth" d="M54,65 Q60,70 66,65"/>
+    <!-- whiskers -->
+    <line stroke="#bbb" stroke-width="1" x1="18" y1="60" x2="48" y2="63"/>
+    <line stroke="#bbb" stroke-width="1" x1="18" y1="66" x2="48" y2="65"/>
+    <line stroke="#bbb" stroke-width="1" x1="102" y1="60" x2="72" y2="63"/>
+    <line stroke="#bbb" stroke-width="1" x1="102" y1="66" x2="72" y2="65"/>
+    <!-- tail -->
+    <path class="tail" d="M94,90 Q112,96 110,106" stroke-linecap="round"/>
+  </svg>`
+};
+
+const colourTasks = [
+  { key:'cat',   instr:'Colour the cat black.',    tts:'Colour the cat black.',    correct:'#212121', correctName:'black',
+    pal:['#212121','#F44336','#2196F3','#FFEB3B','#9E9E9E','#795548'] },
+  { key:'fish',  instr:'Colour the fish blue.',    tts:'Colour the fish blue.',    correct:'#2196F3', correctName:'blue',
+    pal:['#2196F3','#F44336','#212121','#4CAF50','#FFEB3B','#9E9E9E'] },
+  { key:'dog',   instr:'Colour the dog brown.',    tts:'Colour the dog brown.',    correct:'#795548', correctName:'brown',
+    pal:['#795548','#212121','#F44336','#2196F3','#FFEB3B','#9E9E9E'] },
+  { key:'snake', instr:'Colour the snake yellow.', tts:'Colour the snake yellow.', correct:'#FFEB3B', correctName:'yellow',
+    pal:['#FFEB3B','#F44336','#2196F3','#4CAF50','#212121','#9E9E9E'] },
+  { key:'mouse', instr:'Colour the mouse grey.',   tts:'Colour the mouse grey.',   correct:'#9E9E9E', correctName:'grey',
+    pal:['#9E9E9E','#F44336','#2196F3','#4CAF50','#FFEB3B','#212121'] },
+];
+const colorNames = {
+  '#212121':'black','#F44336':'red','#2196F3':'blue','#4CAF50':'green',
+  '#FFEB3B':'yellow','#9E9E9E':'grey','#795548':'brown'
+};
+let colourScore = 0;
+
+(function(){
+  const g = document.getElementById('colourGrid');
+  colourTasks.forEach((t,i)=>{
+    const swatches = t.pal.map(c=>
+      `<div class="col-swatch" style="background:${c};${c==='#FFEB3B'?'border-color:#ccc':''}"
+            onclick="pickColour(${i},'${c}',this)" title="${colorNames[c]||c}"></div>`
+    ).join('');
+    const card = document.createElement('div');
+    card.className = 'colour-card'; card.id = 'cc'+i;
+    card.innerHTML = `
+      <button class="listen-btn" onclick="listenColour(${i})">🔊 Listen</button>
+      <div id="svg-wrap-${i}">${animalSVGs[t.key]}</div>
+      <div class="colour-instr">${t.instr}</div>
+      <div class="colour-palette">${swatches}</div>
+      <div class="colour-result" id="cr${i}"></div>`;
+    g.appendChild(card);
+  });
+})();
+
+function listenColour(i){ speak(colourTasks[i].tts); }
+
+function paintAnimal(idx, colour) {
+  const wrap = document.getElementById('svg-wrap-'+idx);
+  if (!wrap) return;
+  const svg = wrap.querySelector('svg');
+  if (!svg) return;
+  // Paint all "body" and "ear" elements with the chosen colour
+  svg.querySelectorAll('.body, .ear, .body-inner').forEach(el => {
+    el.style.fill = colour;
+    // if it's a path with stroke-based body (snake), also paint stroke
+    if (el.getAttribute('fill') === 'none' || el.style.fill === 'none') {
+      el.style.stroke = colour;
+    }
+  });
+  // belly / inner ear: lighter shade — mix colour with white at 60%
+  svg.querySelectorAll('.belly').forEach(el => {
+    el.style.fill = mixWithWhite(colour, 0.5);
+  });
+  // stripe for snake: slightly darker
+  svg.querySelectorAll('.stripe').forEach(el => {
+    el.style.stroke = mixWithWhite(colour, -0.25);
+  });
+}
+
+function mixWithWhite(hex, amount) {
+  // amount > 0 = lighter, amount < 0 = darker
+  let r = parseInt(hex.slice(1,3),16);
+  let g = parseInt(hex.slice(3,5),16);
+  let b = parseInt(hex.slice(5,7),16);
+  if (amount > 0) {
+    r = Math.round(r + (255-r)*amount);
+    g = Math.round(g + (255-g)*amount);
+    b = Math.round(b + (255-b)*amount);
+  } else {
+    r = Math.round(r * (1+amount));
+    g = Math.round(g * (1+amount));
+    b = Math.round(b * (1+amount));
+  }
+  return `rgb(${r},${g},${b})`;
+}
+
+function pickColour(i, chosen, sw) {
+  const card = document.getElementById('cc'+i);
+  if (card.dataset.done) return;
+  const correct = colourTasks[i].correct;
+  card.querySelectorAll('.col-swatch').forEach(s=>s.classList.remove('active'));
+  sw.classList.add('active');
+  // Always paint the animal immediately so kids see the colour
+  paintAnimal(i, chosen);
+  const fb = document.getElementById('cr'+i);
+  const ok = chosen === correct;
+  if (ok) {
+    card.dataset.done = '1';
+    card.classList.add('coloured');
+    card.style.borderColor = correct;
+    fb.innerHTML = `✅ <strong>${colorNames[correct]}</strong>! Correct! 🎉`;
+    fb.style.color = '#2E7D32';
+    colourScore++;
+    const doneCnt = document.querySelectorAll('.colour-card[data-done]').length;
+    if (doneCnt === colourTasks.length) {
+      const r = document.getElementById('colourResult');
+      r.textContent = '🌟 Excellent! All coloured correctly!';
+      r.classList.add('show');
+    }
+  } else {
+    fb.textContent = '😊 Try again! Listen again!';
+    fb.style.color = '#C62828';
+    // After 1s, reset to white
+    setTimeout(()=>{
+      if (!card.dataset.done) {
+        paintAnimal(i, '#f5f5f5');
+        fb.textContent = '';
+        card.querySelectorAll('.col-swatch').forEach(s=>s.classList.remove('active'));
+      }
+    }, 1000);
+  }
+}
+
+/* ══════════════════════════════════════════ */
+/*  S6 — Pet or Wild                         */
+/* ══════════════════════════════════════════ */
+// pet only: dog, cat, parrot
+// wild only: lion, tiger, etc (we add extra wild animals to the mix)
+// both: snake, mouse, fish
+const extraWild = [
+  { word:'lion',   article:'a',  emoji:'🦁', zone:'wild' },
+  { word:'tiger',  article:'a',  emoji:'🐯', zone:'wild' },
+  { word:'elephant',article:'an',emoji:'🐘', zone:'wild' },
+  { word:'bear',   article:'a',  emoji:'🐻', zone:'wild' },
+];
+const sortAnimals = [
+  { word:'dog',    article:'a',  emoji:'🐶', zone:'pet'  },
+  { word:'cat',    article:'a',  emoji:'🐱', zone:'pet'  },
+  { word:'parrot', article:'a',  emoji:'🦜', zone:'pet'  },
+  { word:'fish',   article:'a',  emoji:'🐠', zone:'both' },
+  { word:'snake',  article:'a',  emoji:'🐍', zone:'both' },
+  { word:'mouse',  article:'a',  emoji:'🐭', zone:'both' },
+  ...extraWild,
+].sort(()=>Math.random()-.5);
+
+let sortDragWord = null, sortTouchEl = null, sortTouchClone = null;
+
+(function(){
+  const bank = document.getElementById('sortBank');
+  sortAnimals.forEach(a => {
+    const chip = makeChip(a);
+    bank.appendChild(chip);
+  });
+})();
+
+function makeChip(a){
+  const chip = document.createElement('div');
+  chip.className = 'sort-chip' + (a.zone==='both'?' both':'');
+  chip.draggable = true; chip.dataset.word = a.word; chip.dataset.zone = a.zone;
+  chip.textContent = a.emoji+' '+a.article+' '+a.word;
+  chip.addEventListener('dragstart', e=>{
+    sortDragWord = a.word;
+    e.dataTransfer.setData('text', a.word);
+  });
+  chip.addEventListener('touchstart', tStart, {passive:true});
+  chip.addEventListener('touchmove',  tMove,  {passive:false});
+  chip.addEventListener('touchend',   tEnd);
+  return chip;
+}
+
+function allowDrop(e){ e.preventDefault(); }
+function dropChip(e, zone){
+  e.preventDefault();
+  e.currentTarget.classList.remove('sz-over');
+  const word = e.dataTransfer.getData('text') || sortDragWord;
+  placeChip(word, zone);
+}
+function placeChip(word, chosenZone){
+  const chip = [...document.querySelectorAll('.sort-chip')].find(c=>c.dataset.word===word);
+  if(!chip) return;
+  const aData = sortAnimals.find(a=>a.word===word);
+  const target = document.getElementById(chosenZone==='pet'?'zonePetItems':'zoneWildItems');
+  // validation: pet-only can't go wild, wild-only can't go pet; both can go anywhere
+  if(aData.zone==='pet' && chosenZone==='wild'){
+    chip.style.animation='wag 0.4s';
+    setTimeout(()=>chip.style.animation='',500);
+    return;
+  }
+  if(aData.zone==='wild' && chosenZone==='pet'){
+    chip.style.animation='wag 0.4s';
+    setTimeout(()=>chip.style.animation='',500);
+    return;
+  }
+  target.appendChild(chip);
+  checkSortDone();
+}
+function checkSortDone(){
+  const bankLeft = document.getElementById('sortBank').children.length;
+  if(bankLeft===0){
+    const msg = document.getElementById('sortDoneMsg');
+    msg.style.display='block'; msg.classList.add('show');
+  }
+}
+
+// Touch
+function tStart(e){
+  sortTouchEl = e.currentTarget;
+  const t=e.touches[0];
+  sortTouchClone = sortTouchEl.cloneNode(true);
+  sortTouchClone.style.cssText=`position:fixed;opacity:.85;pointer-events:none;z-index:9999;
+    left:${t.clientX-50}px;top:${t.clientY-18}px;font-size:.9rem;padding:8px 14px;
+    background:white;border-radius:12px;box-shadow:0 4px 16px rgba(0,0,0,.3);`;
+  document.body.appendChild(sortTouchClone);
+}
+function tMove(e){
+  if(!sortTouchClone) return;
+  e.preventDefault();
+  const t=e.touches[0];
+  sortTouchClone.style.left=(t.clientX-50)+'px';
+  sortTouchClone.style.top=(t.clientY-18)+'px';
+}
+function tEnd(e){
+  if(!sortTouchClone) return;
+  const t=e.changedTouches[0];
+  sortTouchClone.remove(); sortTouchClone=null;
+  const under = document.elementFromPoint(t.clientX, t.clientY);
+  const zone = under?.closest('.sort-zone');
+  if(zone) placeChip(sortTouchEl.dataset.word, zone.id==='zonePet'?'pet':'wild');
+  sortTouchEl=null;
+}
+</script>
+</body>
+</html>

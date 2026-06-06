@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Opposites! 🔄 English Fun</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0F1B2D;
+  --card: #1A2D45;
+  --card2: #162438;
+  --accent1: #FF6B35;
+  --accent2: #FFD23F;
+  --accent3: #06D6A0;
+  --accent4: #EF476F;
+  --accent5: #118AB2;
+  --text: #F0F4FF;
+  --muted: #8BA3BE;
+  --radius: 20px;
+  --glow: 0 0 30px rgba(255,107,53,0.25);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* starfield */
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0;
+  background-image:
+    radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at 30% 60%, rgba(255,255,255,0.35) 0%, transparent 100%),
+    radial-gradient(1px 1px at 55% 10%, rgba(255,255,255,0.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 75% 40%, rgba(255,255,255,0.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 90% 80%, rgba(255,255,255,0.45) 0%, transparent 100%),
+    radial-gradient(1px 1px at 20% 85%, rgba(255,255,255,0.35) 0%, transparent 100%),
+    radial-gradient(1px 1px at 65% 70%, rgba(255,255,255,0.4) 0%, transparent 100%);
+  pointer-events: none;
+}
+
+/* ── HEADER ── */
+header {
+  position: relative; z-index: 1;
+  text-align: center;
+  padding: 44px 20px 32px;
+  background: linear-gradient(180deg, #0A1628 0%, transparent 100%);
+}
+.header-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--accent1), var(--accent2));
+  color: #1A1A1A;
+  font-family: 'Fredoka One', cursive;
+  font-size: 0.85rem;
+  letter-spacing: 2px;
+  padding: 4px 16px;
+  border-radius: 50px;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+}
+header h1 {
+  font-family: 'Fredoka One', cursive;
+  font-size: clamp(2.4rem, 7vw, 4.2rem);
+  background: linear-gradient(135deg, var(--accent2) 0%, var(--accent1) 50%, var(--accent4) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1.1; margin-bottom: 8px;
+}
+header p { color: var(--muted); font-size: 1.05rem; font-weight: 700; }
+
+/* ── NAV ── */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(15,27,45,0.9);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  display: flex; justify-content: center; flex-wrap: wrap;
+  gap: 6px; padding: 12px 16px;
+}
+nav a {
+  padding: 6px 14px; border-radius: 50px;
+  font-size: 0.82rem; font-weight: 800;
+  text-decoration: none; color: var(--muted);
+  border: 1.5px solid rgba(255,255,255,0.1);
+  transition: all .2s;
+}
+nav a:hover {
+  color: var(--text); border-color: var(--accent1);
+  background: rgba(255,107,53,0.15);
+  transform: translateY(-2px);
+}
+
+/* ── MAIN ── */
+main {
+  position: relative; z-index: 1;
+  max-width: 880px; margin: 0 auto; padding: 30px 16px 70px;
+}
+
+/* ── SECTION ── */
+.section {
+  background: var(--card);
+  border-radius: var(--radius);
+  border: 1px solid rgba(255,255,255,0.07);
+  padding: 28px 24px;
+  margin-bottom: 36px;
+  position: relative;
+  overflow: hidden;
+  animation: fadeUp .5s ease both;
+}
+.section::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 4px;
+  border-radius: var(--radius) var(--radius) 0 0;
+}
+.section:nth-child(1)::before { background: linear-gradient(90deg, var(--accent2), var(--accent1)); }
+.section:nth-child(2)::before { background: linear-gradient(90deg, var(--accent3), var(--accent5)); }
+.section:nth-child(3)::before { background: linear-gradient(90deg, var(--accent4), var(--accent1)); }
+.section:nth-child(4)::before { background: linear-gradient(90deg, var(--accent2), var(--accent3)); }
+.section:nth-child(5)::before { background: linear-gradient(90deg, var(--accent5), var(--accent4)); }
+.section:nth-child(6)::before { background: linear-gradient(90deg, var(--accent1), var(--accent4)); }
+
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(28px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+
+.section-num {
+  font-size: 0.7rem; font-weight: 900; letter-spacing: 3px;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 4px;
+}
+.section-title {
+  font-family: 'Fredoka One', cursive;
+  font-size: clamp(1.3rem, 4vw, 1.9rem);
+  color: var(--text); margin-bottom: 6px;
+}
+.section-sub {
+  color: var(--muted); font-size: 0.92rem; font-weight: 700;
+  margin-bottom: 20px;
+}
+
+/* ── EX 1: WORD CARDS ── */
+.word-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 12px;
+}
+.word-card {
+  background: var(--card2);
+  border: 2px solid rgba(255,255,255,0.1);
+  border-radius: 16px;
+  padding: 16px 8px 12px;
+  text-align: center;
+  cursor: pointer;
+  transition: all .2s;
+  user-select: none;
+}
+.word-card:hover { transform: translateY(-4px) scale(1.04); border-color: var(--accent2); box-shadow: 0 8px 24px rgba(255,210,63,0.2); }
+.word-card.playing { animation: bounce .4s ease; border-color: var(--accent1); }
+@keyframes bounce { 0%,100%{transform:scale(1)} 50%{transform:scale(1.14)} }
+.word-card .wc-icon { font-size: 2.4rem; display: block; margin-bottom: 8px; }
+.word-card .wc-label { font-size: 0.9rem; font-weight: 900; color: var(--text); }
+.word-card .wc-play {
+  display: inline-block; margin-top: 7px;
+  background: rgba(255,107,53,0.2); color: var(--accent1);
+  border-radius: 50px; padding: 3px 10px;
+  font-size: 0.72rem; font-weight: 800;
+}
+
+/* ── EX 2: MATCH OPPOSITES ── */
+.opp-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px 10px;
+}
+.opp-col { display: flex; flex-direction: column; gap: 10px; }
+.opp-item {
+  padding: 12px 18px;
+  border-radius: 14px;
+  font-size: 1rem; font-weight: 900;
+  cursor: pointer;
+  border: 2.5px solid rgba(255,255,255,0.1);
+  background: var(--card2);
+  transition: all .2s;
+  text-align: center;
+  user-select: none;
+  color: var(--text);
+}
+.opp-item:hover { transform: scale(1.04); }
+.opp-item.sel   { border-color: var(--accent2); background: rgba(255,210,63,0.12); color: var(--accent2); }
+.opp-item.correct { border-color: var(--accent3) !important; background: rgba(6,214,160,0.15) !important; color: var(--accent3) !important; pointer-events:none; }
+.opp-item.wrong   { border-color: var(--accent4) !important; background: rgba(239,71,111,0.15) !important; animation: shake .4s; }
+@keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
+.opp-score { text-align:right; font-size:0.85rem; font-weight:800; color:var(--accent3); margin-bottom:12px; }
+
+/* ── EX 3: OPPOSITE HUNT ── */
+.hunt-stage {
+  text-align: center;
+}
+.hunt-command {
+  font-family: 'Fredoka One', cursive;
+  font-size: clamp(1.8rem, 7vw, 3.2rem);
+  padding: 24px 30px;
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, var(--accent5), var(--accent3));
+  color: #fff;
+  max-width: 480px;
+  margin: 0 auto 22px;
+  box-shadow: 0 8px 32px rgba(17,138,178,0.4);
+  transition: all .35s cubic-bezier(.17,.67,.4,1.2);
+  text-shadow: 1px 2px 0 rgba(0,0,0,0.2);
+}
+.hunt-command.big   { background: linear-gradient(135deg, #FF9A3C, #FF6B35); box-shadow: 0 8px 32px rgba(255,107,53,0.4); }
+.hunt-command.small { background: linear-gradient(135deg, #95E1D3, #06D6A0); box-shadow: 0 8px 32px rgba(6,214,160,0.4); }
+.hunt-command.hot   { background: linear-gradient(135deg, #FF6B6B, #FF0000); box-shadow: 0 8px 32px rgba(255,0,0,0.35); }
+.hunt-command.cold  { background: linear-gradient(135deg, #6DAEDB, #118AB2); box-shadow: 0 8px 32px rgba(17,138,178,0.4); }
+.hunt-command.high  { background: linear-gradient(135deg, #C77DFF, #7B2FBE); box-shadow: 0 8px 32px rgba(123,47,190,0.4); }
+.hunt-command.low   { background: linear-gradient(135deg, #FFD93D, #FF9A3C); box-shadow: 0 8px 32px rgba(255,154,60,0.4); }
+.hunt-command.fast  { background: linear-gradient(135deg, #EF476F, #C0392B); box-shadow: 0 8px 32px rgba(239,71,111,0.4); }
+.hunt-command.slow  { background: linear-gradient(135deg, #B8A9C9, #7B6C9E); box-shadow: 0 8px 32px rgba(123,108,158,0.4); }
+.hunt-command.happy { background: linear-gradient(135deg, #FFD93D, #FF9A3C); box-shadow: 0 8px 32px rgba(255,210,63,0.4); }
+.hunt-command.sad   { background: linear-gradient(135deg, #6DAEDB, #2980B9); box-shadow: 0 8px 32px rgba(41,128,185,0.4); }
+
+.hunt-btns { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+.hunt-btn {
+  padding: 9px 18px; border-radius: 50px;
+  font-size: 0.92rem; font-weight: 900; border: none;
+  cursor: pointer; transition: all .2s; color: #fff;
+  background: rgba(255,255,255,0.1);
+  border: 2px solid rgba(255,255,255,0.15);
+}
+.hunt-btn:hover { background: rgba(255,255,255,0.2); transform: translateY(-2px); }
+.hunt-hint { color: var(--muted); font-size: 0.92rem; font-weight: 700; margin-top: 14px; }
+
+/* ── EX 4: YES OR NO ── */
+.yesno-list { display: flex; flex-direction: column; gap: 14px; }
+.yesno-row {
+  display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+  background: var(--card2); border-radius: 14px; padding: 16px 18px;
+  border: 2px solid rgba(255,255,255,0.07);
+}
+.yesno-statement {
+  flex: 1; font-size: 1.05rem; font-weight: 800; min-width: 180px;
+}
+.yesno-statement .emoji-hint { font-size: 1.4rem; margin-right: 6px; }
+.yesno-btns { display: flex; gap: 8px; }
+.yn-btn {
+  padding: 8px 20px; border-radius: 50px; border: none;
+  font-size: 0.92rem; font-weight: 900; cursor: pointer;
+  transition: all .2s; color: #fff;
+}
+.yn-btn.yes { background: rgba(6,214,160,0.2); color: var(--accent3); border: 2px solid var(--accent3); }
+.yn-btn.no  { background: rgba(239,71,111,0.2); color: var(--accent4); border: 2px solid var(--accent4); }
+.yn-btn:hover { transform: scale(1.08); }
+.yn-btn.correct-ans { background: var(--accent3) !important; color: #fff !important; border-color: var(--accent3) !important; pointer-events: none; }
+.yn-btn.wrong-ans   { background: var(--accent4) !important; color: #fff !important; border-color: var(--accent4) !important; animation: shake .4s; }
+.yn-result { font-size: 1.1rem; min-width: 28px; }
+
+/* ── EX 5: ACT IT OUT ── */
+.act-stage { text-align: center; }
+.act-command {
+  font-family: 'Fredoka One', cursive;
+  font-size: clamp(2rem, 8vw, 3.8rem);
+  padding: 26px 32px;
+  border-radius: var(--radius);
+  margin: 0 auto 22px;
+  max-width: 500px;
+  transition: all .4s cubic-bezier(.17,.67,.4,1.2);
+  box-shadow: 0 12px 36px rgba(0,0,0,0.4);
+  color: #fff; text-shadow: 2px 2px 0 rgba(0,0,0,0.2);
+}
+.act-command.tall  { background: linear-gradient(135deg, #C77DFF, #7B2FBE); box-shadow: 0 12px 36px rgba(123,47,190,0.45); }
+.act-command.short { background: linear-gradient(135deg, #FFD93D, #FF9A3C); box-shadow: 0 12px 36px rgba(255,154,60,0.45); }
+.act-command.slow  { background: linear-gradient(135deg, #B8A9C9, #5E548E); box-shadow: 0 12px 36px rgba(94,84,142,0.45); }
+.act-command.fast  { background: linear-gradient(135deg, #EF476F, #C0392B); box-shadow: 0 12px 36px rgba(239,71,111,0.45); }
+.act-command.big   { background: linear-gradient(135deg, #FF6B35, #CC2900); box-shadow: 0 12px 36px rgba(255,107,53,0.45); }
+.act-command.small { background: linear-gradient(135deg, #06D6A0, #048A66); box-shadow: 0 12px 36px rgba(6,214,160,0.45); }
+.act-btns { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 16px; }
+.act-btn {
+  padding: 9px 20px; border-radius: 50px; border: none;
+  font-size: 0.92rem; font-weight: 900; cursor: pointer;
+  transition: all .2s; color: var(--text);
+  background: rgba(255,255,255,0.08);
+  border: 2px solid rgba(255,255,255,0.12);
+}
+.act-btn:hover { background: rgba(255,255,255,0.18); transform: translateY(-3px) scale(1.05); }
+.act-timer-wrap { background: rgba(255,255,255,0.08); border-radius: 50px; height: 8px; max-width: 400px; margin: 0 auto 12px; overflow: hidden; }
+.act-timer-bar { height: 100%; border-radius: 50px; background: linear-gradient(90deg, var(--accent3), var(--accent2)); width: 100%; transition: width .1s linear; }
+.act-hint { color: var(--muted); font-size: 0.92rem; font-weight: 700; }
+
+/* ── EX 6: GRAMMAR FILL-IN ── */
+.grammar-list { display: flex; flex-direction: column; gap: 14px; }
+.grammar-row {
+  background: var(--card2); border-radius: 16px;
+  padding: 16px 18px;
+  border: 2px solid rgba(255,255,255,0.07);
+  display: flex; flex-direction: column; gap: 10px;
+}
+.grammar-prompt {
+  font-size: 1rem; font-weight: 800; color: var(--text);
+  line-height: 1.7;
+  display: flex; flex-wrap: wrap; align-items: center; gap: 6px;
+}
+.blank-input {
+  display: inline-block;
+  background: rgba(255,255,255,0.07);
+  border: 2px dashed rgba(255,255,255,0.2);
+  border-radius: 10px;
+  padding: 4px 10px;
+  min-width: 90px; text-align: center;
+  font-size: 0.95rem; font-weight: 900;
+  color: var(--accent2); cursor: pointer;
+  transition: all .2s;
+}
+.blank-input:hover { background: rgba(255,210,63,0.1); border-color: var(--accent2); }
+.blank-input.correct-fill { background: rgba(6,214,160,0.15); border-color: var(--accent3); border-style: solid; color: var(--accent3); }
+.blank-input.wrong-fill   { background: rgba(239,71,111,0.15); border-color: var(--accent4); border-style: solid; color: var(--accent4); animation: shake .4s; }
+.grammar-choices { display: flex; flex-wrap: wrap; gap: 7px; }
+.gc-btn {
+  padding: 5px 16px; border-radius: 50px;
+  font-size: 0.88rem; font-weight: 900;
+  border: 2px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.06); color: var(--muted);
+  cursor: pointer; transition: all .2s;
+}
+.gc-btn:hover { background: rgba(255,255,255,0.15); color: var(--text); transform: scale(1.05); }
+.gc-btn.used { opacity:.35; pointer-events:none; }
+
+/* ── TOAST ── */
+.toast {
+  position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(80px);
+  background: #ECFDF5; color: #065F46;
+  padding: 11px 26px; border-radius: 50px;
+  font-size: 0.95rem; font-weight: 800;
+  box-shadow: 0 8px 28px rgba(0,0,0,0.35);
+  transition: transform .35s cubic-bezier(.17,.67,.4,1.3);
+  z-index: 9999; pointer-events: none;
+}
+.toast.bad { background: #FEF2F2; color: #B91C1C; }
+.toast.show { transform: translateX(-50%) translateY(0); }
+
+@media (max-width: 520px) {
+  .opp-grid { grid-template-columns: 1fr 1fr; }
+  .section { padding: 20px 14px; }
+  .word-grid { grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-badge">English for Kids</div>
+  <h1>🔄 Opposites!</h1>
+  <p>Big &amp; small · fast &amp; slow · happy &amp; sad — and more!</p>
+</header>
+
+<nav>
+  <a href="#ex1">🔊 Words</a>
+  <a href="#ex2">🧩 Match</a>
+  <a href="#ex3">🔍 Hunt</a>
+  <a href="#ex4">✅ Yes/No</a>
+  <a href="#ex5">🎭 Act It</a>
+  <a href="#ex6">📝 Fill In</a>
+</nav>
+
+<main>
+
+<!-- ══════════ EX 1: LISTEN ══════════ -->
+<section class="section" id="ex1">
+  <div class="section-num">Exercise 1</div>
+  <div class="section-title">🔊 Listen &amp; Remember</div>
+  <div class="section-sub">Click any card to hear the word in British English!</div>
+  <div class="word-grid" id="word-grid"></div>
+</section>
+
+<!-- ══════════ EX 2: MATCH ══════════ -->
+<section class="section" id="ex2">
+  <div class="section-num">Exercise 2</div>
+  <div class="section-title">🧩 Match the Opposites</div>
+  <div class="section-sub">Click a word on the left, then its opposite on the right!</div>
+  <div class="opp-score" id="opp-score">⭐ 0 / 6</div>
+  <div class="opp-grid">
+    <div class="opp-col" id="opp-left"></div>
+    <div class="opp-col" id="opp-right"></div>
+  </div>
+</section>
+
+<!-- ══════════ EX 3: HUNT ══════════ -->
+<section class="section" id="ex3">
+  <div class="section-num">Exercise 3</div>
+  <div class="section-title">🔍 Opposite Hunt</div>
+  <div class="section-sub">Read the command — find something like that in the room!</div>
+  <div class="hunt-stage">
+    <div class="hunt-command big" id="hunt-cmd">Find something BIG! 🐘</div>
+    <div class="hunt-btns" id="hunt-btns"></div>
+    <p class="hunt-hint">👀 Look around the room!</p>
+  </div>
+</section>
+
+<!-- ══════════ EX 4: YES OR NO ══════════ -->
+<section class="section" id="ex4">
+  <div class="section-num">Exercise 4</div>
+  <div class="section-title">✅ Yes or No?</div>
+  <div class="section-sub">Is the sentence true? Press YES ✅ or NO ❌!</div>
+  <div class="yesno-list" id="yesno-list"></div>
+</section>
+
+<!-- ══════════ EX 5: ACT IT OUT ══════════ -->
+<section class="section" id="ex5">
+  <div class="section-num">Exercise 5</div>
+  <div class="section-title">🎭 Act It Out!</div>
+  <div class="section-sub">Read the command — show it with your whole body!</div>
+  <div class="act-stage">
+    <div class="act-command tall" id="act-cmd">Be TALL! 🦒</div>
+    <div class="act-timer-wrap"><div class="act-timer-bar" id="act-timer"></div></div>
+    <div class="act-btns" id="act-btns"></div>
+    <p class="act-hint">🎬 Use your body to show the word!</p>
+  </div>
+</section>
+
+<!-- ══════════ EX 6: GRAMMAR FILL-IN ══════════ -->
+<section class="section" id="ex6">
+  <div class="section-num">Exercise 6</div>
+  <div class="section-title">📝 Fill in the Opposite!</div>
+  <div class="section-sub">Choose the correct opposite word to complete each sentence.</div>
+  <div class="grammar-list" id="grammar-list"></div>
+</section>
+
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ────────────── UTILS ────────────── */
+function shuffle(arr) { return [...arr].sort(() => Math.random() - .5); }
+let toastTimer;
+function showToast(msg, bad = false) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show' + (bad ? ' bad' : '');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.className = 'toast', 1900);
+}
+
+/* ────────────── SPEECH ────────────── */
+function speak(word) {
+  const utt = new SpeechSynthesisUtterance(word);
+  utt.lang = 'en-GB'; utt.rate = 0.82; utt.pitch = 1.05;
+  const voices = speechSynthesis.getVoices();
+  const gb = voices.find(v => v.lang === 'en-GB') || voices.find(v => v.lang.startsWith('en'));
+  if (gb) utt.voice = gb;
+  speechSynthesis.cancel();
+  speechSynthesis.speak(utt);
+}
+window.speechSynthesis.onvoiceschanged = () => speechSynthesis.getVoices();
+
+/* ════════════ EX 1 ════════════ */
+const allWords = [
+  { w: 'happy',  e: '😊' }, { w: 'sad',   e: '😢' },
+  { w: 'angry',  e: '😠' }, { w: 'tired', e: '😴' },
+  { w: 'scared', e: '😨' },
+  { w: 'big',    e: '🐘' }, { w: 'small', e: '🐭' },
+  { w: 'fast',   e: '🚀' }, { w: 'slow',  e: '🐢' },
+  { w: 'high',   e: '🏔️' }, { w: 'low',   e: '🌊' },
+];
+
+function buildEx1() {
+  const g = document.getElementById('word-grid');
+  allWords.forEach(({w, e}) => {
+    const c = document.createElement('div');
+    c.className = 'word-card';
+    c.dataset.word = w;
+    c.innerHTML = `<span class="wc-icon">${e}</span><div class="wc-label">${w}</div><span class="wc-play">▶ play</span>`;
+    c.onclick = () => {
+      speak(w);
+      c.classList.add('playing');
+      setTimeout(() => c.classList.remove('playing'), 600);
+    };
+    g.appendChild(c);
+  });
+}
+buildEx1();
+
+/* ════════════ EX 2: MATCH OPPOSITES ════════════ */
+const oppPairs = [
+  ['big','small'], ['hot','cold'], ['happy','sad'],
+  ['fast','slow'], ['high','low'], ['angry','calm'],
+];
+
+let oppSel = null, oppScore = 0;
+
+function buildEx2() {
+  const left = document.getElementById('opp-left');
+  const right = document.getElementById('opp-right');
+  const shuffLeft  = shuffle(oppPairs.map(p => p[0]));
+  const shuffRight = shuffle(oppPairs.map(p => p[1]));
+
+  shuffLeft.forEach(w => {
+    const el = makeOppItem(w, 'L');
+    left.appendChild(el);
+  });
+  shuffRight.forEach(w => {
+    const el = makeOppItem(w, 'R');
+    right.appendChild(el);
+  });
+}
+
+function makeOppItem(word, side) {
+  const el = document.createElement('div');
+  el.className = 'opp-item';
+  el.dataset.word = word; el.dataset.side = side;
+  el.textContent = word;
+  el.onclick = () => selectOpp(el);
+  return el;
+}
+
+function pairOf(w) {
+  for (const [a,b] of oppPairs) {
+    if (a === w) return b;
+    if (b === w) return a;
+  }
+}
+
+function selectOpp(el) {
+  if (el.classList.contains('correct')) return;
+  if (!oppSel) {
+    el.classList.add('sel'); oppSel = el;
+  } else {
+    if (oppSel === el) { el.classList.remove('sel'); oppSel = null; return; }
+    if (oppSel.dataset.side === el.dataset.side) {
+      oppSel.classList.remove('sel');
+      el.classList.add('sel'); oppSel = el; return;
+    }
+    const a = oppSel, b = el;
+    if (pairOf(a.dataset.word) === b.dataset.word) {
+      a.classList.remove('sel'); b.classList.remove('sel');
+      a.classList.add('correct'); b.classList.add('correct');
+      speak(a.dataset.word + ' — ' + b.dataset.word);
+      oppScore++;
+      document.getElementById('opp-score').textContent = `⭐ ${oppScore} / 6`;
+      if (oppScore === 6) showToast('🎉 All matched! Amazing!');
+      else showToast('✅ Correct pair!');
+    } else {
+      a.classList.add('wrong'); b.classList.add('wrong');
+      setTimeout(() => { a.classList.remove('wrong','sel'); b.classList.remove('wrong','sel'); }, 700);
+      showToast('❌ Not a pair — try again!', true);
+    }
+    oppSel = null;
+  }
+}
+buildEx2();
+
+/* ════════════ EX 3: HUNT ════════════ */
+const huntCommands = [
+  { text: 'Find something BIG! 🐘', cls: 'big', say: 'Find something big!' },
+  { text: 'Find something SMALL! 🐭', cls: 'small', say: 'Find something small!' },
+  { text: 'Find something HOT! 🔥', cls: 'hot', say: 'Find something hot!' },
+  { text: 'Find something COLD! ❄️', cls: 'cold', say: 'Find something cold!' },
+  { text: 'Find something HIGH! 🏔️', cls: 'high', say: 'Find something high!' },
+  { text: 'Find something LOW! 🌊', cls: 'low', say: 'Find something low!' },
+  { text: 'Find something FAST! 🚗', cls: 'fast', say: 'Find something fast!' },
+  { text: 'Find something SLOW! 🐢', cls: 'slow', say: 'Find something slow!' },
+  { text: 'Find something HAPPY! 😊', cls: 'happy', say: 'Find something happy!' },
+  { text: 'Find something SAD! 😢', cls: 'sad', say: 'Find something sad!' },
+];
+
+function buildHunt() {
+  const btns = document.getElementById('hunt-btns');
+  huntCommands.forEach(h => {
+    const b = document.createElement('button');
+    b.className = 'hunt-btn';
+    b.textContent = h.cls.charAt(0).toUpperCase() + h.cls.slice(1);
+    b.onclick = () => triggerHunt(h);
+    btns.appendChild(b);
+  });
+}
+
+function triggerHunt(h) {
+  const cmd = document.getElementById('hunt-cmd');
+  cmd.textContent = h.text;
+  cmd.className = 'hunt-command ' + h.cls;
+  speak(h.say);
+}
+buildHunt();
+
+/* ════════════ EX 4: YES OR NO ════════════ */
+const yesnoData = [
+  { stmt: '🐘 An elephant is small.',     correct: false },
+  { stmt: '🧊 Ice is hot.',               correct: false },
+  { stmt: '🐢 A turtle is slow.',         correct: true  },
+  { stmt: '🌞 The sun is high in the sky.', correct: true  },
+  { stmt: '😊 Crying makes us happy.',    correct: false },
+  { stmt: '🚀 A rocket is fast.',         correct: true  },
+  { stmt: '🐭 A mouse is big.',           correct: false },
+  { stmt: '😴 We feel tired after running.', correct: true },
+];
+
+function buildYesNo() {
+  const list = document.getElementById('yesno-list');
+  yesnoData.forEach((d, i) => {
+    const row = document.createElement('div');
+    row.className = 'yesno-row';
+    row.innerHTML = `
+      <div class="yesno-statement">${d.stmt}</div>
+      <div class="yesno-btns">
+        <button class="yn-btn yes" onclick="checkYN(this, true, ${d.correct}, ${i})">✅ YES</button>
+        <button class="yn-btn no"  onclick="checkYN(this, false, ${d.correct}, ${i})">❌ NO</button>
+      </div>
+      <div class="yn-result" id="yn-res-${i}"></div>`;
+    list.appendChild(row);
+  });
+}
+
+function checkYN(btn, chosen, correct, i) {
+  const row = btn.closest('.yesno-row');
+  if (row.dataset.done) return;
+  const res = document.getElementById(`yn-res-${i}`);
+  if (chosen === correct) {
+    btn.classList.add('correct-ans');
+    res.textContent = '⭐';
+    row.dataset.done = '1';
+    showToast('✅ That\'s right!');
+  } else {
+    btn.classList.add('wrong-ans');
+    setTimeout(() => btn.classList.remove('wrong-ans'), 700);
+    showToast('❌ Try again!', true);
+  }
+}
+buildYesNo();
+
+/* ════════════ EX 5: ACT IT OUT ════════════ */
+const actCommands = [
+  { text: 'Be TALL! 🦒', cls: 'tall',  say: 'Be tall!' },
+  { text: 'Be SHORT! 🐣', cls: 'short', say: 'Be short!' },
+  { text: 'Be SLOW! 🐢', cls: 'slow',  say: 'Be slow!' },
+  { text: 'Be FAST! 🚀', cls: 'fast',  say: 'Be fast!' },
+  { text: 'Be BIG! 🐻',  cls: 'big',   say: 'Be big!' },
+  { text: 'Be SMALL! 🐭', cls: 'small', say: 'Be small!' },
+];
+
+let actTimerInterval = null;
+
+function buildAct() {
+  const btns = document.getElementById('act-btns');
+  actCommands.forEach(a => {
+    const b = document.createElement('button');
+    b.className = 'act-btn';
+    b.textContent = a.cls.charAt(0).toUpperCase() + a.cls.slice(1);
+    b.onclick = () => triggerAct(a);
+    btns.appendChild(b);
+  });
+}
+
+function triggerAct(a) {
+  const cmd = document.getElementById('act-cmd');
+  const bar = document.getElementById('act-timer');
+  cmd.textContent = a.text;
+  cmd.className = 'act-command ' + a.cls;
+  speak(a.say);
+  clearInterval(actTimerInterval);
+  bar.style.transition = 'none'; bar.style.width = '100%';
+  let pct = 100;
+  setTimeout(() => {
+    bar.style.transition = 'width .1s linear';
+    actTimerInterval = setInterval(() => {
+      pct -= 1; bar.style.width = pct + '%';
+      if (pct <= 0) clearInterval(actTimerInterval);
+    }, 50);
+  }, 50);
+}
+buildAct();
+
+/* ════════════ EX 6: GRAMMAR FILL-IN ════════════ */
+const grammarData = [
+  {
+    parts: ['A giraffe is very ', null, ', but a frog is ', null, '.'],
+    blanks: ['tall', 'short'],
+    choices: ['tall', 'short', 'hot', 'slow'],
+  },
+  {
+    parts: ['Fire is ', null, ', but snow is ', null, '.'],
+    blanks: ['hot', 'cold'],
+    choices: ['hot', 'cold', 'big', 'fast'],
+  },
+  {
+    parts: ['A cheetah is ', null, ', but a snail is very ', null, '.'],
+    blanks: ['fast', 'slow'],
+    choices: ['fast', 'slow', 'tall', 'happy'],
+  },
+  {
+    parts: ['The sky is ', null, ', but the floor is ', null, '.'],
+    blanks: ['high', 'low'],
+    choices: ['high', 'low', 'cold', 'small'],
+  },
+  {
+    parts: ['When you get a present, you feel ', null, '. When you lose something, you feel ', null, '.'],
+    blanks: ['happy', 'sad'],
+    choices: ['happy', 'sad', 'fast', 'tall'],
+  },
+  {
+    parts: ['An elephant is ', null, ', but a mouse is ', null, '.'],
+    blanks: ['big', 'small'],
+    choices: ['big', 'small', 'cold', 'high'],
+  },
+];
+
+function buildGrammar() {
+  const list = document.getElementById('grammar-list');
+  grammarData.forEach((d, ri) => {
+    const row = document.createElement('div');
+    row.className = 'grammar-row';
+    row.dataset.filled = '0';
+    row.dataset.blanks = JSON.stringify(d.blanks);
+
+    // build prompt HTML
+    let promptHTML = '';
+    let blankIdx = 0;
+    d.parts.forEach(p => {
+      if (p === null) {
+        promptHTML += `<span class="blank-input" id="gr-${ri}-${blankIdx}" data-idx="${blankIdx}" data-row="${ri}" onclick="fillGram(${ri},${blankIdx})">___</span>`;
+        blankIdx++;
+      } else {
+        promptHTML += `<span>${p}</span>`;
+      }
+    });
+
+    // choices
+    const choiceHTML = shuffle(d.choices).map(c =>
+      `<button class="gc-btn" id="gc-${ri}-${c}" data-row="${ri}" data-word="${c}" onclick="pickGram(${ri},'${c}')">${c}</button>`
+    ).join('');
+
+    row.innerHTML = `
+      <div class="grammar-prompt">${promptHTML}</div>
+      <div class="grammar-choices">${choiceHTML}</div>`;
+    list.appendChild(row);
+  });
+}
+
+// per-row selected word
+const gramSel = {};
+
+function pickGram(ri, word) {
+  // deselect prev selection visual (just track it)
+  gramSel[ri] = word;
+  // highlight chosen button
+  document.querySelectorAll(`[id^="gc-${ri}-"]`).forEach(b => b.style.boxShadow = '');
+  const btn = document.getElementById(`gc-${ri}-${word}`);
+  if (btn) btn.style.boxShadow = '0 0 0 2.5px var(--accent2)';
+  showToast(`"${word}" selected — click a blank!`);
+}
+
+function fillGram(ri, bi) {
+  const chosen = gramSel[ri];
+  if (!chosen) { showToast('Pick a word first! 👆', true); return; }
+  const blank = document.getElementById(`gr-${ri}-${bi}`);
+  if (blank.classList.contains('correct-fill')) return;
+  const correct = JSON.parse(document.querySelector(`.grammar-row:nth-child(${ri+1})`).dataset.blanks)[bi];
+  if (chosen === correct) {
+    blank.textContent = chosen;
+    blank.classList.add('correct-fill');
+    // mark word btn as used
+    const btn = document.getElementById(`gc-${ri}-${chosen}`);
+    if (btn) { btn.classList.add('used'); btn.style.boxShadow=''; }
+    speak(chosen);
+    showToast('✅ Correct!');
+    gramSel[ri] = null;
+  } else {
+    blank.classList.add('wrong-fill');
+    blank.textContent = chosen + '?';
+    setTimeout(() => { blank.classList.remove('wrong-fill'); blank.textContent = '___'; }, 800);
+    showToast('❌ Not right — try another!', true);
+    gramSel[ri] = null;
+    document.querySelectorAll(`[id^="gc-${ri}-"]`).forEach(b => b.style.boxShadow = '');
+  }
+}
+
+buildGrammar();
+</script>
+</body>
+</html>

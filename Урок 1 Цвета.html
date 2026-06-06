@@ -1,0 +1,1305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌈 Let's Learn Colours!</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red: #FF3B3B;
+    --orange: #FF8C00;
+    --yellow: #FFD600;
+    --green: #2ECC40;
+    --blue: #2196F3;
+    --purple: #9B59B6;
+    --pink: #FF69B4;
+    --white: #FFFFFF;
+    --black: #222222;
+    --bg: #FFF9F0;
+    --card-shadow: 0 8px 32px rgba(0,0,0,0.13);
+    --radius: 24px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* HEADER */
+  .hero {
+    background: linear-gradient(135deg, #FF6B6B 0%, #FFD93D 25%, #6BCB77 50%, #4D96FF 75%, #C77DFF 100%);
+    padding: 40px 20px 60px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Ccircle cx='30' cy='30' r='25' fill='rgba(255,255,255,0.08)'/%3E%3C/svg%3E") repeat;
+  }
+  .hero h1 {
+    font-family: 'Baloo 2', cursive;
+    font-size: clamp(2.5rem, 7vw, 5rem);
+    font-weight: 800;
+    color: white;
+    text-shadow: 4px 4px 0 rgba(0,0,0,0.15);
+    position: relative;
+    letter-spacing: -1px;
+  }
+  .hero p {
+    font-size: clamp(1rem, 3vw, 1.4rem);
+    color: rgba(255,255,255,0.95);
+    margin-top: 10px;
+    font-weight: 700;
+    position: relative;
+  }
+  .stars {
+    font-size: 2rem;
+    position: relative;
+    margin-top: 8px;
+    animation: bounce 1.5s infinite;
+  }
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+
+  /* NAV TABS */
+  .tab-nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    padding: 24px 16px 0;
+    background: white;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .tab-btn {
+    font-family: 'Baloo 2', cursive;
+    font-size: 0.95rem;
+    font-weight: 600;
+    padding: 10px 20px;
+    border: 3px solid transparent;
+    border-radius: 50px;
+    cursor: pointer;
+    background: #f5f5f5;
+    color: #555;
+    transition: all 0.25s;
+    white-space: nowrap;
+  }
+  .tab-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+  .tab-btn.active { color: white; border-color: transparent; box-shadow: 0 4px 16px rgba(0,0,0,0.2); }
+  .tab-btn[data-tab="intro"].active { background: #FF6B6B; }
+  .tab-btn[data-tab="match"].active { background: #FF8C00; }
+  .tab-btn[data-tab="hunt"].active { background: #2ECC40; }
+  .tab-btn[data-tab="drag"].active { background: #2196F3; }
+  .tab-btn[data-tab="sentences"].active { background: #9B59B6; }
+  .tab-btn[data-tab="quiz"].active { background: #FF69B4; }
+  .tab-btn[data-tab="paint"].active { background: #E67E22; }
+
+  /* SECTIONS */
+  .section { display: none; padding: 40px 20px 60px; max-width: 900px; margin: 0 auto; }
+  .section.active { display: block; animation: fadeIn 0.4s ease; }
+  @keyframes fadeIn { from { opacity:0; transform: translateY(16px); } to { opacity:1; transform: translateY(0); } }
+
+  .section-title {
+    font-family: 'Baloo 2', cursive;
+    font-size: clamp(1.6rem, 5vw, 2.4rem);
+    font-weight: 800;
+    text-align: center;
+    margin-bottom: 30px;
+    color: #333;
+  }
+
+  /* ===== SECTION 1: INTRO ===== */
+  .colours-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 20px;
+  }
+  .colour-card {
+    background: white;
+    border-radius: var(--radius);
+    box-shadow: var(--card-shadow);
+    padding: 20px 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .colour-card:hover { transform: translateY(-6px) scale(1.04); box-shadow: 0 16px 40px rgba(0,0,0,0.18); }
+  .colour-card:active { transform: scale(0.96); }
+  .colour-swatch {
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    margin: 0 auto 14px;
+    border: 4px solid rgba(0,0,0,0.08);
+    transition: transform 0.3s;
+  }
+  .colour-card:hover .colour-swatch { transform: rotate(15deg) scale(1.1); }
+  .colour-name {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #333;
+  }
+  .colour-emoji { font-size: 1.5rem; margin-bottom: 4px; }
+  .speak-btn {
+    margin-top: 10px;
+    background: rgba(0,0,0,0.07);
+    border: none;
+    border-radius: 20px;
+    padding: 5px 14px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    color: #555;
+    transition: background 0.2s;
+  }
+  .speak-btn:hover { background: rgba(0,0,0,0.14); }
+  .audio-note {
+    text-align: center;
+    color: #888;
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+    font-style: italic;
+  }
+
+  /* ===== SECTION 2: MATCHING ===== */
+  .match-container {
+    display: flex;
+    gap: 40px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .match-col { flex: 1; min-width: 200px; }
+  .match-col h3 {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.2rem;
+    text-align: center;
+    margin-bottom: 16px;
+    color: #666;
+  }
+  .match-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: white;
+    border-radius: 16px;
+    padding: 14px 18px;
+    margin-bottom: 12px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    cursor: pointer;
+    border: 3px solid transparent;
+    transition: all 0.2s;
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.1rem;
+    font-weight: 700;
+  }
+  .match-item:hover { transform: translateX(4px); }
+  .match-item.selected { border-color: #2196F3; background: #e3f2fd; }
+  .match-item.correct { border-color: #2ECC40; background: #d4edda; animation: pop 0.4s; }
+  .match-item.wrong { border-color: #FF3B3B; background: #fde8e8; animation: shake 0.4s; }
+  .match-dot {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    border: 2px solid rgba(0,0,0,0.1);
+  }
+  @keyframes pop { 0%,100%{transform:scale(1)} 50%{transform:scale(1.15)} }
+  @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
+
+  .match-score {
+    text-align: center;
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: #555;
+    margin-top: 20px;
+  }
+  .reset-btn {
+    display: block;
+    margin: 20px auto 0;
+    font-family: 'Baloo 2', cursive;
+    font-size: 1rem;
+    font-weight: 700;
+    padding: 12px 30px;
+    background: linear-gradient(135deg, #FF6B6B, #FFD93D);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(255,107,107,0.4);
+    transition: transform 0.2s;
+  }
+  .reset-btn:hover { transform: scale(1.05); }
+
+  /* ===== SECTION 3: COLOUR HUNT ===== */
+  .hunt-card {
+    background: white;
+    border-radius: var(--radius);
+    box-shadow: var(--card-shadow);
+    padding: 30px;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .hunt-colour-bubble {
+    width: 120px; height: 120px;
+    border-radius: 50%;
+    margin: 0 auto 20px;
+    border: 5px solid rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse { 0%,100%{box-shadow:0 0 0 0 rgba(0,0,0,0.1)} 50%{box-shadow:0 0 0 16px rgba(0,0,0,0)} }
+  .hunt-instruction {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #333;
+    margin-bottom: 8px;
+  }
+  .hunt-sub { color: #888; font-size: 1rem; margin-bottom: 24px; }
+  .hunt-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+  }
+  .hunt-opt {
+    background: #f5f5f5;
+    border: 3px solid #ddd;
+    border-radius: 16px;
+    padding: 14px 24px;
+    cursor: pointer;
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #444;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .hunt-opt:hover { transform: scale(1.06); box-shadow: 0 4px 16px rgba(0,0,0,0.12); }
+  .hunt-opt.correct { background: #d4edda; border-color: #2ECC40; color: #1a7a30; }
+  .hunt-opt.wrong { background: #fde8e8; border-color: #FF3B3B; color: #a00; }
+  .hunt-progress {
+    display: flex; gap: 8px; justify-content: center; margin-bottom: 24px; flex-wrap: wrap;
+  }
+  .hunt-dot {
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    background: #ddd;
+    transition: background 0.3s;
+  }
+  .hunt-dot.done { background: #2ECC40; }
+  .feedback-msg {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.2rem;
+    font-weight: 800;
+    min-height: 32px;
+    margin-top: 16px;
+  }
+
+  /* ===== SECTION 4: DRAG & DROP ===== */
+  .drag-scene {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+  }
+  .drag-source {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    justify-content: center;
+    background: white;
+    border-radius: var(--radius);
+    padding: 24px;
+    box-shadow: var(--card-shadow);
+    min-height: 80px;
+  }
+  .drag-ball {
+    width: 60px; height: 60px;
+    border-radius: 50%;
+    cursor: grab;
+    border: 3px solid rgba(0,0,0,0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    transition: transform 0.2s, box-shadow 0.2s;
+    user-select: none;
+  }
+  .drag-ball:hover { transform: scale(1.15); box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
+  .drag-ball.dragging { opacity: 0.5; cursor: grabbing; }
+
+  .baskets-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+  }
+  .basket {
+    width: 120px;
+    background: white;
+    border-radius: 20px;
+    box-shadow: var(--card-shadow);
+    overflow: hidden;
+    transition: transform 0.2s;
+  }
+  .basket-lid {
+    height: 20px;
+    border-radius: 10px 10px 0 0;
+  }
+  .basket-label {
+    font-family: 'Baloo 2', cursive;
+    font-size: 0.95rem;
+    font-weight: 800;
+    text-align: center;
+    padding: 6px 4px;
+    color: #444;
+  }
+  .basket-body {
+    min-height: 80px;
+    padding: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    justify-content: center;
+    align-items: center;
+    border: 3px dashed transparent;
+    border-radius: 0 0 20px 20px;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .basket-body.over { border-color: currentColor; background: rgba(0,0,0,0.04); }
+  .basket-body.correct-flash { animation: greenFlash 0.4s; }
+  @keyframes greenFlash { 0%,100%{background:transparent} 50%{background:rgba(46,204,64,0.2)} }
+  .basket-body.wrong-flash { animation: redFlash 0.4s; }
+  @keyframes redFlash { 0%,100%{background:transparent} 50%{background:rgba(255,59,59,0.2)} }
+  .placed-ball {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    border: 2px solid rgba(0,0,0,0.12);
+    display: inline-block;
+  }
+  .drag-score {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: #555;
+    text-align: center;
+  }
+
+  /* ===== SECTION 5: SENTENCES ===== */
+  .sentence-card {
+    background: white;
+    border-radius: var(--radius);
+    box-shadow: var(--card-shadow);
+    padding: 28px 24px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+  .sentence-emoji { font-size: 2.5rem; flex-shrink: 0; }
+  .sentence-text {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #333;
+    flex: 1;
+    min-width: 200px;
+  }
+  .colour-select {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.1rem;
+    font-weight: 700;
+    padding: 8px 18px;
+    border: 3px solid #ddd;
+    border-radius: 14px;
+    background: #f9f9f9;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    color: #444;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .colour-select:focus { border-color: #2196F3; }
+  .colour-select.correct { border-color: #2ECC40; background: #d4edda; }
+  .colour-select.wrong { border-color: #FF3B3B; background: #fde8e8; }
+  .check-sent-btn {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.1rem;
+    font-weight: 700;
+    padding: 14px 36px;
+    background: linear-gradient(135deg, #9B59B6, #2196F3);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    display: block;
+    margin: 10px auto 0;
+    box-shadow: 0 4px 16px rgba(155,89,182,0.35);
+    transition: transform 0.2s;
+  }
+  .check-sent-btn:hover { transform: scale(1.05); }
+  .sent-result {
+    text-align: center;
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.3rem;
+    font-weight: 800;
+    margin-top: 16px;
+    min-height: 36px;
+  }
+
+  /* ===== SECTION 6: QUIZ ===== */
+  .quiz-wrap { max-width: 600px; margin: 0 auto; }
+  .quiz-q {
+    background: white;
+    border-radius: var(--radius);
+    box-shadow: var(--card-shadow);
+    padding: 32px;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .quiz-num {
+    font-family: 'Baloo 2', cursive;
+    font-size: 0.9rem;
+    color: #aaa;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .quiz-question {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: #333;
+    margin-bottom: 24px;
+  }
+  .quiz-swatch {
+    width: 100px; height: 100px;
+    border-radius: 50%;
+    margin: 0 auto 24px;
+    border: 5px solid rgba(0,0,0,0.1);
+  }
+  .quiz-opts {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .quiz-opt {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.1rem;
+    font-weight: 700;
+    padding: 14px;
+    border: 3px solid #ddd;
+    border-radius: 16px;
+    background: #f5f5f5;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .quiz-opt:hover { background: #e8e8e8; transform: scale(1.03); }
+  .quiz-opt.correct { background: #d4edda; border-color: #2ECC40; }
+  .quiz-opt.wrong { background: #fde8e8; border-color: #FF3B3B; }
+  .quiz-opt:disabled { cursor: default; }
+  .quiz-bar {
+    height: 10px;
+    background: #eee;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+  .quiz-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #FF6B6B, #FFD93D, #6BCB77);
+    border-radius: 10px;
+    transition: width 0.4s;
+  }
+  .quiz-score-display {
+    text-align: center;
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: #555;
+    margin-bottom: 16px;
+  }
+  .quiz-done {
+    text-align: center;
+    background: white;
+    border-radius: var(--radius);
+    box-shadow: var(--card-shadow);
+    padding: 40px;
+    font-family: 'Baloo 2', cursive;
+  }
+  .quiz-done .big-emoji { font-size: 4rem; }
+  .quiz-done h2 { font-size: 2rem; margin: 12px 0; }
+
+  /* ===== SECTION 7: PAINT ===== */
+  .paint-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 16px;
+  }
+  .paint-card {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    overflow: hidden;
+    text-align: center;
+    cursor: pointer;
+    border: 4px solid transparent;
+    transition: all 0.2s;
+  }
+  .paint-card:hover { transform: scale(1.05); }
+  .paint-card.selected { border-color: #333; }
+  .paint-top {
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    transition: filter 0.3s;
+  }
+  .paint-card.greyed .paint-top { filter: grayscale(100%) brightness(1.3); }
+  .paint-bottom {
+    padding: 8px 6px;
+    font-family: 'Baloo 2', cursive;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #444;
+  }
+  .paint-instruction {
+    text-align: center;
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.1rem;
+    color: #666;
+    margin-bottom: 20px;
+    font-weight: 700;
+  }
+  .paint-palette {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 24px;
+  }
+  .paint-colour {
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 4px solid transparent;
+    transition: transform 0.2s, border-color 0.2s;
+  }
+  .paint-colour:hover { transform: scale(1.2); }
+  .paint-colour.active-paint { border-color: #222; transform: scale(1.2); }
+  .paint-result {
+    text-align: center;
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.2rem;
+    font-weight: 800;
+    min-height: 36px;
+    margin-top: 8px;
+  }
+
+  /* CELEBRATION */
+  .celebrate {
+    position: fixed; inset: 0;
+    pointer-events: none;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .celebrate-text {
+    font-family: 'Baloo 2', cursive;
+    font-size: 3rem;
+    font-weight: 800;
+    color: white;
+    text-shadow: 3px 3px 0 rgba(0,0,0,0.3);
+    animation: bigPop 0.7s forwards;
+    pointer-events: none;
+  }
+  @keyframes bigPop {
+    0% { opacity:0; transform: scale(0); }
+    60% { transform: scale(1.2); opacity: 1; }
+    100% { transform: scale(1); opacity: 0; }
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 480px) {
+    .match-container { flex-direction: column; }
+    .quiz-opts { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>🌈 Let's Learn Colours!</h1>
+  <p>Tap, listen, drag and play!</p>
+  <div class="stars">⭐ 🌟 ⭐</div>
+</div>
+
+<nav class="tab-nav">
+  <button class="tab-btn active" data-tab="intro">🎨 Colours</button>
+  <button class="tab-btn" data-tab="match">🔗 Matching</button>
+  <button class="tab-btn" data-tab="hunt">🔍 Colour Hunt</button>
+  <button class="tab-btn" data-tab="drag">🧺 Baskets</button>
+  <button class="tab-btn" data-tab="sentences">✏️ Sentences</button>
+  <button class="tab-btn" data-tab="quiz">❓ Quiz</button>
+  <button class="tab-btn" data-tab="paint">🖌️ Colour It!</button>
+</nav>
+
+<!-- ===== SECTION 1: INTRO ===== -->
+<section class="section active" id="intro">
+  <h2 class="section-title">🎨 Meet the Colours!</h2>
+  <p class="audio-note">👆 Tap a colour card to hear how it sounds!</p>
+  <div class="colours-grid" id="colourGrid"></div>
+</section>
+
+<!-- ===== SECTION 2: MATCHING ===== -->
+<section class="section" id="match">
+  <h2 class="section-title">🔗 Match the Colour!</h2>
+  <p style="text-align:center;color:#888;margin-bottom:24px;font-weight:600;">Tap a colour on the left, then tap the matching word on the right!</p>
+  <div class="match-container">
+    <div class="match-col">
+      <h3>Colours 🎨</h3>
+      <div id="matchLeft"></div>
+    </div>
+    <div class="match-col">
+      <h3>Words 📝</h3>
+      <div id="matchRight"></div>
+    </div>
+  </div>
+  <div class="match-score" id="matchScore">⭐ Score: 0 / 7</div>
+  <button class="reset-btn" onclick="initMatch()">🔄 Play Again!</button>
+</section>
+
+<!-- ===== SECTION 3: COLOUR HUNT ===== -->
+<section class="section" id="hunt">
+  <h2 class="section-title">🔍 Colour Hunt!</h2>
+  <div class="hunt-progress" id="huntProgress"></div>
+  <div class="hunt-card">
+    <div class="hunt-colour-bubble" id="huntBubble"></div>
+    <div class="hunt-instruction" id="huntInstruction"></div>
+    <div class="hunt-sub" id="huntSub">Find something this colour!</div>
+    <div class="hunt-options" id="huntOptions"></div>
+    <div class="feedback-msg" id="huntFeedback"></div>
+  </div>
+</section>
+
+<!-- ===== SECTION 4: DRAG ===== -->
+<section class="section" id="drag">
+  <h2 class="section-title">🧺 Sort the Colours!</h2>
+  <p style="text-align:center;color:#888;margin-bottom:20px;font-weight:600;">Drag each ball into the correct basket!</p>
+  <div class="drag-scene">
+    <div class="drag-source" id="dragSource"></div>
+    <div class="baskets-row" id="basketsRow"></div>
+    <div class="drag-score" id="dragScore">🎯 Score: 0 / 14</div>
+    <button class="reset-btn" onclick="initDrag()">🔄 Reset</button>
+  </div>
+</section>
+
+<!-- ===== SECTION 5: SENTENCES ===== -->
+<section class="section" id="sentences">
+  <h2 class="section-title">✏️ Complete the Sentence!</h2>
+  <p style="text-align:center;color:#888;margin-bottom:24px;font-weight:600;">Choose the right colour word!</p>
+  <div id="sentencesWrap"></div>
+  <button class="check-sent-btn" onclick="checkSentences()">✅ Check my answers!</button>
+  <div class="sent-result" id="sentResult"></div>
+</section>
+
+<!-- ===== SECTION 6: QUIZ ===== -->
+<section class="section" id="quiz">
+  <h2 class="section-title">❓ Colour Quiz!</h2>
+  <div class="quiz-wrap">
+    <div class="quiz-bar"><div class="quiz-fill" id="quizFill" style="width:0%"></div></div>
+    <div class="quiz-score-display" id="quizScoreDisplay">⭐ 0 correct</div>
+    <div id="quizContent"></div>
+  </div>
+</section>
+
+<!-- ===== SECTION 7: PAINT ===== -->
+<section class="section" id="paint">
+  <h2 class="section-title">🖌️ Colour It!</h2>
+  <p class="paint-instruction">Pick a colour, then tap the picture to colour it!</p>
+  <div class="paint-palette" id="paintPalette"></div>
+  <div class="paint-grid" id="paintGrid"></div>
+  <div class="paint-result" id="paintResult"></div>
+</section>
+
+<div class="celebrate" id="celebrate" style="display:none">
+  <div class="celebrate-text" id="celebrateText"></div>
+</div>
+
+<script>
+// =========== DATA ===========
+const COLOURS = [
+  { name: 'Red',    hex: '#FF3B3B', emoji: '🍎', objects: ['apple','strawberry','fire truck','tomato','roses'] },
+  { name: 'Orange', hex: '#FF8C00', emoji: '🍊', objects: ['orange','pumpkin','carrot','tiger','sunset'] },
+  { name: 'Yellow', hex: '#FFD600', emoji: '🌞', objects: ['sun','banana','lemon','star','duck'] },
+  { name: 'Green',  hex: '#2ECC40', emoji: '🐸', objects: ['frog','leaf','grass','broccoli','turtle'] },
+  { name: 'Blue',   hex: '#2196F3', emoji: '🌊', objects: ['sky','sea','bluebell','whale','jeans'] },
+  { name: 'Purple', hex: '#9B59B6', emoji: '🍇', objects: ['grapes','lavender','plum','eggplant','violet'] },
+  { name: 'Pink',   hex: '#FF69B4', emoji: '🌸', objects: ['flamingo','rose','bubblegum','piglet','blossom'] },
+];
+
+const speak = (word) => {
+  const u = new SpeechSynthesisUtterance(word);
+  u.lang = 'en-US'; u.rate = 0.85; u.pitch = 1.2;
+  speechSynthesis.cancel();
+  speechSynthesis.speak(u);
+};
+
+// =========== TAB NAV ===========
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.tab).classList.add('active');
+  });
+});
+
+// =========== CELEBRATION ===========
+function celebrate(msg) {
+  const el = document.getElementById('celebrate');
+  const t = document.getElementById('celebrateText');
+  t.textContent = msg;
+  el.style.display = 'flex';
+  setTimeout(() => { el.style.display = 'none'; }, 800);
+}
+
+// =========== SECTION 1: INTRO ===========
+function initIntro() {
+  const grid = document.getElementById('colourGrid');
+  grid.innerHTML = '';
+  COLOURS.forEach(c => {
+    const card = document.createElement('div');
+    card.className = 'colour-card';
+    card.innerHTML = `
+      <div class="colour-swatch" style="background:${c.hex}"></div>
+      <div class="colour-emoji">${c.emoji}</div>
+      <div class="colour-name">${c.name}</div>
+      <button class="speak-btn">🔊 Listen</button>
+    `;
+    card.querySelector('.speak-btn').addEventListener('click', (e) => {
+      e.stopPropagation();
+      speak(c.name);
+    });
+    card.addEventListener('click', () => speak(c.name));
+    grid.appendChild(card);
+  });
+}
+
+// =========== SECTION 2: MATCHING ===========
+let matchSelected = null;
+let matchScore = 0;
+let matchDone = new Set();
+
+function initMatch() {
+  matchSelected = null; matchScore = 0; matchDone.clear();
+  const left = document.getElementById('matchLeft');
+  const right = document.getElementById('matchRight');
+  left.innerHTML = ''; right.innerHTML = '';
+  document.getElementById('matchScore').textContent = '⭐ Score: 0 / 7';
+
+  const shuffledRight = [...COLOURS].sort(() => Math.random() - 0.5);
+  COLOURS.forEach(c => {
+    const li = document.createElement('div');
+    li.className = 'match-item';
+    li.dataset.name = c.name;
+    li.dataset.side = 'left';
+    li.innerHTML = `<div class="match-dot" style="background:${c.hex}"></div>`;
+    li.addEventListener('click', () => handleMatch(li));
+    left.appendChild(li);
+  });
+  shuffledRight.forEach(c => {
+    const ri = document.createElement('div');
+    ri.className = 'match-item';
+    ri.dataset.name = c.name;
+    ri.dataset.side = 'right';
+    ri.textContent = c.name;
+    ri.addEventListener('click', () => handleMatch(ri));
+    right.appendChild(ri);
+  });
+}
+
+function handleMatch(el) {
+  if (el.classList.contains('correct')) return;
+  if (!matchSelected) {
+    if (el.dataset.side !== 'left') return;
+    matchSelected = el;
+    el.classList.add('selected');
+    speak(el.dataset.name);
+  } else {
+    if (el.dataset.side !== 'right') {
+      matchSelected.classList.remove('selected');
+      matchSelected = el;
+      el.classList.add('selected');
+      return;
+    }
+    if (matchSelected.dataset.name === el.dataset.name) {
+      matchSelected.classList.remove('selected');
+      matchSelected.classList.add('correct');
+      el.classList.add('correct');
+      matchScore++;
+      speak('Great job!');
+      celebrate('🎉 Great!');
+      document.getElementById('matchScore').textContent = `⭐ Score: ${matchScore} / 7`;
+      if (matchScore === 7) setTimeout(() => { speak('Fantastic! You matched all colours!'); }, 300);
+    } else {
+      matchSelected.classList.add('wrong');
+      el.classList.add('wrong');
+      speak('Try again!');
+      const s = matchSelected; const e2 = el;
+      setTimeout(() => { s.classList.remove('wrong','selected'); e2.classList.remove('wrong'); }, 700);
+    }
+    matchSelected = null;
+  }
+}
+
+// =========== SECTION 3: HUNT ===========
+const huntQuestions = [
+  { colour: 'Red',    options: ['🍎 apple','🍋 lemon','🌊 sea','🍇 grapes'], correct: '🍎 apple' },
+  { colour: 'Yellow', options: ['🌸 flower','🌞 sun','🍎 apple','🐸 frog'], correct: '🌞 sun' },
+  { colour: 'Blue',   options: ['🍊 orange','🌊 sea','🍓 strawberry','🌿 leaf'], correct: '🌊 sea' },
+  { colour: 'Green',  options: ['🐸 frog','🍌 banana','🔴 ball','🌙 moon'], correct: '🐸 frog' },
+  { colour: 'Orange', options: ['🫐 blueberry','🌹 rose','🍊 orange','🐦 bird'], correct: '🍊 orange' },
+  { colour: 'Purple', options: ['☀️ sun','🍇 grapes','🌊 ocean','🥕 carrot'], correct: '🍇 grapes' },
+  { colour: 'Pink',   options: ['🌸 blossom','🌳 tree','🍋 lemon','🐢 turtle'], correct: '🌸 blossom' },
+];
+let huntIdx = 0;
+let huntScoreVal = 0;
+
+function initHunt() {
+  huntIdx = 0; huntScoreVal = 0;
+  renderHunt();
+}
+
+function renderHunt() {
+  const prog = document.getElementById('huntProgress');
+  prog.innerHTML = huntQuestions.map((q,i) => `<div class="hunt-dot${i < huntIdx ? ' done' : ''}"></div>`).join('');
+
+  if (huntIdx >= huntQuestions.length) {
+    document.getElementById('huntInstruction').textContent = '🎉 Well done!';
+    document.getElementById('huntBubble').style.background = 'linear-gradient(135deg,#FF6B6B,#FFD93D,#6BCB77,#4D96FF,#C77DFF)';
+    document.getElementById('huntBubble').textContent = '🌈';
+    document.getElementById('huntOptions').innerHTML = '';
+    document.getElementById('huntSub').textContent = '';
+    document.getElementById('huntFeedback').textContent = `You got ${huntScoreVal} out of ${huntQuestions.length} correct! 🌟`;
+    speak(`Amazing! You got ${huntScoreVal} out of ${huntQuestions.length}!`);
+    return;
+  }
+  const q = huntQuestions[huntIdx];
+  const c = COLOURS.find(x => x.name === q.colour);
+  document.getElementById('huntBubble').style.background = c.hex;
+  document.getElementById('huntBubble').textContent = c.emoji;
+  document.getElementById('huntInstruction').textContent = `Find something ${q.colour}!`;
+  document.getElementById('huntFeedback').textContent = '';
+  speak(`Find something ${q.colour}!`);
+
+  const opts = document.getElementById('huntOptions');
+  opts.innerHTML = '';
+  q.options.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'hunt-opt';
+    btn.textContent = opt;
+    btn.addEventListener('click', () => {
+      if (btn.classList.contains('correct') || btn.classList.contains('wrong')) return;
+      if (opt === q.correct) {
+        btn.classList.add('correct');
+        huntScoreVal++;
+        document.getElementById('huntFeedback').textContent = '✅ Yes! Well done! 🎉';
+        speak('Yes! Correct!');
+        celebrate('🌟 Yes!');
+        setTimeout(() => { huntIdx++; renderHunt(); }, 1500);
+      } else {
+        btn.classList.add('wrong');
+        document.getElementById('huntFeedback').textContent = '❌ Try again!';
+        speak('Try again!');
+        setTimeout(() => btn.classList.remove('wrong'), 700);
+      }
+    });
+    opts.appendChild(btn);
+  });
+}
+
+// =========== SECTION 4: DRAG ===========
+const DRAG_BASKETS = ['Red','Yellow','Blue','Green','Orange','Purple','Pink'];
+const BASKET_EMOJIS = ['🍎','🌞','🌊','🐸','🍊','🍇','🌸'];
+let dragScoreVal = 0;
+let dragTotal = 14;
+
+function initDrag() {
+  dragScoreVal = 0;
+  document.getElementById('dragScore').textContent = `🎯 Score: 0 / ${dragTotal}`;
+  const source = document.getElementById('dragSource');
+  const basketsRow = document.getElementById('basketsRow');
+  source.innerHTML = ''; basketsRow.innerHTML = '';
+
+  // Create 2 balls per colour
+  const balls = [];
+  COLOURS.forEach(c => {
+    for (let i = 0; i < 2; i++) balls.push(c);
+  });
+  balls.sort(() => Math.random() - 0.5);
+
+  balls.forEach((c, i) => {
+    const ball = document.createElement('div');
+    ball.className = 'drag-ball';
+    ball.draggable = true;
+    ball.dataset.colour = c.name;
+    ball.style.background = c.hex;
+    ball.textContent = c.emoji;
+    ball.id = `ball-${i}`;
+    ball.addEventListener('dragstart', (e) => {
+      e.dataTransfer.setData('text/plain', ball.id + '|' + c.name);
+      ball.classList.add('dragging');
+    });
+    ball.addEventListener('dragend', () => ball.classList.remove('dragging'));
+    source.appendChild(ball);
+  });
+
+  // Touch support
+  enableTouch(source);
+
+  DRAG_BASKETS.forEach((name, i) => {
+    const c = COLOURS.find(x => x.name === name);
+    const basket = document.createElement('div');
+    basket.className = 'basket';
+    basket.innerHTML = `
+      <div class="basket-lid" style="background:${c.hex}"></div>
+      <div class="basket-label">${BASKET_EMOJIS[i]} ${name}</div>
+      <div class="basket-body" id="basket-${name}" style="color:${c.hex}"></div>
+    `;
+    const body = basket.querySelector('.basket-body');
+    body.addEventListener('dragover', (e) => { e.preventDefault(); body.classList.add('over'); });
+    body.addEventListener('dragleave', () => body.classList.remove('over'));
+    body.addEventListener('drop', (e) => {
+      e.preventDefault();
+      body.classList.remove('over');
+      const [ballId, ballColour] = e.dataTransfer.getData('text/plain').split('|');
+      const ballEl = document.getElementById(ballId);
+      if (!ballEl) return;
+      if (ballColour === name) {
+        const placed = document.createElement('div');
+        placed.className = 'placed-ball';
+        placed.style.background = COLOURS.find(x => x.name === name).hex;
+        body.appendChild(placed);
+        ballEl.remove();
+        body.classList.add('correct-flash');
+        setTimeout(() => body.classList.remove('correct-flash'), 400);
+        dragScoreVal++;
+        document.getElementById('dragScore').textContent = `🎯 Score: ${dragScoreVal} / ${dragTotal}`;
+        celebrate('🎯 Yes!');
+        if (dragScoreVal === dragTotal) {
+          setTimeout(() => speak('Amazing! You sorted all the colours!'), 300);
+        }
+      } else {
+        body.classList.add('wrong-flash');
+        setTimeout(() => body.classList.remove('wrong-flash'), 400);
+        speak('Try again!');
+      }
+    });
+    basketsRow.appendChild(basket);
+  });
+}
+
+function enableTouch(container) {
+  let dragged = null;
+  container.addEventListener('touchstart', (e) => {
+    const t = e.target.closest('.drag-ball');
+    if (!t) return;
+    dragged = t;
+    t.classList.add('dragging');
+  }, { passive: true });
+  document.addEventListener('touchmove', (e) => {
+    if (!dragged) return;
+    e.preventDefault();
+    const touch = e.touches[0];
+    dragged.style.position = 'fixed';
+    dragged.style.left = (touch.clientX - 30) + 'px';
+    dragged.style.top = (touch.clientY - 30) + 'px';
+    dragged.style.zIndex = 1000;
+    dragged.style.pointerEvents = 'none';
+  }, { passive: false });
+  document.addEventListener('touchend', (e) => {
+    if (!dragged) return;
+    dragged.style.position = '';
+    dragged.style.left = '';
+    dragged.style.top = '';
+    dragged.style.zIndex = '';
+    dragged.style.pointerEvents = '';
+    dragged.classList.remove('dragging');
+    const touch = e.changedTouches[0];
+    const el = document.elementFromPoint(touch.clientX, touch.clientY);
+    const body = el ? el.closest('.basket-body') : null;
+    if (body) {
+      const basketName = body.id.replace('basket-', '');
+      const ballColour = dragged.dataset.colour;
+      if (ballColour === basketName) {
+        const placed = document.createElement('div');
+        placed.className = 'placed-ball';
+        placed.style.background = COLOURS.find(x => x.name === basketName).hex;
+        body.appendChild(placed);
+        dragged.remove();
+        body.classList.add('correct-flash');
+        setTimeout(() => body.classList.remove('correct-flash'), 400);
+        dragScoreVal++;
+        document.getElementById('dragScore').textContent = `🎯 Score: ${dragScoreVal} / ${dragTotal}`;
+        celebrate('🎯 Yes!');
+      } else {
+        body.classList.add('wrong-flash');
+        setTimeout(() => body.classList.remove('wrong-flash'), 400);
+      }
+    }
+    dragged = null;
+  });
+}
+
+// =========== SECTION 5: SENTENCES ===========
+const SENTENCES = [
+  { emoji: '🍎', before: 'The apple is', after: '.', answer: 'Red', context: 'apples are red' },
+  { emoji: '🍌', before: 'The banana is', after: '.', answer: 'Yellow', context: 'bananas are yellow' },
+  { emoji: '🌊', before: 'The sea is', after: '.', answer: 'Blue', context: 'the sea is blue' },
+  { emoji: '🐸', before: 'The frog is', after: '.', answer: 'Green', context: 'frogs are green' },
+  { emoji: '🍇', before: 'The grapes are', after: '.', answer: 'Purple', context: 'grapes are purple' },
+  { emoji: '🍊', before: 'The orange is', after: '.', answer: 'Orange', context: 'oranges are orange' },
+  { emoji: '🌸', before: 'The flower is', after: '.', answer: 'Pink', context: 'cherry blossoms are pink' },
+  { emoji: '☁️', before: 'The cloud is', after: '.', answer: 'White', context: 'clouds are white' },
+];
+
+function initSentences() {
+  const wrap = document.getElementById('sentencesWrap');
+  wrap.innerHTML = '';
+  SENTENCES.forEach((s, i) => {
+    const opts = [...COLOURS.map(c => c.name), 'White', 'Black'];
+    const shuffled = opts.sort(() => Math.random() - 0.5);
+    const card = document.createElement('div');
+    card.className = 'sentence-card';
+    const selectOpts = shuffled.map(o => `<option value="${o}">${o}</option>`).join('');
+    card.innerHTML = `
+      <div class="sentence-emoji">${s.emoji}</div>
+      <div class="sentence-text">
+        ${s.before}
+        <select class="colour-select" id="sel-${i}">
+          <option value="">-- choose --</option>
+          ${selectOpts}
+        </select>
+        ${s.after}
+      </div>
+    `;
+    wrap.appendChild(card);
+  });
+  document.getElementById('sentResult').textContent = '';
+  document.querySelectorAll('.colour-select').forEach(s => {
+    s.classList.remove('correct','wrong');
+  });
+}
+
+function checkSentences() {
+  let correct = 0;
+  SENTENCES.forEach((s, i) => {
+    const sel = document.getElementById(`sel-${i}`);
+    if (!sel) return;
+    sel.classList.remove('correct','wrong');
+    if (sel.value === s.answer) {
+      sel.classList.add('correct');
+      correct++;
+    } else if (sel.value !== '') {
+      sel.classList.add('wrong');
+    }
+  });
+  const res = document.getElementById('sentResult');
+  const total = SENTENCES.length;
+  if (correct === total) {
+    res.textContent = `🎉 Amazing! ${correct}/${total} correct! You're a colour star! 🌟`;
+    res.style.color = '#2ECC40';
+    celebrate('🌟 Perfect!');
+    speak(`Fantastic! All correct!`);
+  } else {
+    res.textContent = `✅ ${correct} out of ${total} correct! Try again!`;
+    res.style.color = '#FF8C00';
+    speak(`${correct} correct! Try again!`);
+  }
+}
+
+// =========== SECTION 6: QUIZ ===========
+let quizQuestions = [];
+let quizIdx = 0;
+let quizScore = 0;
+
+function buildQuiz() {
+  quizQuestions = [];
+  COLOURS.forEach(c => {
+    // What colour is this swatch?
+    const wrong = COLOURS.filter(x => x.name !== c.name).sort(() => Math.random() - 0.5).slice(0, 3).map(x => x.name);
+    const opts = [...wrong, c.name].sort(() => Math.random() - 0.5);
+    quizQuestions.push({ type: 'swatch', colour: c, opts, answer: c.name });
+    // What is the colour of [object]?
+    const obj = c.objects[Math.floor(Math.random() * c.objects.length)];
+    const wrong2 = COLOURS.filter(x => x.name !== c.name).sort(() => Math.random() - 0.5).slice(0, 3).map(x => x.name);
+    const opts2 = [...wrong2, c.name].sort(() => Math.random() - 0.5);
+    quizQuestions.push({ type: 'object', colour: c, obj, opts: opts2, answer: c.name });
+  });
+  quizQuestions = quizQuestions.sort(() => Math.random() - 0.5).slice(0, 10);
+  quizIdx = 0; quizScore = 0;
+  renderQuiz();
+}
+
+function renderQuiz() {
+  const content = document.getElementById('quizContent');
+  document.getElementById('quizFill').style.width = `${(quizIdx / quizQuestions.length) * 100}%`;
+  document.getElementById('quizScoreDisplay').textContent = `⭐ ${quizScore} correct`;
+
+  if (quizIdx >= quizQuestions.length) {
+    content.innerHTML = `
+      <div class="quiz-done">
+        <div class="big-emoji">${quizScore >= 8 ? '🏆' : quizScore >= 5 ? '⭐' : '💪'}</div>
+        <h2>${quizScore >= 8 ? 'Amazing!' : quizScore >= 5 ? 'Good job!' : 'Keep practising!'}</h2>
+        <p style="font-size:1.2rem;color:#666;margin:8px 0 24px">You got <strong>${quizScore}</strong> out of <strong>${quizQuestions.length}</strong>!</p>
+        <button class="reset-btn" onclick="buildQuiz()">🔄 Play Again!</button>
+      </div>`;
+    speak(`You got ${quizScore} out of ${quizQuestions.length}!`);
+    return;
+  }
+
+  const q = quizQuestions[quizIdx];
+  const questionText = q.type === 'swatch'
+    ? 'What colour is this?'
+    : `What colour is a ${q.obj}?`;
+
+  content.innerHTML = `
+    <div class="quiz-q">
+      <div class="quiz-num">Question ${quizIdx + 1} of ${quizQuestions.length}</div>
+      ${q.type === 'swatch' ? `<div class="quiz-swatch" style="background:${q.colour.hex}"></div>` : `<div style="font-size:4rem;margin-bottom:16px">${q.colour.emoji}</div>`}
+      <div class="quiz-question">${questionText}</div>
+      <div class="quiz-opts" id="quizOpts">
+        ${q.opts.map(o => `<button class="quiz-opt" onclick="answerQuiz('${o}','${q.answer}')">${o}</button>`).join('')}
+      </div>
+    </div>`;
+  speak(questionText);
+}
+
+function answerQuiz(chosen, answer) {
+  const btns = document.querySelectorAll('.quiz-opt');
+  btns.forEach(b => {
+    b.disabled = true;
+    if (b.textContent === answer) b.classList.add('correct');
+    else if (b.textContent === chosen && chosen !== answer) b.classList.add('wrong');
+  });
+  if (chosen === answer) {
+    quizScore++;
+    celebrate('⭐ Correct!');
+    speak('Correct!');
+  } else {
+    speak(`The answer is ${answer}`);
+  }
+  quizIdx++;
+  setTimeout(renderQuiz, 1200);
+}
+
+// =========== SECTION 7: PAINT ===========
+const PAINT_ITEMS = [
+  { emoji: '🐬', name: 'dolphin',    correct: 'Blue',   desc: 'Dolphins live in the sea!' },
+  { emoji: '🌻', name: 'sunflower',  correct: 'Yellow', desc: 'Sunflowers are yellow!' },
+  { emoji: '🦁', name: 'lion',       correct: 'Orange', desc: 'Lions are orange!' },
+  { emoji: '🐊', name: 'crocodile',  correct: 'Green',  desc: 'Crocodiles are green!' },
+  { emoji: '🦩', name: 'flamingo',   correct: 'Pink',   desc: 'Flamingos are pink!' },
+  { emoji: '🍅', name: 'tomato',     correct: 'Red',    desc: 'Tomatoes are red!' },
+  { emoji: '🍆', name: 'eggplant',   correct: 'Purple', desc: 'Eggplants are purple!' },
+  { emoji: '🥕', name: 'carrot',     correct: 'Orange', desc: 'Carrots are orange!' },
+];
+let selectedPaintColour = null;
+
+function initPaint() {
+  selectedPaintColour = null;
+  const palette = document.getElementById('paintPalette');
+  palette.innerHTML = '';
+  [...COLOURS, { name: 'White', hex: '#F0F0F0' }, { name: 'Black', hex: '#222' }].forEach(c => {
+    const btn = document.createElement('div');
+    btn.className = 'paint-colour';
+    btn.style.background = c.hex;
+    btn.title = c.name;
+    btn.dataset.name = c.name;
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.paint-colour').forEach(b => b.classList.remove('active-paint'));
+      btn.classList.add('active-paint');
+      selectedPaintColour = c;
+      speak(c.name);
+      document.getElementById('paintResult').textContent = '';
+    });
+    palette.appendChild(btn);
+  });
+
+  const grid = document.getElementById('paintGrid');
+  grid.innerHTML = '';
+  PAINT_ITEMS.forEach((item, i) => {
+    const card = document.createElement('div');
+    card.className = 'paint-card greyed';
+    card.id = `paint-card-${i}`;
+    card.innerHTML = `
+      <div class="paint-top" style="background:#eee">${item.emoji}</div>
+      <div class="paint-bottom">${item.name}</div>
+    `;
+    card.addEventListener('click', () => {
+      if (!selectedPaintColour) {
+        speak('Choose a colour first!');
+        document.getElementById('paintResult').textContent = '👆 Choose a colour first!';
+        return;
+      }
+      const top = card.querySelector('.paint-top');
+      top.style.background = selectedPaintColour.hex;
+      card.classList.remove('greyed');
+      const result = document.getElementById('paintResult');
+      if (selectedPaintColour.name === item.correct) {
+        result.textContent = `✅ ${item.desc}`;
+        result.style.color = '#2ECC40';
+        celebrate('🎨 Correct!');
+        speak(item.desc);
+        card.style.borderColor = '#2ECC40';
+      } else {
+        result.textContent = `🤔 Hmm… is a ${item.name} really ${selectedPaintColour.name}? Try again!`;
+        result.style.color = '#FF8C00';
+        speak(`Is a ${item.name} really ${selectedPaintColour.name}?`);
+      }
+    });
+    grid.appendChild(card);
+  });
+}
+
+// =========== INIT ALL ===========
+initIntro();
+initMatch();
+initHunt();
+initDrag();
+initSentences();
+buildQuiz();
+initPaint();
+
+// Re-init hunt on tab switch
+document.querySelector('[data-tab="hunt"]').addEventListener('click', () => {
+  if (huntIdx >= huntQuestions.length) initHunt();
+});
+</script>
+</body>
+</html>

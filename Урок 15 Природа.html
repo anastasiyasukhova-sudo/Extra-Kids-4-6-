@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌿 Nature English Adventures!</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sky: #87CEEB;
+    --grass: #5DBB63;
+    --sun: #FFD700;
+    --cloud: #fff;
+    --flower: #FF6B9D;
+    --tree: #4A7C59;
+    --rainbow1: #FF6B6B;
+    --rainbow2: #FFE66D;
+    --rainbow3: #4ECDC4;
+    --bg: #F0FFF4;
+    --card: #ffffff;
+    --text: #2d4a3e;
+    --accent: #FF6B9D;
+    --correct: #5DBB63;
+    --wrong: #FF6B6B;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: linear-gradient(180deg, #c9f0ff 0%, #e8fbe8 50%, #f0fff4 100%);
+    min-height: 100vh;
+    color: var(--text);
+    overflow-x: hidden;
+  }
+
+  /* floating bg elements */
+  body::before {
+    content: '☁️ ☁️ ⭐ ☁️';
+    position: fixed; top: 10px; left: 0; right: 0;
+    text-align: center; font-size: 2rem;
+    opacity: 0.3; pointer-events: none; z-index: 0;
+    letter-spacing: 4rem;
+    animation: drift 20s linear infinite;
+  }
+  @keyframes drift { from{transform:translateX(-50px)} to{transform:translateX(50px)} }
+
+  header {
+    text-align: center;
+    padding: 2rem 1rem 1rem;
+    position: relative;
+    z-index: 1;
+  }
+  header h1 {
+    font-family: 'Baloo 2', cursive;
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    font-weight: 800;
+    background: linear-gradient(135deg, #2d9e4f, #0066cc, #cc3388);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: none;
+    filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.15));
+  }
+  header p {
+    font-size: 1.1rem;
+    color: #4a7c59;
+    margin-top: .4rem;
+    font-weight: 600;
+  }
+
+  .exercises {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 1rem 1rem 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .card {
+    background: white;
+    border-radius: 24px;
+    padding: 1.8rem;
+    box-shadow: 0 8px 32px rgba(45,74,62,.12), 0 2px 8px rgba(45,74,62,.08);
+    border: 3px solid transparent;
+    transition: transform .3s, box-shadow .3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 6px;
+  }
+  .card:nth-child(1)::before { background: linear-gradient(90deg,#FFD700,#FF6B6B); }
+  .card:nth-child(2)::before { background: linear-gradient(90deg,#4ECDC4,#45B7D1); }
+  .card:nth-child(3)::before { background: linear-gradient(90deg,#FF6B9D,#FFE66D); }
+  .card:nth-child(4)::before { background: linear-gradient(90deg,#5DBB63,#4A7C59); }
+  .card:nth-child(5)::before { background: linear-gradient(90deg,#A855F7,#EC4899); }
+  .card:nth-child(6)::before { background: linear-gradient(90deg,#F97316,#EF4444); }
+  .card:hover { transform: translateY(-3px); box-shadow: 0 16px 48px rgba(45,74,62,.18); }
+
+  .task-header {
+    display: flex;
+    align-items: center;
+    gap: .8rem;
+    margin-bottom: 1.2rem;
+  }
+  .task-num {
+    background: var(--text);
+    color: white;
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Baloo 2', cursive;
+    font-weight: 800; font-size: 1rem;
+    flex-shrink: 0;
+  }
+  .task-title {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .task-instruction {
+    font-size: .95rem;
+    color: #666;
+    margin-bottom: 1.2rem;
+    padding: .6rem 1rem;
+    background: #f8fff8;
+    border-radius: 10px;
+    border-left: 4px solid var(--grass);
+  }
+
+  /* ===== TASK 1: Listen & Repeat ===== */
+  .word-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .8rem;
+    justify-content: center;
+  }
+  .word-card {
+    background: linear-gradient(135deg, #f0fff4, #e8f8ff);
+    border: 2.5px solid #d0eedd;
+    border-radius: 16px;
+    padding: .8rem 1.2rem;
+    cursor: pointer;
+    transition: all .2s;
+    text-align: center;
+    min-width: 120px;
+    user-select: none;
+  }
+  .word-card:hover, .word-card:active {
+    transform: scale(1.08);
+    border-color: var(--grass);
+    box-shadow: 0 4px 16px rgba(93,187,99,.3);
+  }
+  .word-card.playing {
+    background: linear-gradient(135deg, #d4fce4, #d0f0ff);
+    border-color: var(--grass);
+    animation: pulse .4s ease;
+  }
+  .word-card .emoji { font-size: 2.4rem; display: block; margin-bottom: .3rem; }
+  .word-card .word { font-weight: 700; font-size: .95rem; color: var(--text); }
+  @keyframes pulse { 0%{transform:scale(1)} 50%{transform:scale(1.12)} 100%{transform:scale(1.08)} }
+
+  /* ===== TASK 2: Matching ===== */
+  .match-area {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+  .match-col { display: flex; flex-direction: column; gap: .6rem; }
+  .match-col h3 {
+    font-size: .85rem; text-transform: uppercase; letter-spacing: .1em;
+    color: #999; font-weight: 700; text-align: center; margin-bottom: .3rem;
+  }
+  .match-item {
+    padding: .75rem 1rem;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all .2s;
+    font-weight: 700;
+    text-align: center;
+    border: 2.5px solid;
+    user-select: none;
+  }
+  .match-item.emoji-item {
+    font-size: 2rem;
+    background: #fff8f0;
+    border-color: #ffd0a0;
+    color: #333;
+  }
+  .match-item.word-item {
+    font-size: 1rem;
+    background: #f0f8ff;
+    border-color: #a0c8ff;
+    color: var(--text);
+  }
+  .match-item.selected { transform: scale(1.06); box-shadow: 0 4px 16px rgba(0,0,0,.15); }
+  .match-item.matched-ok { background: #d4fce4 !important; border-color: var(--correct) !important; color: var(--correct); cursor: default; }
+  .match-item.matched-err { background: #ffe0e0; border-color: var(--wrong); animation: shake .3s; }
+  @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
+  #match-feedback {
+    text-align: center; font-weight: 700; font-size: 1.1rem;
+    min-height: 1.6rem; margin-top: .8rem;
+  }
+  #match-reset {
+    display: block; margin: .8rem auto 0;
+    background: var(--text); color: white;
+    border: none; border-radius: 10px; padding: .5rem 1.5rem;
+    cursor: pointer; font-family: 'Nunito',sans-serif; font-weight: 700;
+    font-size: .9rem; transition: opacity .2s;
+  }
+  #match-reset:hover { opacity: .8; }
+
+  /* ===== TASK 3: I see ===== */
+  .isee-container { text-align: center; }
+  .isee-display {
+    font-family: 'Baloo 2', cursive;
+    font-size: 5rem;
+    margin: .5rem 0;
+    animation: bounce .5s ease;
+    cursor: pointer;
+    display: inline-block;
+  }
+  @keyframes bounce { 0%{transform:scale(.8)} 70%{transform:scale(1.15)} 100%{transform:scale(1)} }
+  .isee-sentence {
+    font-size: 1.6rem; font-weight: 800;
+    color: var(--text);
+    background: linear-gradient(135deg,#e8fff0,#e8f0ff);
+    border-radius: 14px; padding: .7rem 1.5rem;
+    display: inline-block; margin: .5rem 0 1rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,.08);
+  }
+  .isee-sentence span { color: var(--flower); }
+  .isee-choices { display: flex; flex-wrap: wrap; gap: .7rem; justify-content: center; margin-top: .5rem; }
+  .isee-btn {
+    padding: .65rem 1.4rem;
+    border-radius: 50px; border: 2.5px solid #ddd;
+    background: white; cursor: pointer;
+    font-family: 'Nunito',sans-serif; font-weight: 700; font-size: 1rem;
+    transition: all .2s;
+  }
+  .isee-btn:hover { transform: scale(1.06); border-color: var(--flower); }
+  .isee-btn.correct { background: #d4fce4; border-color: var(--correct); color: var(--correct); }
+  .isee-btn.wrong { background: #ffe0e0; border-color: var(--wrong); color: var(--wrong); }
+  #isee-feedback { margin-top: .6rem; font-weight: 700; font-size: 1.05rem; min-height: 1.5rem; }
+  #isee-score { font-size: .9rem; color: #888; margin-top: .3rem; }
+
+  /* ===== TASK 4: Build the picture ===== */
+  .build-area {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+  }
+  .build-scene {
+    width: 100%; max-width: 480px;
+    height: 260px;
+    background: linear-gradient(180deg, #87CEEB 0%, #87CEEB 55%, #7ec87e 55%, #5DBB63 100%);
+    border-radius: 20px;
+    border: 3px solid #b0d8b0;
+    position: relative;
+    overflow: hidden;
+    box-shadow: inset 0 4px 12px rgba(0,0,0,.1);
+  }
+  .build-scene .drop-zone {
+    position: absolute;
+    width: 80px; height: 80px;
+    border: 3px dashed rgba(255,255,255,.7);
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2.5rem;
+    transition: all .2s;
+    background: rgba(255,255,255,.15);
+  }
+  .build-scene .drop-zone.over {
+    border-color: #fff;
+    background: rgba(255,255,255,.35);
+    transform: scale(1.08);
+  }
+  .build-scene .drop-zone.placed {
+    border-style: solid;
+    border-color: rgba(255,255,255,.5);
+    background: rgba(255,255,255,.2);
+  }
+  .dz-sun { top: 10px; right: 20px; }
+  .dz-cloud { top: 10px; left: 30px; }
+  .dz-tree { bottom: 10px; right: 40px; }
+  .dz-flower { bottom: 10px; left: 30px; }
+
+  .build-items {
+    display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;
+  }
+  .drag-item {
+    background: white;
+    border: 2.5px solid #ddd;
+    border-radius: 14px;
+    padding: .7rem 1.1rem;
+    cursor: grab;
+    font-size: 2rem;
+    text-align: center;
+    transition: all .2s;
+    user-select: none;
+    min-width: 80px;
+  }
+  .drag-item:hover { transform: scale(1.1); border-color: var(--grass); box-shadow: 0 4px 12px rgba(0,0,0,.12); }
+  .drag-item.dragging { opacity: .5; cursor: grabbing; }
+  .drag-item.used { opacity: .3; pointer-events: none; }
+  .drag-item .di-label { font-size: .75rem; font-weight: 700; color: #666; display: block; margin-top: .2rem; }
+  #build-feedback { text-align:center; font-weight:700; font-size:1.05rem; margin-top:.5rem; min-height:1.5rem; }
+  #build-reset {
+    display:block; margin:.6rem auto 0;
+    background: var(--text); color:white;
+    border:none; border-radius:10px; padding:.5rem 1.5rem;
+    cursor:pointer; font-family:'Nunito',sans-serif; font-weight:700; font-size:.9rem;
+  }
+  #build-reset:hover { opacity:.8; }
+
+  /* ===== TASK 5: Guess ===== */
+  .guess-container { text-align: center; }
+  .guess-emoji {
+    font-size: 7rem;
+    display: block;
+    animation: wiggle 1s ease infinite alternate;
+    cursor: pointer;
+    margin: .2rem auto;
+    line-height: 1;
+  }
+  @keyframes wiggle { from{transform:rotate(-5deg)scale(.95)} to{transform:rotate(5deg)scale(1.05)} }
+  .guess-question {
+    font-size: 1.3rem; font-weight: 700;
+    color: #666; margin: .6rem 0 1rem;
+  }
+  .guess-choices { display:flex; flex-wrap:wrap; gap:.7rem; justify-content:center; }
+  .guess-btn {
+    padding: .7rem 1.6rem;
+    border-radius: 50px;
+    border: 2.5px solid #ddd;
+    background: white; cursor: pointer;
+    font-family:'Nunito',sans-serif; font-weight:700; font-size:1rem;
+    transition: all .2s;
+  }
+  .guess-btn:hover { transform:scale(1.06); border-color: #a855f7; }
+  .guess-btn.correct { background:#d4fce4; border-color:var(--correct); color:var(--correct); }
+  .guess-btn.wrong { background:#ffe0e0; border-color:var(--wrong); color:var(--wrong); animation:shake .3s; }
+  #guess-feedback { margin-top:.8rem; font-weight:700; font-size:1.1rem; min-height:1.6rem; }
+  #guess-next {
+    margin-top:.6rem; display:none;
+    background: linear-gradient(135deg, #a855f7, #ec4899);
+    color:white; border:none; border-radius:50px;
+    padding:.6rem 2rem; cursor:pointer;
+    font-family:'Nunito',sans-serif; font-weight:700; font-size:1rem;
+  }
+  #guess-score { font-size:.9rem; color:#888; margin-top:.3rem; }
+
+  /* ===== TASK 6: Crazy Nature ===== */
+  .crazy-container { text-align: center; }
+  .crazy-statement {
+    font-size: 1.5rem; font-weight: 800;
+    background: linear-gradient(135deg,#fff3f0,#f0f3ff);
+    border-radius: 16px; padding: 1rem 1.5rem;
+    margin-bottom: 1.2rem; display: inline-block;
+    box-shadow: 0 2px 8px rgba(0,0,0,.08);
+    animation: pop .4s ease;
+    max-width: 100%;
+  }
+  @keyframes pop { from{transform:scale(.85)} to{transform:scale(1)} }
+  .crazy-emoji-big { font-size: 3rem; display:block; margin-bottom:.4rem; }
+  .crazy-btns { display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; }
+  .yn-btn {
+    padding: .8rem 2.5rem;
+    border-radius: 50px; border: none;
+    font-family:'Nunito',sans-serif; font-weight:800; font-size:1.2rem;
+    cursor: pointer; transition: all .2s;
+    box-shadow: 0 4px 12px rgba(0,0,0,.15);
+  }
+  .yn-yes { background: linear-gradient(135deg,#5DBB63,#3da844); color:white; }
+  .yn-no  { background: linear-gradient(135deg,#FF6B6B,#e64444); color:white; }
+  .yn-btn:hover { transform:scale(1.08) translateY(-2px); }
+  .yn-btn:active { transform:scale(.95); }
+  #crazy-feedback { margin-top:.8rem; font-weight:700; font-size:1.2rem; min-height:1.8rem; }
+  #crazy-score { font-size:.9rem; color:#888; margin-top:.3rem; }
+
+  /* Stars rating at bottom */
+  .final-stars { text-align:center; padding:1rem; font-size:2rem; display:none; }
+
+  /* Responsive */
+  @media(max-width:500px) {
+    .match-area { grid-template-columns: 1fr; }
+    .match-col:nth-child(2) { margin-top: -.5rem; }
+    .build-scene { height: 220px; }
+    .guess-emoji { font-size: 5rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🌿 Nature Adventures!</h1>
+  <p>Learn English with nature! 🌸🌳☀️🌈</p>
+</header>
+
+<div class="exercises">
+
+  <!-- ===== TASK 1 ===== -->
+  <div class="card">
+    <div class="task-header">
+      <div class="task-num">1</div>
+      <div class="task-title">👂 Listen & Repeat!</div>
+    </div>
+    <p class="task-instruction">🔊 Click on the picture to hear the word, then say it out loud!</p>
+    <div class="word-cards" id="listen-cards"></div>
+  </div>
+
+  <!-- ===== TASK 2 ===== -->
+  <div class="card">
+    <div class="task-header">
+      <div class="task-num">2</div>
+      <div class="task-title">🔗 Match the Words!</div>
+    </div>
+    <p class="task-instruction">Click a picture, then click the matching word!</p>
+    <div class="match-area">
+      <div class="match-col">
+        <h3>Pictures</h3>
+        <div id="match-emojis"></div>
+      </div>
+      <div class="match-col">
+        <h3>Words</h3>
+        <div id="match-words"></div>
+      </div>
+    </div>
+    <div id="match-feedback"></div>
+    <button id="match-reset">🔄 Play Again</button>
+  </div>
+
+  <!-- ===== TASK 3 ===== -->
+  <div class="card">
+    <div class="task-header">
+      <div class="task-num">3</div>
+      <div class="task-title">👀 I See…</div>
+    </div>
+    <p class="task-instruction">Look at the picture and complete the sentence: "I see …"</p>
+    <div class="isee-container">
+      <div class="isee-display" id="isee-emoji" onclick="speakWord(currentIsee.word)">🌸</div>
+      <div class="isee-sentence">I see <span id="isee-blank">____</span></div>
+      <div class="isee-choices" id="isee-choices"></div>
+      <div id="isee-feedback"></div>
+      <div id="isee-score"></div>
+    </div>
+  </div>
+
+  <!-- ===== TASK 4 ===== -->
+  <div class="card">
+    <div class="task-header">
+      <div class="task-num">4</div>
+      <div class="task-title">🧩 Build the Nature Picture!</div>
+    </div>
+    <p class="task-instruction">Drag each item to its place in the nature picture!</p>
+    <div class="build-area">
+      <div class="build-scene" id="build-scene">
+        <div class="drop-zone dz-sun" data-target="sun" title="sun">☀️?</div>
+        <div class="drop-zone dz-cloud" data-target="cloud" title="cloud">☁️?</div>
+        <div class="drop-zone dz-tree" data-target="tree" title="tree">🌳?</div>
+        <div class="drop-zone dz-flower" data-target="flower" title="flower">🌸?</div>
+      </div>
+      <div class="build-items" id="build-items">
+        <div class="drag-item" draggable="true" data-word="sun">☀️<span class="di-label">sun</span></div>
+        <div class="drag-item" draggable="true" data-word="cloud">⛅<span class="di-label">cloud</span></div>
+        <div class="drag-item" draggable="true" data-word="tree">🌳<span class="di-label">tree</span></div>
+        <div class="drag-item" draggable="true" data-word="flower">🌸<span class="di-label">flower</span></div>
+      </div>
+    </div>
+    <div id="build-feedback"></div>
+    <button id="build-reset">🔄 Reset</button>
+  </div>
+
+  <!-- ===== TASK 5 ===== -->
+  <div class="card">
+    <div class="task-header">
+      <div class="task-num">5</div>
+      <div class="task-title">🤔 Guess the Nature Object!</div>
+    </div>
+    <p class="task-instruction">Look at the emoji — what is it? Choose the right answer!</p>
+    <div class="guess-container">
+      <span class="guess-emoji" id="guess-emoji" onclick="speakWord(currentGuess.word)">🌈</span>
+      <div class="guess-question">What is it?</div>
+      <div class="guess-choices" id="guess-choices"></div>
+      <div id="guess-feedback"></div>
+      <button id="guess-next" onclick="nextGuess()">Next ➡️</button>
+      <div id="guess-score"></div>
+    </div>
+  </div>
+
+  <!-- ===== TASK 6 ===== -->
+  <div class="card">
+    <div class="task-header">
+      <div class="task-num">6</div>
+      <div class="task-title">🤪 Crazy Nature!</div>
+    </div>
+    <p class="task-instruction">Is this TRUE or FALSE? Press YES ✅ or NO ❌!</p>
+    <div class="crazy-container">
+      <div id="crazy-statement" class="crazy-statement">Loading...</div>
+      <div class="crazy-btns">
+        <button class="yn-btn yn-yes" onclick="answerCrazy(true)">✅ YES</button>
+        <button class="yn-btn yn-no"  onclick="answerCrazy(false)">❌ NO</button>
+      </div>
+      <div id="crazy-feedback"></div>
+      <div id="crazy-score"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ==================== DATA ====================
+const natureItems = [
+  { word: 'a flower',  short: 'flower',  emoji: '🌸', article: 'a' },
+  { word: 'a tree',    short: 'tree',    emoji: '🌳', article: 'a' },
+  { word: 'the sun',   short: 'sun',     emoji: '☀️', article: 'the' },
+  { word: 'the sky',   short: 'sky',     emoji: '🌤️', article: 'the' },
+  { word: 'a rainbow', short: 'rainbow', emoji: '🌈', article: 'a' },
+];
+
+// ==================== SPEECH ====================
+function speakWord(text) {
+  if (!window.speechSynthesis) return;
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'en-GB'; u.rate = .85; u.pitch = 1.2;
+  window.speechSynthesis.cancel();
+  window.speechSynthesis.speak(u);
+}
+
+// ==================== TASK 1 ====================
+const listenContainer = document.getElementById('listen-cards');
+natureItems.forEach(item => {
+  const div = document.createElement('div');
+  div.className = 'word-card';
+  div.innerHTML = `<span class="emoji">${item.emoji}</span><span class="word">${item.word}</span>`;
+  div.onclick = () => {
+    div.classList.add('playing');
+    speakWord(item.word);
+    setTimeout(() => div.classList.remove('playing'), 700);
+  };
+  listenContainer.appendChild(div);
+});
+
+// ==================== TASK 2: Matching ====================
+const matchData = natureItems.map(i => ({emoji: i.emoji, word: i.word, id: i.short}));
+let selectedMatch = null;
+let matchedCount = 0;
+
+function shuffleArr(arr) {
+  return [...arr].sort(() => Math.random() - .5);
+}
+
+function buildMatch() {
+  selectedMatch = null; matchedCount = 0;
+  document.getElementById('match-feedback').textContent = '';
+  const emojiCol = document.getElementById('match-emojis');
+  const wordCol  = document.getElementById('match-words');
+  emojiCol.innerHTML = ''; wordCol.innerHTML = '';
+
+  shuffleArr(matchData).forEach(item => {
+    const div = document.createElement('div');
+    div.className = 'match-item emoji-item';
+    div.dataset.id = item.id;
+    div.dataset.type = 'emoji';
+    div.textContent = item.emoji;
+    div.onclick = () => handleMatchClick(div);
+    emojiCol.appendChild(div);
+  });
+  shuffleArr(matchData).forEach(item => {
+    const div = document.createElement('div');
+    div.className = 'match-item word-item';
+    div.dataset.id = item.id;
+    div.dataset.type = 'word';
+    div.textContent = item.word;
+    div.onclick = () => handleMatchClick(div);
+    wordCol.appendChild(div);
+  });
+}
+
+function handleMatchClick(el) {
+  if (el.classList.contains('matched-ok')) return;
+  const fb = document.getElementById('match-feedback');
+  if (!selectedMatch) {
+    selectedMatch = el;
+    el.classList.add('selected');
+    return;
+  }
+  if (selectedMatch === el) { selectedMatch.classList.remove('selected'); selectedMatch = null; return; }
+  if (selectedMatch.dataset.type === el.dataset.type) {
+    selectedMatch.classList.remove('selected'); selectedMatch = el;
+    document.querySelectorAll('.match-item.selected').forEach(x => { if(x!==el) x.classList.remove('selected'); });
+    el.classList.add('selected');
+    return;
+  }
+  if (selectedMatch.dataset.id === el.dataset.id) {
+    [selectedMatch, el].forEach(x => { x.classList.remove('selected'); x.classList.add('matched-ok'); x.style.pointerEvents='none'; });
+    matchedCount++;
+    speakWord(el.dataset.type === 'word' ? el.textContent : selectedMatch.textContent);
+    fb.style.color = 'var(--correct)';
+    fb.textContent = matchedCount === matchData.length ? '🎉 Great job! All matched!' : '✅ Correct!';
+    selectedMatch = null;
+  } else {
+    [selectedMatch, el].forEach(x => { x.classList.remove('selected'); x.classList.add('matched-err'); setTimeout(()=>x.classList.remove('matched-err'),500); });
+    fb.style.color = 'var(--wrong)'; fb.textContent = '❌ Try again!';
+    selectedMatch = null;
+  }
+}
+document.getElementById('match-reset').onclick = buildMatch;
+buildMatch();
+
+// ==================== TASK 3: I See ====================
+let iseeIndex = 0; let iseeScore = 0; let iseeTotal = 0;
+const iseeOrder = shuffleArr(natureItems);
+let currentIsee = iseeOrder[0];
+
+function loadIsee() {
+  currentIsee = iseeOrder[iseeIndex % iseeOrder.length];
+  document.getElementById('isee-emoji').textContent = currentIsee.emoji;
+  document.getElementById('isee-blank').textContent = '____';
+  document.getElementById('isee-feedback').textContent = '';
+  const choices = shuffleArr([currentIsee, ...natureItems.filter(x=>x!==currentIsee).slice(0,3)]);
+  const choicesDiv = document.getElementById('isee-choices');
+  choicesDiv.innerHTML = '';
+  choices.forEach(item => {
+    const btn = document.createElement('button');
+    btn.className = 'isee-btn';
+    btn.textContent = item.word;
+    btn.onclick = () => checkIsee(btn, item);
+    choicesDiv.appendChild(btn);
+  });
+  updateIseeScore();
+}
+
+function checkIsee(btn, item) {
+  if (document.getElementById('isee-feedback').textContent) return;
+  iseeTotal++;
+  if (item === currentIsee) {
+    btn.classList.add('correct');
+    document.getElementById('isee-blank').textContent = currentIsee.word;
+    document.getElementById('isee-feedback').style.color = 'var(--correct)';
+    document.getElementById('isee-feedback').textContent = '⭐ I see ' + currentIsee.word + '!';
+    speakWord('I see ' + currentIsee.word);
+    iseeScore++;
+    setTimeout(() => { iseeIndex++; loadIsee(); }, 1600);
+  } else {
+    btn.classList.add('wrong');
+    document.getElementById('isee-feedback').style.color = 'var(--wrong)';
+    document.getElementById('isee-feedback').textContent = '❌ Try again!';
+    setTimeout(() => { btn.classList.remove('wrong'); document.getElementById('isee-feedback').textContent=''; }, 700);
+  }
+  updateIseeScore();
+}
+function updateIseeScore() {
+  document.getElementById('isee-score').textContent = iseeTotal > 0 ? `⭐ ${iseeScore} / ${iseeTotal}` : '';
+}
+loadIsee();
+
+// ==================== TASK 4: Build ====================
+let draggedItem = null;
+let buildPlaced = 0;
+const emojiMap = { sun:'☀️', cloud:'⛅', tree:'🌳', flower:'🌸' };
+
+document.querySelectorAll('.drag-item').forEach(item => {
+  item.addEventListener('dragstart', e => {
+    draggedItem = item; item.classList.add('dragging');
+    e.dataTransfer.setData('text/plain', item.dataset.word);
+  });
+  item.addEventListener('dragend', () => item.classList.remove('dragging'));
+  // Touch support
+  item.addEventListener('touchstart', touchStart, {passive:true});
+  item.addEventListener('touchmove', touchMove, {passive:false});
+  item.addEventListener('touchend', touchEnd);
+});
+
+document.querySelectorAll('.drop-zone').forEach(zone => {
+  zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('over'); });
+  zone.addEventListener('dragleave', () => zone.classList.remove('over'));
+  zone.addEventListener('drop', e => {
+    e.preventDefault(); zone.classList.remove('over');
+    const word = e.dataTransfer.getData('text/plain');
+    handleDrop(zone, word);
+  });
+});
+
+let touchEl = null, touchClone = null;
+function touchStart(e) {
+  touchEl = e.currentTarget;
+  const r = touchEl.getBoundingClientRect();
+  touchClone = touchEl.cloneNode(true);
+  touchClone.style.cssText = `position:fixed;opacity:.7;pointer-events:none;z-index:9999;width:${r.width}px;transition:none;`;
+  document.body.appendChild(touchClone);
+}
+function touchMove(e) {
+  if(!touchEl) return; e.preventDefault();
+  const t = e.touches[0];
+  touchClone.style.left = (t.clientX - 40)+'px';
+  touchClone.style.top  = (t.clientY - 40)+'px';
+}
+function touchEnd(e) {
+  if(!touchEl) return;
+  const t = e.changedTouches[0];
+  touchClone.remove(); touchClone=null;
+  const el = document.elementFromPoint(t.clientX, t.clientY);
+  const zone = el?.closest('.drop-zone');
+  if(zone) handleDrop(zone, touchEl.dataset.word);
+  touchEl=null;
+}
+
+function handleDrop(zone, word) {
+  const target = zone.dataset.target;
+  const fb = document.getElementById('build-feedback');
+  if (zone.classList.contains('placed')) return;
+  if (word === target) {
+    zone.textContent = emojiMap[word];
+    zone.classList.add('placed');
+    speakWord(word);
+    const usedItem = document.querySelector(`.drag-item[data-word="${word}"]`);
+    if(usedItem) usedItem.classList.add('used');
+    buildPlaced++;
+    fb.style.color = 'var(--correct)';
+    fb.textContent = buildPlaced === 4 ? '🎉 Amazing! The nature picture is complete!' : '✅ Great!';
+  } else {
+    fb.style.color = 'var(--wrong)';
+    fb.textContent = '❌ Hmm, try another spot!';
+    setTimeout(() => fb.textContent = '', 900);
+  }
+}
+
+document.getElementById('build-reset').onclick = () => {
+  buildPlaced = 0;
+  document.getElementById('build-feedback').textContent = '';
+  document.querySelectorAll('.drop-zone').forEach(z => {
+    z.classList.remove('placed', 'over');
+    const txt = z.classList.contains('dz-sun') ? '☀️?' :
+                z.classList.contains('dz-cloud') ? '☁️?' :
+                z.classList.contains('dz-tree') ? '🌳?' : '🌸?';
+    z.textContent = txt;
+  });
+  document.querySelectorAll('.drag-item').forEach(i => i.classList.remove('used'));
+};
+
+// ==================== TASK 5: Guess ====================
+const guessItems = [...natureItems];
+let guessOrder = shuffleArr(guessItems);
+let guessIdx = 0; let guessScore = 0; let guessTotal = 0;
+let currentGuess = guessOrder[0];
+
+function loadGuess() {
+  currentGuess = guessOrder[guessIdx % guessOrder.length];
+  document.getElementById('guess-emoji').textContent = currentGuess.emoji;
+  document.getElementById('guess-feedback').textContent = '';
+  document.getElementById('guess-next').style.display = 'none';
+  const wrong = shuffleArr(guessItems.filter(x=>x!==currentGuess)).slice(0,3);
+  const choices = shuffleArr([currentGuess, ...wrong]);
+  const choicesDiv = document.getElementById('guess-choices');
+  choicesDiv.innerHTML = '';
+  choices.forEach(item => {
+    const btn = document.createElement('button');
+    btn.className = 'guess-btn';
+    btn.textContent = item.word;
+    btn.onclick = () => checkGuess(btn, item);
+    choicesDiv.appendChild(btn);
+  });
+  updateGuessScore();
+}
+function checkGuess(btn, item) {
+  if (document.getElementById('guess-next').style.display === 'block') return;
+  guessTotal++;
+  const fb = document.getElementById('guess-feedback');
+  if (item === currentGuess) {
+    btn.classList.add('correct');
+    fb.style.color = 'var(--correct)';
+    fb.textContent = `✅ Yes! It's ${currentGuess.word}!`;
+    speakWord("It's " + currentGuess.word);
+    guessScore++;
+    document.getElementById('guess-next').style.display = 'inline-block';
+  } else {
+    btn.classList.add('wrong');
+    fb.style.color = 'var(--wrong)';
+    fb.textContent = `❌ Not quite! Try again!`;
+    setTimeout(() => { btn.classList.remove('wrong'); fb.textContent=''; }, 800);
+    guessTotal--; // don't count wrong attempts, only first correct
+  }
+  updateGuessScore();
+}
+function nextGuess() { guessIdx++; loadGuess(); }
+function updateGuessScore() {
+  document.getElementById('guess-score').textContent = guessTotal > 0 ? `⭐ ${guessScore} / ${guessTotal}` : '';
+}
+loadGuess();
+
+// ==================== TASK 6: Crazy Nature ====================
+const crazyStatements = [
+  { text: 'The sun is yellow. ☀️', emoji:'☀️', correct: true },
+  { text: 'The sun is purple! ☀️💜', emoji:'☀️', correct: false },
+  { text: 'Trees are green. 🌳', emoji:'🌳', correct: true },
+  { text: 'Trees are blue! 🌳💙', emoji:'🌳', correct: false },
+  { text: 'The sky is blue. 🌤️', emoji:'🌤️', correct: true },
+  { text: 'The sky is orange! 🌤️🍊', emoji:'🌤️', correct: false },
+  { text: 'Flowers are pretty. 🌸', emoji:'🌸', correct: true },
+  { text: 'Flowers can fly! 🌸✈️', emoji:'🌸', correct: false },
+  { text: 'A rainbow has many colours. 🌈', emoji:'🌈', correct: true },
+  { text: 'Rainbows are black! 🌈🖤', emoji:'🌈', correct: false },
+  { text: 'Grass is green. 🌿', emoji:'🌿', correct: true },
+  { text: 'Grass is pink! 🌿🩷', emoji:'🌿', correct: false },
+  { text: 'A cloud is white. ☁️', emoji:'☁️', correct: true },
+  { text: 'Clouds are square! ☁️📦', emoji:'☁️', correct: false },
+];
+let crazyOrder = shuffleArr(crazyStatements);
+let crazyIdx = 0; let crazyScore = 0; let crazyTotal = 0;
+
+function loadCrazy() {
+  const s = crazyOrder[crazyIdx % crazyOrder.length];
+  document.getElementById('crazy-statement').innerHTML = s.text;
+  document.getElementById('crazy-feedback').textContent = '';
+  document.querySelectorAll('.yn-btn').forEach(b => b.disabled = false);
+  updateCrazyScore();
+  return s;
+}
+
+function answerCrazy(answer) {
+  const s = crazyOrder[crazyIdx % crazyOrder.length];
+  const fb = document.getElementById('crazy-feedback');
+  crazyTotal++;
+  document.querySelectorAll('.yn-btn').forEach(b => b.disabled = true);
+  if (answer === s.correct) {
+    fb.style.color = 'var(--correct)';
+    fb.textContent = answer ? '✅ Yes, that\'s TRUE! 🎉' : '✅ Right! That\'s NOT true! 😄';
+    speakWord(answer ? 'Yes! Correct!' : 'No! That is not true!');
+    crazyScore++;
+  } else {
+    fb.style.color = 'var(--wrong)';
+    fb.textContent = answer ? '❌ No! That\'s crazy! 🤪' : '❌ Actually that IS true!';
+  }
+  updateCrazyScore();
+  crazyIdx++;
+  setTimeout(loadCrazy, 1800);
+}
+function updateCrazyScore() {
+  document.getElementById('crazy-score').textContent = crazyTotal > 0 ? `⭐ ${crazyScore} / ${crazyTotal}` : '';
+}
+loadCrazy();
+</script>
+</body>
+</html>

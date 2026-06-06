@@ -1,0 +1,1388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>I Can! Action Verbs</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sky: #e0f4ff;
+    --yellow: #ffe066;
+    --pink: #ffb3d9;
+    --green: #b8f0b8;
+    --orange: #ffd199;
+    --purple: #d9b8ff;
+    --blue: #99d6ff;
+    --red: #ff9999;
+    --teal: #99eedc;
+    --ink: #2d2a4a;
+    --correct: #3dcc88;
+    --wrong: #ff6b6b;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--sky);
+    background-image:
+      radial-gradient(circle at 10% 20%, rgba(255,224,102,0.3) 0%, transparent 40%),
+      radial-gradient(circle at 90% 80%, rgba(255,179,217,0.3) 0%, transparent 40%),
+      radial-gradient(circle at 50% 50%, rgba(153,214,255,0.2) 0%, transparent 60%);
+    font-family: 'Nunito', sans-serif;
+    min-height: 100vh;
+    padding: 30px 16px 80px;
+    color: var(--ink);
+  }
+
+  /* floating clouds bg */
+  .clouds {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none; z-index: 0; overflow: hidden;
+  }
+  .cloud {
+    position: absolute;
+    background: white;
+    border-radius: 50px;
+    opacity: 0.5;
+    animation: drift linear infinite;
+  }
+  .cloud::before, .cloud::after {
+    content: ''; position: absolute;
+    background: white; border-radius: 50%;
+  }
+  .cloud::before { width: 60%; height: 130%; top: -40%; left: 15%; }
+  .cloud::after  { width: 45%; height: 110%; top: -30%; right: 10%; }
+  @keyframes drift { from { transform: translateX(-200px); } to { transform: translateX(110vw); } }
+
+  .page { max-width: 780px; margin: 0 auto; position: relative; z-index: 1; }
+
+  /* ── HEADER ── */
+  .header {
+    text-align: center;
+    margin-bottom: 36px;
+    animation: bounceIn 0.7s cubic-bezier(0.34,1.56,0.64,1);
+  }
+
+  @keyframes bounceIn {
+    from { opacity: 0; transform: scale(0.6); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+
+  .header-star { font-size: 32px; display: inline-block; animation: spin 4s linear infinite; }
+  @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+  .header h1 {
+    font-family: 'Fredoka One', cursive;
+    font-size: clamp(42px, 10vw, 80px);
+    color: #ff5fa0;
+    text-shadow: 4px 4px 0 #ffb3d9, 6px 6px 0 rgba(255,95,160,0.15);
+    line-height: 1.1;
+    margin: 8px 0;
+  }
+
+  .header .subtitle {
+    font-size: 18px;
+    font-weight: 700;
+    color: #7b5ea7;
+    margin-top: 4px;
+  }
+
+  /* ── STARS BAR ── */
+  .stars-bar {
+    background: white;
+    border-radius: 40px;
+    padding: 10px 24px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    margin-bottom: 36px;
+    font-size: 15px;
+    font-weight: 700;
+    color: #7b5ea7;
+  }
+
+  .star-collected { font-size: 22px; transition: transform 0.3s; }
+  .star-collected.earned { animation: starPop 0.4s cubic-bezier(0.34,1.56,0.64,1); }
+  @keyframes starPop { 0% { transform: scale(1); } 50% { transform: scale(1.6); } 100% { transform: scale(1); } }
+
+  /* ── SECTION ── */
+  .section {
+    background: white;
+    border-radius: 28px;
+    padding: 28px 24px;
+    margin-bottom: 28px;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.08);
+    animation: slideUp 0.5s ease both;
+  }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .section:nth-child(2) { animation-delay: 0.1s; }
+  .section:nth-child(3) { animation-delay: 0.2s; }
+  .section:nth-child(4) { animation-delay: 0.3s; }
+
+  .section-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: 24px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-num {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Fredoka One', cursive;
+    font-size: 20px;
+    color: white;
+    flex-shrink: 0;
+  }
+
+  /* ── VERB CARDS GRID ── */
+  .verb-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 16px;
+  }
+
+  .verb-card {
+    border-radius: 20px;
+    padding: 16px 10px 14px;
+    text-align: center;
+    cursor: default;
+    transition: transform 0.2s;
+    box-shadow: 0 4px 0 rgba(0,0,0,0.1);
+    animation: wobbleIn 0.5s cubic-bezier(0.34,1.56,0.64,1) both;
+  }
+
+  @keyframes wobbleIn {
+    from { opacity: 0; transform: scale(0.5) rotate(-5deg); }
+    to   { opacity: 1; transform: scale(1) rotate(0deg); }
+  }
+
+  .verb-card:hover { transform: translateY(-4px) rotate(1deg); }
+
+  .verb-card .emoji-wrap {
+    font-size: 52px;
+    display: block;
+    margin-bottom: 6px;
+    animation: idle 2s ease-in-out infinite;
+  }
+
+  @keyframes idle {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(-5px); }
+  }
+
+  .verb-card .word {
+    font-family: 'Fredoka One', cursive;
+    font-size: 20px;
+    color: var(--ink);
+  }
+
+  .verb-card .sentence {
+    font-size: 12px;
+    font-weight: 600;
+    color: #888;
+    margin-top: 3px;
+  }
+
+  /* ── TASK 2: CAN / CAN'T ── */
+  .animal-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    border-radius: 16px;
+    margin-bottom: 12px;
+    font-size: 16px;
+    font-weight: 700;
+    transition: background 0.2s;
+  }
+
+  .animal-row:hover { background: #f5f5ff; }
+
+  .animal-emoji { font-size: 40px; flex-shrink: 0; }
+
+  .animal-text { flex: 1; line-height: 1.4; }
+
+  .animal-text .animal-name { color: #7b5ea7; }
+
+  .can-buttons { display: flex; gap: 8px; flex-shrink: 0; }
+
+  .can-btn {
+    padding: 8px 14px;
+    border-radius: 100px;
+    border: 2.5px solid transparent;
+    font-family: 'Fredoka One', cursive;
+    font-size: 15px;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+    background: #f0f0f8;
+    color: #7b5ea7;
+  }
+
+  .can-btn:hover { transform: scale(1.08); }
+  .can-btn:active { transform: scale(0.95); }
+  .can-btn.selected-yes { background: var(--correct); color: white; border-color: #2db874; }
+  .can-btn.selected-no  { background: var(--wrong);   color: white; border-color: #e04040; }
+  .can-btn.correct-flash { animation: flashGreen 0.4s ease; }
+  .can-btn.wrong-flash   { animation: shakeRed 0.4s ease; }
+
+  @keyframes flashGreen { 0%,100% { box-shadow: 0 0 0 rgba(61,204,136,0); } 50% { box-shadow: 0 0 18px rgba(61,204,136,0.7); } }
+  @keyframes shakeRed { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+
+  .animal-feedback {
+    font-size: 13px;
+    font-weight: 700;
+    min-height: 18px;
+    margin-top: 4px;
+  }
+  .animal-feedback.ok  { color: var(--correct); }
+  .animal-feedback.bad { color: var(--wrong); }
+
+  /* ── TASK 3: MATCH ── */
+  .match-area {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .match-col { display: flex; flex-direction: column; gap: 10px; }
+
+  .match-col-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: 15px;
+    color: #aaa;
+    margin-bottom: 4px;
+    text-align: center;
+  }
+
+  .match-item {
+    border-radius: 14px;
+    padding: 10px 16px;
+    font-family: 'Fredoka One', cursive;
+    font-size: 18px;
+    cursor: pointer;
+    text-align: center;
+    transition: transform 0.15s, box-shadow 0.15s;
+    box-shadow: 0 3px 0 rgba(0,0,0,0.1);
+    user-select: none;
+    border: 3px solid transparent;
+  }
+
+  .match-item:hover { transform: scale(1.05); }
+  .match-item.selected { border-color: #7b5ea7; transform: scale(1.08); }
+  .match-item.matched  { opacity: 0.5; cursor: default; pointer-events: none; }
+  .match-item.matched.correct { border-color: var(--correct); background: #e8fff4 !important; }
+  .match-item.wrong-shake { animation: shakeRed 0.4s ease; border-color: var(--wrong); }
+
+  /* ── TASK 4: FILL IN ── */
+  .fill-item {
+    background: #f8f6ff;
+    border-radius: 16px;
+    padding: 14px 18px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    font-size: 17px;
+    font-weight: 700;
+  }
+
+  .fill-emoji { font-size: 36px; flex-shrink: 0; }
+
+  .fill-text { flex: 1; line-height: 1.8; min-width: 180px; }
+
+  .fill-word-bank {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .word-chip {
+    background: white;
+    border: 2.5px solid #d0c8ff;
+    border-radius: 100px;
+    padding: 6px 16px;
+    font-family: 'Fredoka One', cursive;
+    font-size: 16px;
+    color: #7b5ea7;
+    cursor: pointer;
+    transition: transform 0.15s, background 0.15s;
+    user-select: none;
+  }
+  .word-chip:hover { background: #ede8ff; transform: scale(1.06); }
+  .word-chip.used  { opacity: 0.35; pointer-events: none; }
+
+  .fill-blank {
+    display: inline-block;
+    min-width: 90px;
+    border-bottom: 3px dashed #c0b0ff;
+    color: #7b5ea7;
+    font-family: 'Fredoka One', cursive;
+    font-size: 18px;
+    text-align: center;
+    padding: 2px 8px;
+    cursor: pointer;
+    transition: background 0.15s;
+    border-radius: 6px 6px 0 0;
+  }
+  .fill-blank:hover { background: #ede8ff; }
+  .fill-blank.filled { border-bottom-color: var(--correct); color: var(--correct); }
+  .fill-blank.wrong-ans { border-bottom-color: var(--wrong); color: var(--wrong); }
+
+  /* ── BUTTONS ── */
+  .btn-row { display: flex; gap: 12px; margin-top: 24px; flex-wrap: wrap; justify-content: center; }
+
+  .big-btn {
+    padding: 14px 32px;
+    border-radius: 100px;
+    border: none;
+    font-family: 'Fredoka One', cursive;
+    font-size: 20px;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+    box-shadow: 0 5px 0 rgba(0,0,0,0.15);
+  }
+  .big-btn:hover  { transform: translateY(-3px); box-shadow: 0 8px 0 rgba(0,0,0,0.15); }
+  .big-btn:active { transform: translateY(2px); box-shadow: 0 2px 0 rgba(0,0,0,0.15); }
+
+  .btn-check { background: #ff5fa0; color: white; }
+  .btn-reset { background: #ffe066; color: var(--ink); }
+
+  /* ── WELL DONE ── */
+  .well-done {
+    display: none;
+    text-align: center;
+    padding: 28px;
+    background: white;
+    border-radius: 28px;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.1);
+    animation: bounceIn 0.6s cubic-bezier(0.34,1.56,0.64,1);
+    margin-top: 20px;
+  }
+  .well-done.show { display: block; }
+  .well-done .big-emoji { font-size: 64px; display: block; margin-bottom: 8px; }
+  .well-done h2 { font-family: 'Fredoka One', cursive; font-size: 36px; color: #ff5fa0; }
+  .well-done p  { font-size: 18px; font-weight: 700; color: #7b5ea7; margin-top: 6px; }
+
+  /* ── CONFETTI ── */
+  #cnv { position: fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:9999; }
+
+  /* ── TASK 5: SIMON SAYS ── */
+  .simon-status {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: #fff5cc; border-radius: 20px;
+    padding: 8px 20px; margin-bottom: 20px;
+    font-family: 'Fredoka One', cursive; font-size: 16px; color: #7a6000;
+  }
+  .simon-score-label { font-size: 14px; color: #aaa; font-weight: 700; margin-left: 8px; }
+
+  .simon-command {
+    text-align: center;
+    background: linear-gradient(135deg, #f0e8ff, #ffe9f3);
+    border-radius: 24px; padding: 28px 20px; margin-bottom: 20px;
+    transition: background 0.4s;
+  }
+  .simon-command.is-simon { background: linear-gradient(135deg, #d6ffe8, #e8fff4); }
+  .simon-command.is-trap  { background: linear-gradient(135deg, #ffe8e8, #fff0cc); }
+
+  .simon-face { font-size: 64px; display: block; margin-bottom: 8px; animation: idle 2s ease-in-out infinite; }
+  .simon-says-label {
+    font-family: 'Fredoka One', cursive; font-size: 18px;
+    padding: 5px 18px; border-radius: 20px; display: inline-block; margin-bottom: 10px;
+  }
+  .simon-says-label.yes { background: #3dcc88; color: white; }
+  .simon-says-label.no  { background: #ff9999; color: white; }
+
+  .simon-verb {
+    font-family: 'Fredoka One', cursive;
+    font-size: clamp(32px, 8vw, 52px);
+    color: var(--ink);
+  }
+  .simon-verb .verb-emoji { font-size: 0.9em; }
+
+  .simon-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-top: 20px; }
+  .simon-btn {
+    padding: 16px 36px; border-radius: 100px; border: none;
+    font-family: 'Fredoka One', cursive; font-size: 22px;
+    cursor: pointer; transition: transform 0.15s, box-shadow 0.15s;
+    box-shadow: 0 5px 0 rgba(0,0,0,0.12);
+  }
+  .simon-btn:hover  { transform: translateY(-3px); box-shadow: 0 8px 0 rgba(0,0,0,0.12); }
+  .simon-btn:active { transform: translateY(2px); }
+  .simon-btn.do-it  { background: #3dcc88; color: white; }
+  .simon-btn.freeze { background: #ff9999; color: white; }
+
+  .simon-feedback {
+    font-family: 'Fredoka One', cursive; font-size: 22px;
+    text-align: center; min-height: 34px; margin-top: 12px;
+  }
+  .simon-progress {
+    display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; margin-bottom: 16px;
+  }
+  .simon-dot {
+    width: 14px; height: 14px; border-radius: 50%; background: #ddd; transition: background 0.3s;
+  }
+  .simon-dot.win  { background: #3dcc88; }
+  .simon-dot.fail { background: #ff6b6b; }
+
+  /* ── TASK 6: DO THE ACTION ── */
+  .action-card-big {
+    background: linear-gradient(135deg, #fff5cc, #ffe9f3);
+    border-radius: 28px; padding: 36px 20px;
+    text-align: center; margin-bottom: 20px;
+    transition: background 0.4s;
+  }
+  .action-giant-emoji { font-size: 100px; display: block; animation: idle 1.8s ease-in-out infinite; }
+  .action-question {
+    font-family: 'Fredoka One', cursive; font-size: clamp(22px, 6vw, 34px);
+    color: var(--ink); margin: 16px 0 8px;
+  }
+  .action-hint { font-size: 14px; color: #aaa; font-weight: 700; margin-bottom: 20px; }
+
+  .action-word-opts { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+  .action-word-opt {
+    padding: 12px 26px; border-radius: 100px; border: 3px solid #d0c8ff;
+    font-family: 'Fredoka One', cursive; font-size: 20px; color: #7b5ea7;
+    background: white; cursor: pointer; transition: transform 0.15s, background 0.15s;
+    box-shadow: 0 4px 0 rgba(0,0,0,0.08);
+  }
+  .action-word-opt:hover { background: #ede8ff; transform: scale(1.06); }
+  .action-word-opt.correct { background: #3dcc88; color: white; border-color: #2db874; animation: starPop 0.4s ease; }
+  .action-word-opt.wrong   { background: #ff6b6b; color: white; border-color: #e04040; animation: shakeRed 0.4s ease; }
+
+  .action-did-it-btn {
+    display: none; margin: 16px auto 0;
+    padding: 14px 36px; border-radius: 100px; border: none;
+    font-family: 'Fredoka One', cursive; font-size: 20px;
+    background: #7b5ea7; color: white; cursor: pointer;
+    box-shadow: 0 5px 0 rgba(0,0,0,0.12);
+    transition: transform 0.15s;
+  }
+  .action-did-it-btn:hover { transform: scale(1.05); }
+
+  .action-progress { display: flex; gap: 6px; justify-content: center; margin-bottom: 18px; }
+  .action-dot { width: 14px; height: 14px; border-radius: 50%; background: #ddd; transition: background 0.3s; }
+  .action-dot.done { background: #7b5ea7; }
+  .action-feedback { font-family: 'Fredoka One', cursive; font-size: 20px; text-align: center; min-height: 30px; margin-top: 10px; }
+
+  /* ── TASK 7: ANIMALS + ACTIONS ── */
+  .animal-action-card {
+    border-radius: 24px; padding: 24px 20px;
+    text-align: center; margin-bottom: 16px;
+    cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 0 rgba(0,0,0,0.08);
+    position: relative; overflow: hidden;
+  }
+  .animal-action-card:hover { transform: translateY(-4px); box-shadow: 0 10px 20px rgba(0,0,0,0.12); }
+  .animal-action-card.revealed .aa-instruction { display: none; }
+  .animal-action-card.revealed .aa-sentence { display: block; }
+  .animal-action-card.revealed .aa-do-btn { display: none; }
+  .animal-action-card.revealed .aa-done-btn { display: inline-block; }
+
+  .aa-animals { font-size: 52px; margin-bottom: 8px; }
+  .aa-instruction {
+    font-family: 'Fredoka One', cursive; font-size: 18px; color: #888;
+  }
+  .aa-sentence {
+    display: none;
+    font-family: 'Fredoka One', cursive;
+    font-size: clamp(20px, 5vw, 28px); color: var(--ink);
+    animation: bounceIn 0.5s cubic-bezier(0.34,1.56,0.64,1);
+    margin: 6px 0 12px;
+  }
+  .aa-do-btn, .aa-done-btn {
+    padding: 10px 24px; border-radius: 100px; border: none;
+    font-family: 'Fredoka One', cursive; font-size: 17px;
+    cursor: pointer; margin-top: 10px;
+    box-shadow: 0 4px 0 rgba(0,0,0,0.1);
+    transition: transform 0.15s;
+  }
+  .aa-do-btn:hover, .aa-done-btn:hover { transform: scale(1.06); }
+  .aa-done-btn { display: none; background: #3dcc88; color: white; }
+
+  .aa-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 16px; }
+  .aa-all-done {
+    text-align: center; font-family: 'Fredoka One', cursive;
+    font-size: 22px; color: #3dcc88; min-height: 32px; margin-top: 8px;
+  }
+
+  @media (max-width: 500px) {
+    .verb-grid { grid-template-columns: repeat(2, 1fr); }
+    .match-area { grid-template-columns: 1fr; }
+    .can-buttons { flex-direction: column; }
+    .simon-btns { flex-direction: column; align-items: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- clouds -->
+<div class="clouds">
+  <div class="cloud" style="width:120px;height:40px;top:8%;animation-duration:22s;animation-delay:-5s"></div>
+  <div class="cloud" style="width:80px;height:28px;top:18%;animation-duration:30s;animation-delay:-12s"></div>
+  <div class="cloud" style="width:160px;height:50px;top:5%;animation-duration:18s;animation-delay:-2s"></div>
+  <div class="cloud" style="width:100px;height:34px;top:28%;animation-duration:25s;animation-delay:-8s"></div>
+</div>
+
+<canvas id="cnv"></canvas>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div>
+      <span class="header-star">⭐</span>
+      <span style="font-size:32px">⭐</span>
+      <span class="header-star" style="animation-delay:0.5s">⭐</span>
+    </div>
+    <h1>I Can!</h1>
+    <div class="subtitle">🏃 Action Verbs with CAN 🦋</div>
+  </div>
+
+  <!-- STARS BAR -->
+  <div style="text-align:center">
+    <div class="stars-bar">
+      <span>⭐ Stars:</span>
+      <span class="star-collected" id="s1">☆</span>
+      <span class="star-collected" id="s2">☆</span>
+      <span class="star-collected" id="s3">☆</span>
+      <span class="star-collected" id="s4">☆</span>
+      <span class="star-collected" id="s5">☆</span>
+      <span class="star-collected" id="s6">☆</span>
+      <span id="starCount" style="margin-left:4px">0 / 6</span>
+    </div>
+  </div>
+
+
+  <!-- ══════════ TASK 1: VERB CARDS ══════════ -->
+  <div class="section" style="animation-delay:0.05s">
+    <div class="section-title">
+      <div class="section-num" style="background:#ff5fa0">1</div>
+      <span style="color:#ff5fa0">Meet the words! 👋</span>
+    </div>
+    <p style="font-size:15px; color:#888; font-weight:600; margin-bottom:18px;">Look at each picture and say the word out loud! 🗣️</p>
+
+    <div class="verb-grid">
+      <div class="verb-card" style="background:#ffe9f3; animation-delay:0.0s">
+        <span class="emoji-wrap">🏃</span>
+        <div class="word">run</div>
+        <div class="sentence">I can run!</div>
+      </div>
+      <div class="verb-card" style="background:#d6f0ff; animation-delay:0.08s">
+        <span class="emoji-wrap">🏊</span>
+        <div class="word">swim</div>
+        <div class="sentence">I can swim!</div>
+      </div>
+      <div class="verb-card" style="background:#e8ffe8; animation-delay:0.16s">
+        <span class="emoji-wrap">🧗</span>
+        <div class="word">climb</div>
+        <div class="sentence">I can climb!</div>
+      </div>
+      <div class="verb-card" style="background:#fff5cc; animation-delay:0.24s">
+        <span class="emoji-wrap">🐸</span>
+        <div class="word">jump</div>
+        <div class="sentence">I can jump!</div>
+      </div>
+      <div class="verb-card" style="background:#ffe8cc; animation-delay:0.32s">
+        <span class="emoji-wrap">🦋</span>
+        <div class="word">fly</div>
+        <div class="sentence">I can fly!</div>
+      </div>
+      <div class="verb-card" style="background:#f0e8ff; animation-delay:0.40s">
+        <span class="emoji-wrap">💃</span>
+        <div class="word">dance</div>
+        <div class="sentence">I can dance!</div>
+      </div>
+      <div class="verb-card" style="background:#ffe8e8; animation-delay:0.48s">
+        <span class="emoji-wrap">👏</span>
+        <div class="word">clap</div>
+        <div class="sentence">I can clap!</div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ══════════ TASK 2: CAN / CAN'T ══════════ -->
+  <div class="section" style="animation-delay:0.1s">
+    <div class="section-title">
+      <div class="section-num" style="background:#ff9f40">2</div>
+      <span style="color:#ff9f40">Can or can't? 🤔</span>
+    </div>
+    <p style="font-size:15px; color:#888; font-weight:600; margin-bottom:18px;">Press <b style="color:var(--correct)">CAN ✅</b> or <b style="color:var(--wrong)">CAN'T ❌</b> for each animal!</p>
+
+    <!-- fish -->
+    <div class="animal-row">
+      <div class="animal-emoji">🐟</div>
+      <div class="animal-text">
+        <div>A <span class="animal-name">fish</span> can ___</div>
+        <div class="animal-feedback" id="fb-fish"></div>
+      </div>
+      <div style="flex:1; font-weight:700">swim</div>
+      <div class="can-buttons">
+        <button class="can-btn" onclick="canCheck(this,'fish','yes','yes')">CAN ✅</button>
+        <button class="can-btn" onclick="canCheck(this,'fish','no','yes')">CAN'T ❌</button>
+      </div>
+    </div>
+
+    <!-- bird -->
+    <div class="animal-row">
+      <div class="animal-emoji">🐦</div>
+      <div class="animal-text">
+        <div>A <span class="animal-name">bird</span> can ___</div>
+        <div class="animal-feedback" id="fb-bird"></div>
+      </div>
+      <div style="flex:1; font-weight:700">fly</div>
+      <div class="can-buttons">
+        <button class="can-btn" onclick="canCheck(this,'bird','yes','yes')">CAN ✅</button>
+        <button class="can-btn" onclick="canCheck(this,'bird','no','yes')">CAN'T ❌</button>
+      </div>
+    </div>
+
+    <!-- cat -->
+    <div class="animal-row">
+      <div class="animal-emoji">🐱</div>
+      <div class="animal-text">
+        <div>A <span class="animal-name">cat</span> can ___</div>
+        <div class="animal-feedback" id="fb-cat"></div>
+      </div>
+      <div style="flex:1; font-weight:700">dance</div>
+      <div class="can-buttons">
+        <button class="can-btn" onclick="canCheck(this,'cat','yes','no')">CAN ✅</button>
+        <button class="can-btn" onclick="canCheck(this,'cat','no','no')">CAN'T ❌</button>
+      </div>
+    </div>
+
+    <!-- frog -->
+    <div class="animal-row">
+      <div class="animal-emoji">🐸</div>
+      <div class="animal-text">
+        <div>A <span class="animal-name">frog</span> can ___</div>
+        <div class="animal-feedback" id="fb-frog"></div>
+      </div>
+      <div style="flex:1; font-weight:700">jump</div>
+      <div class="can-buttons">
+        <button class="can-btn" onclick="canCheck(this,'frog','yes','yes')">CAN ✅</button>
+        <button class="can-btn" onclick="canCheck(this,'frog','no','yes')">CAN'T ❌</button>
+      </div>
+    </div>
+
+    <!-- elephant -->
+    <div class="animal-row">
+      <div class="animal-emoji">🐘</div>
+      <div class="animal-text">
+        <div>An <span class="animal-name">elephant</span> can ___</div>
+        <div class="animal-feedback" id="fb-elephant"></div>
+      </div>
+      <div style="flex:1; font-weight:700">fly</div>
+      <div class="can-buttons">
+        <button class="can-btn" onclick="canCheck(this,'elephant','yes','no')">CAN ✅</button>
+        <button class="can-btn" onclick="canCheck(this,'elephant','no','no')">CAN'T ❌</button>
+      </div>
+    </div>
+
+    <!-- monkey -->
+    <div class="animal-row">
+      <div class="animal-emoji">🐒</div>
+      <div class="animal-text">
+        <div>A <span class="animal-name">monkey</span> can ___</div>
+        <div class="animal-feedback" id="fb-monkey"></div>
+      </div>
+      <div style="flex:1; font-weight:700">climb</div>
+      <div class="can-buttons">
+        <button class="can-btn" onclick="canCheck(this,'monkey','yes','yes')">CAN ✅</button>
+        <button class="can-btn" onclick="canCheck(this,'monkey','no','yes')">CAN'T ❌</button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ══════════ TASK 3: MATCH ══════════ -->
+  <div class="section" style="animation-delay:0.15s">
+    <div class="section-title">
+      <div class="section-num" style="background:#7b5ea7">3</div>
+      <span style="color:#7b5ea7">Match! 🔗</span>
+    </div>
+    <p style="font-size:15px; color:#888; font-weight:600; margin-bottom:18px;">Tap a picture, then tap the right word! 👆</p>
+
+    <div class="match-area">
+      <div class="match-col">
+        <div class="match-col-title">Pictures</div>
+        <div class="match-item" style="background:#ffe9f3; font-size:42px" data-side="pic" data-id="run" onclick="matchTap(this)">🏃</div>
+        <div class="match-item" style="background:#d6f0ff; font-size:42px" data-side="pic" data-id="swim" onclick="matchTap(this)">🏊</div>
+        <div class="match-item" style="background:#fff5cc; font-size:42px" data-side="pic" data-id="jump" onclick="matchTap(this)">🐸</div>
+        <div class="match-item" style="background:#f0e8ff; font-size:42px" data-side="pic" data-id="dance" onclick="matchTap(this)">💃</div>
+        <div class="match-item" style="background:#ffe8e8; font-size:42px" data-side="pic" data-id="clap" onclick="matchTap(this)">👏</div>
+        <div class="match-item" style="background:#ffe8cc; font-size:42px" data-side="pic" data-id="fly" onclick="matchTap(this)">🦋</div>
+        <div class="match-item" style="background:#e8ffe8; font-size:42px" data-side="pic" data-id="climb" onclick="matchTap(this)">🧗</div>
+      </div>
+      <div class="match-col">
+        <div class="match-col-title">Words</div>
+        <div class="match-item" style="background:#e8ffe8; color:#2d5a2d" data-side="word" data-id="climb" onclick="matchTap(this)">climb</div>
+        <div class="match-item" style="background:#ffe8cc; color:#7a3a00" data-side="word" data-id="fly" onclick="matchTap(this)">fly</div>
+        <div class="match-item" style="background:#ffe9f3; color:#8a0040" data-side="word" data-id="run" onclick="matchTap(this)">run</div>
+        <div class="match-item" style="background:#ffe8e8; color:#8a0000" data-side="word" data-id="clap" onclick="matchTap(this)">clap</div>
+        <div class="match-item" style="background:#f0e8ff; color:#4a0080" data-side="word" data-id="dance" onclick="matchTap(this)">dance</div>
+        <div class="match-item" style="background:#d6f0ff; color:#003a7a" data-side="word" data-id="swim" onclick="matchTap(this)">swim</div>
+        <div class="match-item" style="background:#fff5cc; color:#7a6000" data-side="word" data-id="jump" onclick="matchTap(this)">jump</div>
+      </div>
+    </div>
+
+    <div id="matchMsg" style="text-align:center; margin-top:16px; font-family:'Fredoka One',cursive; font-size:20px; color:var(--correct); min-height:30px"></div>
+  </div>
+
+
+  <!-- ══════════ TASK 4: FILL IN ══════════ -->
+  <div class="section" style="animation-delay:0.2s">
+    <div class="section-title">
+      <div class="section-num" style="background:#3dcc88">4</div>
+      <span style="color:#3dcc88">Fill in! ✏️</span>
+    </div>
+    <p style="font-size:15px; color:#888; font-weight:600; margin-bottom:12px;">Tap a word, then tap the blank to fill it! 🎯</p>
+
+    <div class="fill-word-bank" id="wordBank">
+      <div class="word-chip" data-word="run" onclick="selectWord(this)">🏃 run</div>
+      <div class="word-chip" data-word="swim" onclick="selectWord(this)">🏊 swim</div>
+      <div class="word-chip" data-word="fly" onclick="selectWord(this)">🦋 fly</div>
+      <div class="word-chip" data-word="jump" onclick="selectWord(this)">🐸 jump</div>
+      <div class="word-chip" data-word="dance" onclick="selectWord(this)">💃 dance</div>
+      <div class="word-chip" data-word="clap" onclick="selectWord(this)">👏 clap</div>
+      <div class="word-chip" data-word="climb" onclick="selectWord(this)">🧗 climb</div>
+    </div>
+
+    <div class="fill-item">
+      <div class="fill-emoji">🐠</div>
+      <div class="fill-text">
+        A fish can <span class="fill-blank" data-answer="swim" onclick="fillBlank(this)">___</span>
+      </div>
+    </div>
+
+    <div class="fill-item">
+      <div class="fill-emoji">🦅</div>
+      <div class="fill-text">
+        A bird can <span class="fill-blank" data-answer="fly" onclick="fillBlank(this)">___</span>
+      </div>
+    </div>
+
+    <div class="fill-item">
+      <div class="fill-emoji">🐸</div>
+      <div class="fill-text">
+        A frog can <span class="fill-blank" data-answer="jump" onclick="fillBlank(this)">___</span>
+      </div>
+    </div>
+
+    <div class="fill-item">
+      <div class="fill-emoji">🐒</div>
+      <div class="fill-text">
+        A monkey can <span class="fill-blank" data-answer="climb" onclick="fillBlank(this)">___</span>
+      </div>
+    </div>
+
+    <div class="fill-item">
+      <div class="fill-emoji">👧</div>
+      <div class="fill-text">
+        I can <span class="fill-blank" data-answer="dance" onclick="fillBlank(this)">___</span> and <span class="fill-blank" data-answer="clap" onclick="fillBlank(this)">___</span>!
+      </div>
+    </div>
+
+    <div class="fill-item">
+      <div class="fill-emoji">🏅</div>
+      <div class="fill-text">
+        Athletes can <span class="fill-blank" data-answer="run" onclick="fillBlank(this)">___</span> very fast!
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="big-btn btn-check" onclick="checkFill()">Check! ⭐</button>
+      <button class="big-btn btn-reset" onclick="resetAll()">Try Again 🔄</button>
+    </div>
+  </div>
+
+
+  <!-- ══════════ TASK 5: SIMON SAYS ══════════ -->
+  <div class="section" style="animation-delay:0.25s">
+    <div class="section-title">
+      <div class="section-num" style="background:#ff8c00">5</div>
+      <span style="color:#ff8c00">Simon Says! 🎩</span>
+    </div>
+    <p style="font-size:15px; color:#888; font-weight:600; margin-bottom:14px;">
+      If Simon says — DO it! 🟢 If there is NO "Simon says" — FREEZE! 🔴
+    </p>
+    <div style="text-align:center">
+      <div class="simon-status">
+        🎯 Score: <span id="simonScore">0</span>
+        <span class="simon-score-label" id="simonRound"></span>
+      </div>
+    </div>
+    <div class="simon-progress" id="simonProgress"></div>
+    <div class="simon-command" id="simonCommand">
+      <span class="simon-face">🎩</span>
+      <div style="font-family:'Fredoka One',cursive;font-size:18px;color:#aaa;margin-bottom:8px">Ready to play?</div>
+      <div class="simon-verb" id="simonVerb"></div>
+    </div>
+    <div class="simon-feedback" id="simonFeedback"></div>
+    <div class="simon-btns" id="simonBtns" style="display:none">
+      <button class="simon-btn do-it" onclick="simonAnswer(true)">✅ Do it!</button>
+      <button class="simon-btn freeze" onclick="simonAnswer(false)">🧊 Freeze!</button>
+    </div>
+    <div class="btn-row">
+      <button class="big-btn" style="background:#ff8c00;color:white" onclick="simonStart()">▶️ Start!</button>
+    </div>
+  </div>
+
+  <!-- ══════════ TASK 6: DO THE ACTION ══════════ -->
+  <div class="section" style="animation-delay:0.3s">
+    <div class="section-title">
+      <div class="section-num" style="background:#26c6da">6</div>
+      <span style="color:#26c6da">Do the Action! 🎯</span>
+    </div>
+    <p style="font-size:15px; color:#888; font-weight:600; margin-bottom:14px;">
+      Look at the picture — what action is it? Choose the word, then do it! 💪
+    </p>
+    <div class="action-progress" id="actionProgress"></div>
+    <div class="action-card-big" id="actionCardBig">
+      <span class="action-giant-emoji" id="actionEmoji">🎯</span>
+      <div class="action-question" id="actionQuestion">Press Start to begin!</div>
+      <div class="action-hint" id="actionHint"></div>
+      <div class="action-word-opts" id="actionOpts"></div>
+      <button class="action-did-it-btn" id="actionDidItBtn" onclick="actionDidIt()">🙌 I did it!</button>
+      <div class="action-feedback" id="actionFeedback"></div>
+    </div>
+    <div class="btn-row">
+      <button class="big-btn" style="background:#26c6da;color:white" onclick="actionStart()">▶️ Start!</button>
+    </div>
+  </div>
+
+  <!-- ══════════ TASK 7: ANIMALS + ACTIONS ══════════ -->
+  <div class="section" style="animation-delay:0.35s">
+    <div class="section-title">
+      <div class="section-num" style="background:#3dcc88">7</div>
+      <span style="color:#3dcc88">Animals + Actions! 🐵</span>
+    </div>
+    <p style="font-size:15px; color:#888; font-weight:600; margin-bottom:18px;">
+      Tap the card to see the action — then do it like that animal! 🐾
+    </p>
+    <div class="aa-grid" id="aaGrid"></div>
+    <div class="aa-all-done" id="aaAllDone"></div>
+  </div>
+
+  <!-- WELL DONE -->
+  <div class="well-done" id="wellDone">
+    <span class="big-emoji">🏆</span>
+    <h2>Amazing job!</h2>
+    <p>You are a SUPERSTAR! ⭐⭐⭐</p>
+    <p style="margin-top:8px; font-size:16px">You know all the action verbs! 🎉</p>
+  </div>
+
+</div><!-- page -->
+
+<script>
+  /* ── CONFETTI ── */
+  var cnv = document.getElementById('cnv');
+  var cx = cnv.getContext('2d');
+  var parts = [];
+  var rafId = null;
+  var COLS = ['#ff5fa0','#ffe066','#99d6ff','#b8f0b8','#d9b8ff','#ffd199','#ff9999','#3dcc88'];
+
+  function resize() { cnv.width = window.innerWidth; cnv.height = window.innerHeight; }
+  resize(); window.addEventListener('resize', resize);
+
+  function spawn(x, y, n) {
+    for (var i = 0; i < (n||14); i++) {
+      parts.push({
+        x:x, y:y,
+        vx:(Math.random()-0.5)*10,
+        vy:-(Math.random()*9+2),
+        sz:Math.random()*9+4,
+        col:COLS[Math.floor(Math.random()*COLS.length)],
+        rot:Math.random()*360, rv:(Math.random()-0.5)*15,
+        life:1, circ:Math.random()>0.5
+      });
+    }
+    if (!rafId) loop();
+  }
+
+  function loop() {
+    cx.clearRect(0,0,cnv.width,cnv.height);
+    parts = parts.filter(function(p){return p.life>0;});
+    parts.forEach(function(p){
+      cx.save(); cx.globalAlpha=p.life;
+      cx.translate(p.x,p.y); cx.rotate(p.rot*Math.PI/180);
+      cx.fillStyle=p.col;
+      if(p.circ){cx.beginPath();cx.arc(0,0,p.sz/2,0,Math.PI*2);cx.fill();}
+      else{cx.fillRect(-p.sz/2,-p.sz/4,p.sz,p.sz/2);}
+      cx.restore();
+      p.x+=p.vx; p.y+=p.vy; p.vy+=0.32; p.vx*=0.97;
+      p.rot+=p.rv; p.life-=0.02;
+    });
+    if(parts.length>0){rafId=requestAnimationFrame(loop);}
+    else{rafId=null;cx.clearRect(0,0,cnv.width,cnv.height);}
+  }
+
+  function bigBlast() {
+    for(var i=0;i<8;i++){
+      (function(d){setTimeout(function(){spawn(Math.random()*window.innerWidth,window.innerHeight*0.2,30);},d);})(i*100);
+    }
+  }
+
+  /* ── STARS ── */
+  var stars = [false,false,false,false,false,false];
+
+  function earnStar(idx) {
+    if (stars[idx]) return;
+    stars[idx] = true;
+    var el = document.getElementById('s'+(idx+1));
+    el.textContent = '⭐';
+    el.classList.add('earned');
+    setTimeout(function(){ el.classList.remove('earned'); }, 500);
+    var count = stars.filter(Boolean).length;
+    document.getElementById('starCount').textContent = count + ' / 6';
+    if (count === 6) { bigBlast(); document.getElementById('wellDone').classList.add('show'); }
+  }
+
+  /* ── TASK 2: CAN / CAN'T ── */
+  var t2answers = {};
+
+  function canCheck(btn, animal, chosen, correct) {
+    if (t2answers[animal]) return;
+    var isCorrect = chosen === correct;
+    var fb = document.getElementById('fb-'+animal);
+    var allBtns = btn.parentElement.querySelectorAll('.can-btn');
+    allBtns.forEach(function(b){ b.style.opacity='0.4'; b.style.pointerEvents='none'; });
+    btn.style.opacity='1';
+
+    if (isCorrect) {
+      btn.classList.add('selected-yes');
+      btn.classList.add('correct-flash');
+      fb.textContent = '🌟 Yes! Correct!';
+      fb.className = 'animal-feedback ok';
+      var r = btn.getBoundingClientRect();
+      spawn(r.left+r.width/2, r.top+r.height/2, 12);
+      t2answers[animal] = true;
+      checkT2Done();
+    } else {
+      btn.classList.add('selected-no');
+      btn.classList.add('wrong-flash');
+      fb.textContent = '🙈 Oops! Try again!';
+      fb.className = 'animal-feedback bad';
+      setTimeout(function(){
+        btn.classList.remove('wrong-flash','selected-no');
+        allBtns.forEach(function(b){ b.style.opacity='1'; b.style.pointerEvents=''; });
+        fb.textContent='';
+      }, 800);
+    }
+  }
+
+  function checkT2Done() {
+    var animals = ['fish','bird','cat','frog','elephant','monkey'];
+    var all = animals.every(function(a){ return t2answers[a]; });
+    if (all) earnStar(0);
+  }
+
+  /* ── TASK 3: MATCH ── */
+  var matchSelected = null;
+  var matchDone = 0;
+  var matchTotal = 7;
+
+  function matchTap(el) {
+    if (el.classList.contains('matched')) return;
+
+    if (!matchSelected) {
+      if (matchSelected === el) { el.classList.remove('selected'); matchSelected = null; return; }
+      if (matchSelected) matchSelected.classList.remove('selected');
+      el.classList.add('selected');
+      matchSelected = el;
+      return;
+    }
+
+    /* two selected */
+    if (matchSelected === el) { el.classList.remove('selected'); matchSelected = null; return; }
+
+    var a = matchSelected, b = el;
+    if (a.dataset.side === b.dataset.side) {
+      a.classList.remove('selected');
+      a = b; el.classList.add('selected');
+      matchSelected = el;
+      return;
+    }
+
+    a.classList.remove('selected');
+    matchSelected = null;
+
+    if (a.dataset.id === b.dataset.id) {
+      a.classList.add('matched','correct');
+      b.classList.add('matched','correct');
+      matchDone++;
+      var ra = a.getBoundingClientRect();
+      spawn(ra.left+ra.width/2, ra.top+ra.height/2, 16);
+      if (matchDone === matchTotal) {
+        document.getElementById('matchMsg').textContent = '🎉 All matched! Amazing!';
+        earnStar(1);
+      }
+    } else {
+      a.classList.add('wrong-shake');
+      b.classList.add('wrong-shake');
+      setTimeout(function(){
+        a.classList.remove('wrong-shake');
+        b.classList.remove('wrong-shake');
+      }, 500);
+    }
+  }
+
+  /* ── TASK 4: FILL IN ── */
+  var selectedWord = null;
+
+  function selectWord(chip) {
+    if (chip.classList.contains('used')) return;
+    document.querySelectorAll('.word-chip').forEach(function(c){ c.style.border='2.5px solid #d0c8ff'; });
+    if (selectedWord === chip) { selectedWord = null; return; }
+    chip.style.border = '2.5px solid #7b5ea7';
+    selectedWord = chip;
+  }
+
+  function fillBlank(blank) {
+    if (blank.classList.contains('filled') || blank.classList.contains('wrong-ans')) return;
+    if (!selectedWord) return;
+
+    var word = selectedWord.dataset.word;
+    var answer = blank.dataset.answer;
+
+    if (word === answer) {
+      blank.textContent = word;
+      blank.classList.add('filled');
+      selectedWord.classList.add('used');
+      selectedWord.style.border='2.5px solid #d0c8ff';
+      selectedWord = null;
+      var r = blank.getBoundingClientRect();
+      spawn(r.left+r.width/2, r.top, 10);
+    } else {
+      blank.classList.add('wrong-ans');
+      blank.textContent = word + '?';
+      setTimeout(function(){
+        blank.classList.remove('wrong-ans');
+        blank.textContent = '___';
+      }, 700);
+      selectedWord.style.border='2.5px solid #d0c8ff';
+      selectedWord = null;
+    }
+  }
+
+  function checkFill() {
+    var blanks = document.querySelectorAll('.fill-blank');
+    var allFilled = true;
+    blanks.forEach(function(b){
+      if (!b.classList.contains('filled')) allFilled = false;
+    });
+    if (allFilled) {
+      earnStar(2);
+      bigBlast();
+    } else {
+      var notFilled = document.querySelectorAll('.fill-blank:not(.filled)').length;
+      alert('You still have ' + notFilled + ' blank(s) to fill! Keep going! 💪');
+    }
+  }
+
+  function resetAll() {
+    /* reset task 2 */
+    t2answers = {};
+    document.querySelectorAll('.can-btn').forEach(function(b){
+      b.classList.remove('selected-yes','selected-no','correct-flash');
+      b.style.opacity=''; b.style.pointerEvents='';
+    });
+    document.querySelectorAll('.animal-feedback').forEach(function(f){ f.textContent=''; f.className='animal-feedback'; });
+
+    /* reset task 3 */
+    matchSelected = null; matchDone = 0;
+    document.querySelectorAll('.match-item').forEach(function(m){
+      m.classList.remove('matched','correct','selected','wrong-shake');
+    });
+    document.getElementById('matchMsg').textContent = '';
+
+    /* reset task 4 */
+    selectedWord = null;
+    document.querySelectorAll('.word-chip').forEach(function(c){
+      c.classList.remove('used'); c.style.border='2.5px solid #d0c8ff';
+    });
+    document.querySelectorAll('.fill-blank').forEach(function(b){
+      b.classList.remove('filled','wrong-ans'); b.textContent='___';
+    });
+
+    /* reset tasks 5-7 */
+    simonReset();
+    actionReset();
+    aaInit();
+
+    /* reset stars */
+    stars = [false,false,false,false,false,false];
+    ['s1','s2','s3','s4','s5','s6'].forEach(function(id){ document.getElementById(id).textContent='☆'; });
+    document.getElementById('starCount').textContent = '0 / 6';
+    document.getElementById('wellDone').classList.remove('show');
+  }
+
+  /* ══════════════════════════════════════════
+     TASK 5: SIMON SAYS
+  ══════════════════════════════════════════ */
+  var SIMON_VERBS = [
+    {verb:'jump',  emoji:'🦘', hasSays: true},
+    {verb:'clap',  emoji:'👏', hasSays: true},
+    {verb:'run',   emoji:'🏃', hasSays: false},
+    {verb:'dance', emoji:'💃', hasSays: true},
+    {verb:'swim',  emoji:'🏊', hasSays: false},
+    {verb:'fly',   emoji:'🦋', hasSays: true},
+    {verb:'climb', emoji:'🧗', hasSays: false},
+    {verb:'jump',  emoji:'🦘', hasSays: false},
+    {verb:'clap',  emoji:'👏', hasSays: true},
+    {verb:'dance', emoji:'💃', hasSays: false},
+  ];
+  var simonIdx = 0, simonScoreVal = 0, simonAnswered = false;
+
+  function simonReset() {
+    simonIdx = 0; simonScoreVal = 0; simonAnswered = false;
+    document.getElementById('simonScore').textContent = '0';
+    document.getElementById('simonRound').textContent = '';
+    document.getElementById('simonFeedback').textContent = '';
+    document.getElementById('simonBtns').style.display = 'none';
+    document.getElementById('simonProgress').innerHTML = '';
+    var cmd = document.getElementById('simonCommand');
+    cmd.className = 'simon-command';
+    cmd.innerHTML = '<span class="simon-face">🎩</span><div style="font-family:\'Fredoka One\',cursive;font-size:18px;color:#aaa;margin-bottom:8px">Ready to play?</div><div class="simon-verb" id="simonVerb"></div>';
+  }
+
+  function simonStart() {
+    simonReset();
+    // build progress dots
+    var prog = document.getElementById('simonProgress');
+    prog.innerHTML = SIMON_VERBS.map(function(){ return '<div class="simon-dot"></div>'; }).join('');
+    simonShow();
+  }
+
+  function simonShow() {
+    if (simonIdx >= SIMON_VERBS.length) { simonDone(); return; }
+    simonAnswered = false;
+    var q = SIMON_VERBS[simonIdx];
+    var cmd = document.getElementById('simonCommand');
+    cmd.className = 'simon-command' + (q.hasSays ? ' is-simon' : ' is-trap');
+
+    var label = q.hasSays
+      ? '<div class="simon-says-label yes">Simon says…</div>'
+      : '<div class="simon-says-label no">❌ No "Simon says"!</div>';
+
+    // Show label immediately but verb text revealed after short pause
+    cmd.innerHTML = '<span class="simon-face">' + (q.hasSays ? '🎩' : '😈') + '</span>'
+      + label
+      + '<div class="simon-verb"><span class="verb-emoji">' + q.emoji + '</span> ' + q.verb + '!</div>';
+
+    document.getElementById('simonFeedback').textContent = '';
+    document.getElementById('simonRound').textContent = 'Round ' + (simonIdx+1) + ' / ' + SIMON_VERBS.length;
+    document.getElementById('simonBtns').style.display = 'flex';
+  }
+
+  function simonAnswer(doIt) {
+    if (simonAnswered) return;
+    simonAnswered = true;
+    document.getElementById('simonBtns').style.display = 'none';
+    var q = SIMON_VERBS[simonIdx];
+    var correct = (doIt === q.hasSays);
+    var dots = document.getElementById('simonProgress').querySelectorAll('.simon-dot');
+    var fb = document.getElementById('simonFeedback');
+
+    if (correct) {
+      simonScoreVal++;
+      document.getElementById('simonScore').textContent = simonScoreVal;
+      fb.textContent = '✅ Correct! 🌟';
+      fb.style.color = '#3dcc88';
+      if (dots[simonIdx]) dots[simonIdx].classList.add('win');
+      var r = fb.getBoundingClientRect();
+      spawn(r.left + r.width/2, r.top, 14);
+    } else {
+      fb.textContent = q.hasSays ? '❌ Simon said to do it! 🙈' : '❌ Simon did NOT say! Freeze! 🧊';
+      fb.style.color = '#ff6b6b';
+      if (dots[simonIdx]) dots[simonIdx].classList.add('fail');
+    }
+    simonIdx++;
+    setTimeout(simonShow, 1600);
+  }
+
+  function simonDone() {
+    var cmd = document.getElementById('simonCommand');
+    cmd.className = 'simon-command';
+    var pct = Math.round(simonScoreVal / SIMON_VERBS.length * 100);
+    cmd.innerHTML = '<span class="simon-face">' + (pct >= 70 ? '🏆' : '💪') + '</span>'
+      + '<div style="font-family:\'Fredoka One\',cursive;font-size:22px;color:#333;margin-top:8px">'
+      + simonScoreVal + ' / ' + SIMON_VERBS.length + ' correct!</div>'
+      + '<div style="font-size:15px;color:#aaa;font-weight:700;margin-top:6px">'
+      + (pct >= 70 ? 'Amazing listener! 🎉' : 'Good try! Play again! 💪') + '</div>';
+    document.getElementById('simonFeedback').textContent = '';
+    if (simonScoreVal >= 7) earnStar(3);
+    if (pct >= 70) bigBlast();
+  }
+
+  /* ══════════════════════════════════════════
+     TASK 6: DO THE ACTION
+  ══════════════════════════════════════════ */
+  var ACTION_CARDS = [
+    {emoji:'🦘', verb:'jump',  opts:['jump','swim','fly']},
+    {emoji:'🏊', verb:'swim',  opts:['run','swim','dance']},
+    {emoji:'🏃', verb:'run',   opts:['clap','run','climb']},
+    {emoji:'🦋', verb:'fly',   opts:['jump','clap','fly']},
+    {emoji:'💃', verb:'dance', opts:['dance','swim','run']},
+    {emoji:'👏', verb:'clap',  opts:['fly','clap','jump']},
+    {emoji:'🧗', verb:'climb', opts:['swim','dance','climb']},
+  ];
+  var actionIdx = 0, actionScoreVal = 0, actionWaitingDidIt = false;
+
+  function actionReset() {
+    actionIdx = 0; actionScoreVal = 0; actionWaitingDidIt = false;
+    document.getElementById('actionEmoji').textContent = '🎯';
+    document.getElementById('actionQuestion').textContent = 'Press Start to begin!';
+    document.getElementById('actionHint').textContent = '';
+    document.getElementById('actionOpts').innerHTML = '';
+    document.getElementById('actionDidItBtn').style.display = 'none';
+    document.getElementById('actionFeedback').textContent = '';
+    document.getElementById('actionProgress').innerHTML = '';
+  }
+
+  function actionStart() {
+    actionReset();
+    var prog = document.getElementById('actionProgress');
+    prog.innerHTML = ACTION_CARDS.map(function(){ return '<div class="action-dot"></div>'; }).join('');
+    actionShow();
+  }
+
+  function actionShow() {
+    if (actionIdx >= ACTION_CARDS.length) { actionDone(); return; }
+    actionWaitingDidIt = false;
+    var q = ACTION_CARDS[actionIdx];
+    document.getElementById('actionEmoji').textContent = q.emoji;
+    document.getElementById('actionQuestion').textContent = 'What action is this?';
+    document.getElementById('actionHint').textContent = '';
+    document.getElementById('actionDidItBtn').style.display = 'none';
+    document.getElementById('actionFeedback').textContent = '';
+
+    // shuffle opts
+    var opts = q.opts.slice().sort(function(){ return Math.random()-0.5; });
+    var div = document.getElementById('actionOpts');
+    div.innerHTML = '';
+    opts.forEach(function(o) {
+      var btn = document.createElement('button');
+      btn.className = 'action-word-opt';
+      btn.textContent = o;
+      btn.onclick = function() { actionAnswer(btn, o, q.verb); };
+      div.appendChild(btn);
+    });
+  }
+
+  function actionAnswer(btn, chosen, correct) {
+    if (actionWaitingDidIt) return;
+    var allBtns = document.getElementById('actionOpts').querySelectorAll('.action-word-opt');
+    allBtns.forEach(function(b){ b.onclick = null; });
+
+    if (chosen === correct) {
+      btn.classList.add('correct');
+      actionScoreVal++;
+      document.getElementById('actionFeedback').textContent = '✅ Yes! Now do it! 💪';
+      document.getElementById('actionFeedback').style.color = '#3dcc88';
+      document.getElementById('actionHint').textContent = 'Do the action — then tap the button!';
+      document.getElementById('actionDidItBtn').style.display = 'inline-block';
+      actionWaitingDidIt = true;
+      var dots = document.getElementById('actionProgress').querySelectorAll('.action-dot');
+      if (dots[actionIdx]) dots[actionIdx].classList.add('done');
+      var r = btn.getBoundingClientRect();
+      spawn(r.left + r.width/2, r.top, 14);
+    } else {
+      btn.classList.add('wrong');
+      document.getElementById('actionFeedback').textContent = '❌ Try again!';
+      document.getElementById('actionFeedback').style.color = '#ff6b6b';
+      setTimeout(function(){
+        btn.classList.remove('wrong');
+        document.getElementById('actionFeedback').textContent = '';
+        allBtns.forEach(function(b){
+          b.onclick = function(){ actionAnswer(b, b.textContent, correct); };
+        });
+      }, 700);
+    }
+  }
+
+  function actionDidIt() {
+    document.getElementById('actionDidItBtn').style.display = 'none';
+    document.getElementById('actionFeedback').textContent = '🌟 Superstar!';
+    actionIdx++;
+    setTimeout(actionShow, 1200);
+  }
+
+  function actionDone() {
+    document.getElementById('actionEmoji').textContent = '🏆';
+    document.getElementById('actionQuestion').textContent = actionScoreVal + ' / ' + ACTION_CARDS.length + ' correct! Amazing! 🎉';
+    document.getElementById('actionHint').textContent = '';
+    document.getElementById('actionOpts').innerHTML = '';
+    document.getElementById('actionFeedback').textContent = '';
+    if (actionScoreVal >= 5) { earnStar(4); bigBlast(); }
+  }
+
+  /* ══════════════════════════════════════════
+     TASK 7: ANIMALS + ACTIONS
+  ══════════════════════════════════════════ */
+  var AA_CARDS = [
+    {animal:'🐸', name:'frog',    verb:'jump',  color:'#e8ffe8', instruction:'"Jump like a frog!"'},
+    {animal:'🐦', name:'bird',    verb:'fly',   color:'#d6f0ff', instruction:'"Fly like a bird!"'},
+    {animal:'🐠', name:'fish',    verb:'swim',  color:'#cce8ff', instruction:'"Swim like a fish!"'},
+    {animal:'🐒', name:'monkey',  verb:'climb', color:'#ffe8cc', instruction:'"Climb like a monkey!"'},
+    {animal:'🏃', name:'athlete', verb:'run',   color:'#ffe9f3', instruction:'"Run like an athlete!"'},
+    {animal:'🦋', name:'butterfly',verb:'fly',  color:'#f0e8ff', instruction:'"Fly like a butterfly!"'},
+    {animal:'🐻', name:'bear',    verb:'dance', color:'#fff5cc', instruction:'"Dance like a bear!"'},
+    {animal:'👏', name:'teacher', verb:'clap',  color:'#ffe8e8', instruction:'"Clap like a teacher!"'},
+  ];
+  var aaDone = 0;
+
+  function aaInit() {
+    aaDone = 0;
+    document.getElementById('aaAllDone').textContent = '';
+    var grid = document.getElementById('aaGrid');
+    grid.innerHTML = '';
+    AA_CARDS.forEach(function(c, i) {
+      var card = document.createElement('div');
+      card.className = 'animal-action-card';
+      card.style.background = c.color;
+      card.innerHTML =
+        '<div class="aa-animals">' + c.animal + '</div>' +
+        '<div class="aa-instruction">Tap to see! 👆</div>' +
+        '<div class="aa-sentence">' + c.instruction + '</div>' +
+        '<button class="aa-do-btn" style="background:#7b5ea7;color:white">👁️ Show me!</button>' +
+        '<button class="aa-done-btn" onclick="aaDoneOne(this,' + i + ')">✅ I did it!</button>';
+
+      card.querySelector('.aa-do-btn').addEventListener('click', function() {
+        card.classList.add('revealed');
+      });
+      grid.appendChild(card);
+    });
+  }
+
+  function aaDoneOne(btn, idx) {
+    btn.disabled = true;
+    btn.textContent = '⭐ Done!';
+    aaDone++;
+    var r = btn.getBoundingClientRect();
+    spawn(r.left + r.width/2, r.top, 12);
+    if (aaDone === AA_CARDS.length) {
+      document.getElementById('aaAllDone').textContent = '🎉 You did ALL the actions! Amazing! 🌟';
+      earnStar(5);
+      bigBlast();
+    }
+  }
+
+  /* init task 7 on load */
+  aaInit();
+</script>
+</body>
+</html>

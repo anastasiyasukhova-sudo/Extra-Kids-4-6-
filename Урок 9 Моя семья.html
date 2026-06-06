@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Family 🏠</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sky: #87CEEB;
+    --grass: #7bc67e;
+    --sun: #FFD93D;
+    --pink: #FF8FAB;
+    --blue: #6BBDE8;
+    --purple: #B088F9;
+    --orange: #FFB347;
+    --green: #6BCB77;
+    --red: #FF6B6B;
+    --white: #FFFAF0;
+    --dark: #3d2b1f;
+    --card-bg: #fffef8;
+    --shadow: 0 6px 20px rgba(0,0,0,0.12);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: linear-gradient(180deg, #cce9ff 0%, #e8f5e9 60%, #f9f3e3 100%);
+    min-height: 100vh;
+    color: var(--dark);
+    overflow-x: hidden;
+  }
+
+  /* ---- HEADER ---- */
+  header {
+    background: linear-gradient(135deg, #FFD93D 0%, #FF8FAB 50%, #B088F9 100%);
+    padding: 30px 20px 50px;
+    text-align: center;
+    position: relative;
+    clip-path: ellipse(100% 80% at 50% 20%);
+  }
+  header h1 {
+    font-family: 'Baloo 2', cursive;
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    font-weight: 800;
+    color: white;
+    text-shadow: 3px 4px 0 rgba(0,0,0,0.15);
+    letter-spacing: 1px;
+  }
+  header p { color: rgba(255,255,255,0.9); font-size: 1.1rem; margin-top: 6px; font-weight: 600; }
+
+  .houses { font-size: 2.5rem; margin-bottom: 8px; }
+
+  /* ---- NAV DOTS ---- */
+  nav.dots {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin: 28px auto 10px;
+    flex-wrap: wrap;
+    padding: 0 16px;
+  }
+  nav.dots button {
+    background: white;
+    border: 3px solid transparent;
+    border-radius: 30px;
+    padding: 8px 18px;
+    font-family: 'Baloo 2', cursive;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all .25s;
+    color: var(--dark);
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+  }
+  nav.dots button:hover, nav.dots button.active {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+  }
+  nav.dots button:nth-child(1) { border-color: var(--pink); }
+  nav.dots button:nth-child(2) { border-color: var(--blue); }
+  nav.dots button:nth-child(3) { border-color: var(--purple); }
+  nav.dots button:nth-child(4) { border-color: var(--orange); }
+  nav.dots button:nth-child(5) { border-color: var(--green); }
+  nav.dots button:nth-child(6) { border-color: var(--red); }
+  nav.dots button.active { color: white; }
+  nav.dots button:nth-child(1).active { background: var(--pink); }
+  nav.dots button:nth-child(2).active { background: var(--blue); }
+  nav.dots button:nth-child(3).active { background: var(--purple); }
+  nav.dots button:nth-child(4).active { background: var(--orange); }
+  nav.dots button:nth-child(5).active { background: var(--green); }
+  nav.dots button:nth-child(6).active { background: var(--red); }
+
+  /* ---- SECTIONS ---- */
+  .section { display: none; padding: 20px 16px 60px; max-width: 860px; margin: 0 auto; }
+  .section.active { display: block; animation: fadeIn .4s ease; }
+  @keyframes fadeIn { from { opacity:0; transform: translateY(16px); } to { opacity:1; transform: translateY(0); } }
+
+  .section-title {
+    font-family: 'Baloo 2', cursive;
+    font-size: clamp(1.4rem, 4vw, 2rem);
+    font-weight: 800;
+    text-align: center;
+    margin-bottom: 6px;
+  }
+  .section-sub { text-align: center; color: #666; font-size: 1rem; margin-bottom: 28px; }
+
+  /* ---- EX 1: WORD CARDS ---- */
+  .word-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 18px;
+  }
+  .word-card {
+    background: var(--card-bg);
+    border-radius: 22px;
+    padding: 20px 16px;
+    text-align: center;
+    box-shadow: var(--shadow);
+    border: 3px solid transparent;
+    transition: transform .2s, box-shadow .2s;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .word-card:hover { transform: translateY(-5px); box-shadow: 0 12px 28px rgba(0,0,0,0.15); }
+  .word-card .emoji { font-size: 3.5rem; display: block; margin-bottom: 10px; }
+  .word-card .word { font-family: 'Baloo 2', cursive; font-size: 1.2rem; font-weight: 800; color: var(--dark); display: block; }
+  .word-card .ipa { font-size: 0.8rem; color: #999; margin-top: 3px; letter-spacing: 0.5px; }
+
+  .audio-btn {
+    margin-top: 12px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.6rem;
+    transition: transform .2s;
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 50%;
+    background: #f0f0f0;
+  }
+  .audio-btn:hover { transform: scale(1.2); background: #e0e0e0; }
+  .audio-btn.playing { animation: pulse 0.6s infinite alternate; }
+  @keyframes pulse { from { transform: scale(1); } to { transform: scale(1.25); } }
+
+  /* ---- EX 2: MATCH ---- */
+  .match-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    align-items: start;
+  }
+  .match-col { display: flex; flex-direction: column; gap: 12px; }
+  .match-col h3 { font-family: 'Baloo 2', cursive; font-size: 1.1rem; text-align: center; color: #888; margin-bottom: 4px; }
+  .match-item {
+    background: white;
+    border: 3px dashed #ccc;
+    border-radius: 16px;
+    padding: 14px 18px;
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all .2s;
+    text-align: center;
+    user-select: none;
+    min-height: 54px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .match-item:hover { transform: scale(1.04); border-color: #aaa; background: #fafafa; }
+  .match-item.selected { border-style: solid; transform: scale(1.06); }
+  .match-item.correct { background: #d4edda; border-color: var(--green); border-style: solid; color: #155724; }
+  .match-item.wrong { background: #f8d7da; border-color: var(--red); border-style: solid; animation: shake .4s; }
+  @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
+
+  /* ---- EX 3: WHO IS IT ---- */
+  .quiz-container { display: flex; flex-direction: column; gap: 22px; align-items: center; }
+  .quiz-card {
+    background: white;
+    border-radius: 28px;
+    padding: 28px;
+    box-shadow: var(--shadow);
+    width: 100%;
+    max-width: 460px;
+    text-align: center;
+    border: 3px solid #f0e8ff;
+  }
+  .quiz-card .big-emoji { font-size: 5rem; display: block; margin-bottom: 10px; }
+  .quiz-card .question { font-family: 'Baloo 2', cursive; font-size: 1.3rem; font-weight: 700; margin-bottom: 18px; color: #555; }
+  .quiz-options { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+  .quiz-option {
+    padding: 10px 20px;
+    border-radius: 50px;
+    border: 3px solid #ddd;
+    background: white;
+    font-family: 'Baloo 2', cursive;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all .2s;
+  }
+  .quiz-option:hover { border-color: var(--purple); transform: scale(1.05); }
+  .quiz-option.correct { background: var(--green); border-color: var(--green); color: white; }
+  .quiz-option.wrong { background: var(--red); border-color: var(--red); color: white; animation: shake .4s; }
+  .quiz-feedback { font-size: 1.2rem; font-weight: 700; margin-top: 12px; min-height: 28px; }
+  .quiz-nav { display: flex; gap: 16px; margin-top: 10px; }
+  .quiz-nav button {
+    padding: 12px 28px;
+    border-radius: 50px;
+    border: none;
+    background: var(--purple);
+    color: white;
+    font-family: 'Baloo 2', cursive;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    transition: transform .2s;
+  }
+  .quiz-nav button:hover { transform: translateY(-3px); }
+  .quiz-progress { font-size: 0.95rem; color: #aaa; font-weight: 600; }
+
+  /* ---- EX 4: FAMILY TREE DRAG ---- */
+  .tree-wrap { position: relative; }
+  .tree-svg-container { text-align: center; margin-bottom: 20px; }
+  .tree-svg-container svg { max-width: 100%; }
+
+  .drop-zone {
+    background: #f5f0ff;
+    border: 3px dashed var(--purple);
+    border-radius: 16px;
+    min-width: 90px;
+    min-height: 50px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Baloo 2', cursive;
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: #aaa;
+    transition: all .2s;
+    cursor: default;
+    padding: 6px 10px;
+  }
+  .drop-zone.filled { background: white; border-style: solid; color: var(--dark); border-color: #c9b3ff; }
+  .drop-zone.over { background: #ede0ff; border-color: var(--purple); transform: scale(1.05); }
+
+  .tree-drag-pool {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  .drag-chip {
+    padding: 10px 20px;
+    border-radius: 50px;
+    font-family: 'Baloo 2', cursive;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: grab;
+    user-select: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    transition: transform .15s, opacity .15s;
+    border: 3px solid transparent;
+  }
+  .drag-chip:active { cursor: grabbing; transform: scale(1.1) rotate(-2deg); }
+  .drag-chip.used { opacity: 0.3; pointer-events: none; }
+
+  .tree-visual {
+    background: linear-gradient(135deg, #e8f5e9, #f3e5f5);
+    border-radius: 24px;
+    padding: 24px 12px 16px;
+    box-shadow: var(--shadow);
+    overflow-x: auto;
+  }
+  .tree-level { display: flex; justify-content: center; gap: 20px; margin-bottom: 8px; }
+  .tree-node {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+  .tree-node .node-emoji { font-size: 2.4rem; }
+  .connector-v { width: 2px; height: 24px; background: #bbb; margin: 0 auto; }
+  .connector-h-wrap { display: flex; align-items: center; }
+  .connector-h { height: 2px; background: #bbb; flex: 1; }
+
+  /* ---- EX 5: LISTEN & CHOOSE ---- */
+  .listen-grid { display: flex; flex-direction: column; gap: 22px; }
+  .listen-card {
+    background: white;
+    border-radius: 22px;
+    padding: 20px 24px;
+    box-shadow: var(--shadow);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .listen-btn {
+    background: linear-gradient(135deg, #6BBDE8, #4a9fd1);
+    border: none;
+    border-radius: 50%;
+    width: 56px;
+    height: 56px;
+    font-size: 1.6rem;
+    cursor: pointer;
+    color: white;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    transition: transform .2s;
+    flex-shrink: 0;
+  }
+  .listen-btn:hover { transform: scale(1.1); }
+  .listen-choices { display: flex; flex-wrap: wrap; gap: 10px; }
+  .listen-choice {
+    padding: 10px 20px;
+    border-radius: 50px;
+    border: 3px solid #eee;
+    background: white;
+    font-family: 'Baloo 2', cursive;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all .2s;
+  }
+  .listen-choice:hover { border-color: var(--blue); transform: scale(1.04); }
+  .listen-choice.correct { background: var(--green); border-color: var(--green); color: white; }
+  .listen-choice.wrong { background: var(--red); border-color: var(--red); color: white; animation: shake .4s; }
+
+  /* ---- EX 6: SENTENCE BUILDER ---- */
+  .sentence-area { background: white; border-radius: 22px; padding: 24px; box-shadow: var(--shadow); margin-bottom: 20px; min-height: 60px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; border: 3px dashed #e0d0ff; }
+  .sentence-area .placeholder { color: #ccc; font-family: 'Baloo 2', cursive; font-size: 1rem; }
+  .word-pool-6 { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 20px; }
+  .word-chip {
+    padding: 10px 18px;
+    border-radius: 50px;
+    border: 3px solid #e0d0ff;
+    background: #f5f0ff;
+    font-family: 'Baloo 2', cursive;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all .2s;
+    user-select: none;
+  }
+  .word-chip:hover { background: #ede0ff; transform: scale(1.05); }
+  .word-chip.used { opacity: 0.3; pointer-events: none; }
+  .placed-word {
+    padding: 10px 18px;
+    border-radius: 50px;
+    background: var(--purple);
+    color: white;
+    font-family: 'Baloo 2', cursive;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all .2s;
+  }
+  .placed-word:hover { background: #9b6fe8; transform: scale(0.97); }
+  .sentence-task { text-align: center; font-family: 'Baloo 2', cursive; font-size: 1.1rem; font-weight: 700; margin-bottom: 14px; color: #555; }
+  .sentence-emoji { font-size: 2.5rem; display: block; text-align: center; margin-bottom: 6px; }
+  .check-sentence-btn {
+    display: block;
+    margin: 0 auto;
+    padding: 14px 36px;
+    border-radius: 50px;
+    border: none;
+    background: linear-gradient(135deg, var(--purple), #9b6fe8);
+    color: white;
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.1rem;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 5px 16px rgba(176,136,249,0.4);
+    transition: transform .2s, box-shadow .2s;
+    margin-bottom: 12px;
+  }
+  .check-sentence-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(176,136,249,0.5); }
+  .sentence-feedback { text-align: center; font-size: 1.2rem; font-weight: 700; min-height: 32px; }
+
+  /* ---- SHARED ---- */
+  .score-badge {
+    background: linear-gradient(135deg, #FFD93D, #FF8FAB);
+    color: white;
+    font-family: 'Baloo 2', cursive;
+    font-weight: 800;
+    font-size: 1rem;
+    padding: 6px 16px;
+    border-radius: 50px;
+    display: inline-block;
+    margin: 0 auto 18px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.12);
+  }
+  .score-wrap { text-align: center; }
+
+  .btn-next {
+    display: block;
+    margin: 28px auto 0;
+    padding: 14px 40px;
+    border-radius: 50px;
+    border: none;
+    background: linear-gradient(135deg, #FFB347, #FF8FAB);
+    color: white;
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.1rem;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 5px 16px rgba(255,131,113,0.35);
+    transition: transform .2s;
+  }
+  .btn-next:hover { transform: translateY(-3px); }
+
+  .reset-btn {
+    display: block;
+    margin: 14px auto 0;
+    background: none;
+    border: 2px solid #ddd;
+    border-radius: 50px;
+    padding: 8px 22px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.9rem;
+    color: #aaa;
+    cursor: pointer;
+    transition: all .2s;
+  }
+  .reset-btn:hover { border-color: #bbb; color: #888; }
+
+  @media (max-width: 520px) {
+    .match-container { grid-template-columns: 1fr; }
+    .listen-card { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="houses">🏡👨‍👩‍👧‍👦🏡</div>
+  <h1>My Family</h1>
+  <p>Let's learn about families in English!</p>
+</header>
+
+<nav class="dots">
+  <button onclick="showSection(0)" class="active">1 🔊 Words</button>
+  <button onclick="showSection(1)">2 🔗 Match</button>
+  <button onclick="showSection(2)">3 ❓ Who is it?</button>
+  <button onclick="showSection(3)">4 🌳 Family Tree</button>
+  <button onclick="showSection(4)">5 👂 Listen</button>
+  <button onclick="showSection(5)">6 ✏️ Sentences</button>
+</nav>
+
+<!-- =============== SECTION 1: WORDS + AUDIO =============== -->
+<section class="section active" id="s0">
+  <div class="section-title" style="color: var(--pink)">🔊 Listen & Learn!</div>
+  <p class="section-sub">Click the speaker button 🔊 to hear the word!</p>
+  <div class="word-grid" id="wordGrid"></div>
+  <button class="btn-next" onclick="showSection(1)">Next Exercise →</button>
+</section>
+
+<!-- =============== SECTION 2: MATCH =============== -->
+<section class="section" id="s1">
+  <div class="section-title" style="color: var(--blue)">🔗 Match the Words!</div>
+  <p class="section-sub">Click a word, then click its picture!</p>
+  <div class="score-wrap"><span class="score-badge" id="matchScore">⭐ 0 / 7</span></div>
+  <div class="match-container">
+    <div class="match-col">
+      <h3>Words 📝</h3>
+      <div id="matchWords"></div>
+    </div>
+    <div class="match-col">
+      <h3>Pictures 🖼️</h3>
+      <div id="matchPics"></div>
+    </div>
+  </div>
+  <button class="reset-btn" onclick="initMatch()">🔄 Try Again</button>
+  <button class="btn-next" onclick="showSection(2)">Next Exercise →</button>
+</section>
+
+<!-- =============== SECTION 3: WHO IS IT =============== -->
+<section class="section" id="s2">
+  <div class="section-title" style="color: var(--purple)">❓ Who Is It?</div>
+  <p class="section-sub">Look at the picture and choose the right answer!</p>
+  <div class="score-wrap"><span class="score-badge" id="quizScore">⭐ 0 / 7</span></div>
+  <div class="quiz-container">
+    <div class="quiz-card" id="quizCard">
+      <span class="big-emoji" id="quizEmoji"></span>
+      <div class="question" id="quizQuestion"></div>
+      <div class="quiz-options" id="quizOptions"></div>
+      <div class="quiz-feedback" id="quizFeedback"></div>
+    </div>
+    <div class="quiz-progress" id="quizProgress"></div>
+    <div class="quiz-nav">
+      <button onclick="nextQuiz()">Next →</button>
+    </div>
+  </div>
+  <button class="btn-next" onclick="showSection(3)">Next Exercise →</button>
+</section>
+
+<!-- =============== SECTION 4: FAMILY TREE =============== -->
+<section class="section" id="s3">
+  <div class="section-title" style="color: var(--orange)">🌳 Family Tree!</div>
+  <p class="section-sub">Drag the names into the right boxes!</p>
+  <div class="score-wrap"><span class="score-badge" id="treeScore">⭐ 0 / 6</span></div>
+
+  <div class="tree-visual">
+    <!-- Row 1: Grandparents -->
+    <div class="tree-level">
+      <div class="tree-node">
+        <span class="node-emoji">👴</span>
+        <div class="drop-zone" id="dz-grandfather" data-answer="grandfather" ondragover="dzOver(event)" ondragleave="dzLeave(event)" ondrop="dzDrop(event)">?</div>
+      </div>
+      <div class="tree-node">
+        <span class="node-emoji">👵</span>
+        <div class="drop-zone" id="dz-grandmother" data-answer="grandmother" ondragover="dzOver(event)" ondragleave="dzLeave(event)" ondrop="dzDrop(event)">?</div>
+      </div>
+    </div>
+
+    <div style="display:flex;justify-content:center;margin:4px 0">
+      <div style="width:2px;height:20px;background:#bbb"></div>
+    </div>
+
+    <!-- Row 2: Parents -->
+    <div class="tree-level">
+      <div class="tree-node">
+        <span class="node-emoji">👨</span>
+        <div class="drop-zone" id="dz-dad" data-answer="dad" ondragover="dzOver(event)" ondragleave="dzLeave(event)" ondrop="dzDrop(event)">?</div>
+      </div>
+      <div class="tree-node">
+        <span class="node-emoji">👩</span>
+        <div class="drop-zone" id="dz-mum" data-answer="mum" ondragover="dzOver(event)" ondragleave="dzLeave(event)" ondrop="dzDrop(event)">?</div>
+      </div>
+    </div>
+
+    <div style="display:flex;justify-content:center;margin:4px 0">
+      <div style="width:2px;height:20px;background:#bbb"></div>
+    </div>
+
+    <!-- Row 3: Children -->
+    <div class="tree-level">
+      <div class="tree-node">
+        <span class="node-emoji">👦</span>
+        <div class="drop-zone" id="dz-brother" data-answer="brother" ondragover="dzOver(event)" ondragleave="dzLeave(event)" ondrop="dzDrop(event)">?</div>
+      </div>
+      <div class="tree-node">
+        <span class="node-emoji">👧</span>
+        <div class="drop-zone" id="dz-sister" data-answer="sister" ondragover="dzOver(event)" ondragleave="dzLeave(event)" ondrop="dzDrop(event)">?</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tree-drag-pool" id="dragPool"></div>
+
+  <!-- Mobile tap-to-place fallback -->
+  <p style="text-align:center;color:#aaa;font-size:0.85rem;margin-top:12px;">📱 On mobile: tap a name, then tap the box!</p>
+
+  <button class="reset-btn" onclick="initTree()">🔄 Try Again</button>
+  <button class="btn-next" onclick="showSection(4)">Next Exercise →</button>
+</section>
+
+<!-- =============== SECTION 5: LISTEN & CHOOSE =============== -->
+<section class="section" id="s4">
+  <div class="section-title" style="color: var(--green)">👂 Listen & Choose!</div>
+  <p class="section-sub">Press the play button and choose the correct word!</p>
+  <div class="score-wrap"><span class="score-badge" id="listenScore">⭐ 0 / 5</span></div>
+  <div class="listen-grid" id="listenGrid"></div>
+  <button class="reset-btn" onclick="initListen()">🔄 Try Again</button>
+  <button class="btn-next" onclick="showSection(5)">Next Exercise →</button>
+</section>
+
+<!-- =============== SECTION 6: SENTENCE BUILDER =============== -->
+<section class="section" id="s5">
+  <div class="section-title" style="color: var(--red)">✏️ Build the Sentence!</div>
+  <p class="section-sub">Click words to build the correct sentence!</p>
+  <div class="score-wrap"><span class="score-badge" id="sentScore">⭐ 0 / 4</span></div>
+  <div id="sentExercise"></div>
+</section>
+
+<script>
+// ====================== DATA ======================
+const familyWords = [
+  { word: 'a mother',      emoji: '👩',  ipa: '/ˈmʌðə/',      speak: 'mother' },
+  { word: 'a father',      emoji: '👨',  ipa: '/ˈfɑːðə/',     speak: 'father' },
+  { word: 'a brother',     emoji: '👦',  ipa: '/ˈbrʌðə/',     speak: 'brother' },
+  { word: 'a sister',      emoji: '👧',  ipa: '/ˈsɪstə/',     speak: 'sister' },
+  { word: 'a family',      emoji: '👨‍👩‍👧‍👦', ipa: '/ˈfæməli/',    speak: 'family' },
+  { word: 'a grandfather', emoji: '👴',  ipa: '/ˈɡrænd.fɑːðə/', speak: 'grandfather' },
+  { word: 'a grandmother', emoji: '👵',  ipa: '/ˈɡrænd.mʌðə/', speak: 'grandmother' },
+];
+
+const colors = ['#FFB347','#FF8FAB','#6BBDE8','#B088F9','#6BCB77','#FF6B6B','#FFD93D'];
+
+// ====================== TTS ======================
+function speak(text) {
+  if (!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'en-GB';
+  u.rate = 0.85;
+  u.pitch = 1;
+  // Try to pick a British voice
+  const voices = window.speechSynthesis.getVoices();
+  const british = voices.find(v => v.lang === 'en-GB') || voices.find(v => v.lang.startsWith('en'));
+  if (british) u.voice = british;
+  window.speechSynthesis.speak(u);
+}
+// Load voices
+if (window.speechSynthesis) window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+
+// ====================== NAV ======================
+const navBtns = document.querySelectorAll('nav.dots button');
+function showSection(i) {
+  document.querySelectorAll('.section').forEach((s,j) => {
+    s.classList.toggle('active', j === i);
+  });
+  navBtns.forEach((b,j) => b.classList.toggle('active', j === i));
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+// ====================== EX 1: WORDS ======================
+function initWords() {
+  const grid = document.getElementById('wordGrid');
+  grid.innerHTML = '';
+  familyWords.forEach((fw, i) => {
+    const card = document.createElement('div');
+    card.className = 'word-card';
+    card.style.borderColor = colors[i];
+    card.innerHTML = `
+      <span class="emoji">${fw.emoji}</span>
+      <span class="word">${fw.word}</span>
+      <span class="ipa">${fw.ipa}</span>
+      <button class="audio-btn" title="Listen" onclick="speakWord(this,'${fw.speak}')">🔊</button>
+    `;
+    grid.appendChild(card);
+  });
+}
+function speakWord(btn, text) {
+  btn.classList.add('playing');
+  speak(text);
+  setTimeout(() => btn.classList.remove('playing'), 1600);
+}
+initWords();
+
+// ====================== EX 2: MATCH ======================
+let matchSelected = null;
+let matchScore2 = 0;
+
+function initMatch() {
+  matchScore2 = 0;
+  matchSelected = null;
+  updateMatchScore();
+
+  const words = familyWords.map((fw, i) => ({ id: i, label: fw.word, type: 'word' }));
+  const pics  = familyWords.map((fw, i) => ({ id: i, label: fw.emoji, type: 'pic' }));
+
+  shuffle(words); shuffle(pics);
+
+  const wc = document.getElementById('matchWords');
+  const pc = document.getElementById('matchPics');
+  wc.innerHTML = ''; pc.innerHTML = '';
+
+  words.forEach(w => {
+    const el = document.createElement('div');
+    el.className = 'match-item';
+    el.style.borderColor = colors[w.id];
+    el.dataset.id = w.id;
+    el.dataset.type = 'word';
+    el.textContent = w.label;
+    el.onclick = () => onMatchClick(el);
+    wc.appendChild(el);
+  });
+  pics.forEach(p => {
+    const el = document.createElement('div');
+    el.className = 'match-item';
+    el.style.borderColor = colors[p.id];
+    el.dataset.id = p.id;
+    el.dataset.type = 'pic';
+    el.textContent = p.label;
+    el.style.fontSize = '2rem';
+    el.onclick = () => onMatchClick(el);
+    pc.appendChild(el);
+  });
+}
+
+function onMatchClick(el) {
+  if (el.classList.contains('correct') || el.classList.contains('wrong')) return;
+  if (!matchSelected) {
+    matchSelected = el;
+    el.classList.add('selected');
+    el.style.background = '#fff8e1';
+  } else {
+    if (matchSelected === el) { el.classList.remove('selected'); el.style.background=''; matchSelected=null; return; }
+    const a = matchSelected, b = el;
+    if (a.dataset.id === b.dataset.id && a.dataset.type !== b.dataset.type) {
+      a.classList.remove('selected'); a.style.background='';
+      a.classList.add('correct'); b.classList.add('correct');
+      matchScore2++;
+      updateMatchScore();
+    } else {
+      a.classList.remove('selected'); a.style.background='';
+      a.classList.add('wrong'); b.classList.add('wrong');
+      setTimeout(() => { a.classList.remove('wrong'); b.classList.remove('wrong'); }, 700);
+    }
+    matchSelected = null;
+  }
+}
+function updateMatchScore() {
+  document.getElementById('matchScore').textContent = `⭐ ${matchScore2} / 7`;
+}
+initMatch();
+
+// ====================== EX 3: WHO IS IT ======================
+const quizData = [
+  { emoji:'👩', question:'Who is this?', answer:'mother', options:['mother','father','sister','grandmother'] },
+  { emoji:'👨', question:'Who is this?', answer:'father', options:['father','mother','brother','grandfather'] },
+  { emoji:'👧', question:'Who is this?', answer:'sister', options:['sister','mother','brother','grandmother'] },
+  { emoji:'👦', question:'Who is this?', answer:'brother', options:['brother','father','sister','grandfather'] },
+  { emoji:'👵', question:'Who is this?', answer:'grandmother', options:['grandmother','grandfather','mother','sister'] },
+  { emoji:'👴', question:'Who is this?', answer:'grandfather', options:['grandfather','grandmother','father','brother'] },
+  { emoji:'👨‍👩‍👧‍👦', question:'What is this?', answer:'family', options:['family','mother','father','sister'] },
+];
+
+let quizIdx = 0, quizScore3 = 0, quizAnswered = false;
+
+function renderQuiz() {
+  const q = quizData[quizIdx];
+  document.getElementById('quizEmoji').textContent = q.emoji;
+  document.getElementById('quizQuestion').textContent = q.question;
+  document.getElementById('quizFeedback').textContent = '';
+  document.getElementById('quizProgress').textContent = `Question ${quizIdx+1} of ${quizData.length}`;
+  document.getElementById('quizScore').textContent = `⭐ ${quizScore3} / ${quizData.length}`;
+  quizAnswered = false;
+
+  const opts = document.getElementById('quizOptions');
+  opts.innerHTML = '';
+  shuffle([...q.options]).forEach(opt => {
+    const b = document.createElement('button');
+    b.className = 'quiz-option';
+    b.textContent = opt;
+    b.onclick = () => checkQuiz(b, opt, q.answer);
+    opts.appendChild(b);
+  });
+}
+
+function checkQuiz(btn, chosen, answer) {
+  if (quizAnswered) return;
+  quizAnswered = true;
+  if (chosen === answer) {
+    btn.classList.add('correct');
+    document.getElementById('quizFeedback').textContent = '🎉 Excellent!';
+    quizScore3++;
+  } else {
+    btn.classList.add('wrong');
+    document.getElementById('quizFeedback').textContent = `Try again! It's a ${answer}`;
+    document.querySelectorAll('.quiz-option').forEach(b => {
+      if (b.textContent === answer) b.classList.add('correct');
+    });
+  }
+  document.getElementById('quizScore').textContent = `⭐ ${quizScore3} / ${quizData.length}`;
+}
+
+function nextQuiz() {
+  quizIdx = (quizIdx + 1) % quizData.length;
+  renderQuiz();
+}
+renderQuiz();
+
+// ====================== EX 4: FAMILY TREE ======================
+const treeWords = [
+  { id:'grandfather', label:'grandfather', color:'#FFB347' },
+  { id:'grandmother', label:'grandmother', color:'#FF8FAB' },
+  { id:'dad',         label:'dad',         color:'#6BBDE8' },
+  { id:'mum',         label:'mum',         color:'#B088F9' },
+  { id:'brother',     label:'brother',     color:'#6BCB77' },
+  { id:'sister',      label:'sister',      color:'#FF6B6B' },
+];
+let treeScore5 = 0;
+let mobileSelectedChip = null;
+
+function initTree() {
+  treeScore5 = 0;
+  document.getElementById('treeScore').textContent = '⭐ 0 / 6';
+  mobileSelectedChip = null;
+
+  document.querySelectorAll('.drop-zone').forEach(dz => {
+    dz.textContent = '?';
+    dz.classList.remove('filled');
+    dz.dataset.filled = '';
+  });
+
+  const pool = document.getElementById('dragPool');
+  pool.innerHTML = '';
+  shuffle([...treeWords]).forEach(tw => {
+    const chip = document.createElement('div');
+    chip.className = 'drag-chip';
+    chip.id = 'chip-' + tw.id;
+    chip.textContent = tw.label;
+    chip.draggable = true;
+    chip.style.background = tw.color;
+    chip.style.color = 'white';
+    chip.dataset.word = tw.id;
+    chip.ondragstart = e => e.dataTransfer.setData('text', tw.id);
+    chip.onclick = () => mobileTapChip(chip);
+    pool.appendChild(chip);
+  });
+}
+
+function dzOver(e) { e.preventDefault(); e.currentTarget.classList.add('over'); }
+function dzLeave(e) { e.currentTarget.classList.remove('over'); }
+function dzDrop(e) {
+  e.preventDefault();
+  const dz = e.currentTarget;
+  dz.classList.remove('over');
+  if (dz.classList.contains('filled')) return;
+  const word = e.dataTransfer.getData('text');
+  placeWord(word, dz);
+}
+
+function mobileTapChip(chip) {
+  if (chip.classList.contains('used')) return;
+  if (mobileSelectedChip) mobileSelectedChip.style.outline = '';
+  mobileSelectedChip = chip;
+  chip.style.outline = '4px solid white';
+}
+
+document.querySelectorAll('.drop-zone').forEach(dz => {
+  dz.addEventListener('click', () => {
+    if (dz.classList.contains('filled')) return;
+    if (mobileSelectedChip) {
+      placeWord(mobileSelectedChip.dataset.word, dz);
+      mobileSelectedChip.style.outline = '';
+      mobileSelectedChip = null;
+    }
+  });
+});
+
+function placeWord(word, dz) {
+  if (dz.classList.contains('filled')) return;
+  const chip = document.getElementById('chip-' + word);
+  const expected = dz.dataset.answer;
+
+  if (word === expected) {
+    dz.textContent = word;
+    dz.classList.add('filled');
+    dz.dataset.filled = word;
+    if (chip) chip.classList.add('used');
+    treeScore5++;
+    document.getElementById('treeScore').textContent = `⭐ ${treeScore5} / 6`;
+    dz.style.borderColor = '#6BCB77';
+    dz.style.background = '#d4edda';
+  } else {
+    dz.style.animation = 'shake .4s';
+    setTimeout(() => dz.style.animation = '', 500);
+  }
+}
+initTree();
+
+// ====================== EX 5: LISTEN & CHOOSE ======================
+const listenData = [
+  { word:'mother',      emoji:'👩', options:['mother','father','sister','grandmother'] },
+  { word:'grandfather', emoji:'👴', options:['grandfather','grandmother','father','brother'] },
+  { word:'sister',      emoji:'👧', options:['sister','brother','mother','grandmother'] },
+  { word:'family',      emoji:'👨‍👩‍👧‍👦', options:['family','father','mother','brother'] },
+  { word:'brother',     emoji:'👦', options:['brother','sister','father','grandfather'] },
+];
+let listenScore5 = 0;
+
+function initListen() {
+  listenScore5 = 0;
+  document.getElementById('listenScore').textContent = '⭐ 0 / 5';
+  const grid = document.getElementById('listenGrid');
+  grid.innerHTML = '';
+  shuffle([...listenData]).forEach((item, i) => {
+    const card = document.createElement('div');
+    card.className = 'listen-card';
+    card.id = 'lcard-' + i;
+    const opts = shuffle([...item.options]);
+    card.innerHTML = `
+      <button class="listen-btn" onclick="speak('${item.word}')">🔊</button>
+      <div class="listen-choices">
+        ${opts.map(o => `<button class="listen-choice" onclick="checkListen(this,'${o}','${item.word}',${i})">${o}</button>`).join('')}
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+function checkListen(btn, chosen, answer, cardIdx) {
+  const card = document.getElementById('lcard-' + cardIdx);
+  if (card.dataset.done) return;
+  card.dataset.done = '1';
+  if (chosen === answer) {
+    btn.classList.add('correct');
+    listenScore5++;
+  } else {
+    btn.classList.add('wrong');
+    card.querySelectorAll('.listen-choice').forEach(b => {
+      if (b.textContent === answer) b.classList.add('correct');
+    });
+  }
+  document.getElementById('listenScore').textContent = `⭐ ${listenScore5} / 5`;
+}
+initListen();
+
+// ====================== EX 6: SENTENCE BUILDER ======================
+const sentTasks = [
+  { emoji:'👩', task:'This is my _____.', words:['This','is','my','mother','.'], answer:'This is my mother .' },
+  { emoji:'👴', task:'He is my _____.', words:['He','is','my','grandfather','.'], answer:'He is my grandfather .' },
+  { emoji:'👧', task:'She is my _____.', words:['She','is','my','sister','.'], answer:'She is my sister .' },
+  { emoji:'👨‍👩‍👧‍👦', task:'We are a _____.', words:['We','are','a','family','.'], answer:'We are a family .' },
+];
+let sentIdx = 0, sentScore6 = 0;
+let placed = [], available = [];
+
+function initSent() {
+  const task = sentTasks[sentIdx];
+  available = shuffle([...task.words]);
+  placed = [];
+  renderSent();
+}
+
+function renderSent() {
+  const task = sentTasks[sentIdx];
+  const ex = document.getElementById('sentExercise');
+  ex.innerHTML = `
+    <span class="sentence-emoji">${task.emoji}</span>
+    <p class="sentence-task">${task.task}</p>
+    <div class="sentence-area" id="sentArea">
+      ${placed.length === 0 ? '<span class="placeholder">Click words below to build the sentence...</span>' : ''}
+      ${placed.map((w,i) => `<span class="placed-word" onclick="removePlaced(${i})">${w}</span>`).join('')}
+    </div>
+    <div class="word-pool-6" id="wordPool">
+      ${available.map((w, i) => `<span class="word-chip" onclick="placeWord6(${i})">${w}</span>`).join('')}
+    </div>
+    <button class="check-sentence-btn" onclick="checkSentence()">✅ Check!</button>
+    <div class="sentence-feedback" id="sentFeedback"></div>
+    <div style="text-align:center;margin-top:14px;color:#aaa;font-size:0.9rem">Sentence ${sentIdx+1} of ${sentTasks.length}</div>
+  `;
+}
+
+function placeWord6(i) {
+  placed.push(available[i]);
+  available.splice(i, 1);
+  renderSent();
+}
+function removePlaced(i) {
+  available.push(placed[i]);
+  placed.splice(i, 1);
+  renderSent();
+}
+
+function checkSentence() {
+  const task = sentTasks[sentIdx];
+  const built = placed.join(' ');
+  const fb = document.getElementById('sentFeedback');
+  if (built === task.answer) {
+    fb.textContent = '🎉 Perfect sentence!';
+    fb.style.color = 'var(--green)';
+    sentScore6++;
+    document.getElementById('sentScore').textContent = `⭐ ${sentScore6} / ${sentTasks.length}`;
+    setTimeout(() => {
+      sentIdx++;
+      if (sentIdx < sentTasks.length) { initSent(); }
+      else {
+        document.getElementById('sentExercise').innerHTML = `<div style="text-align:center;padding:40px 20px;font-family:'Baloo 2',cursive;font-size:1.5rem;color:var(--purple)">🏆 Amazing! You finished all exercises!<br><br><span style="font-size:3rem">🌟🌟🌟</span></div>`;
+      }
+    }, 1200);
+  } else {
+    fb.textContent = '🤔 Try again! Check the order.';
+    fb.style.color = 'var(--red)';
+  }
+}
+initSent();
+
+// ====================== UTILS ======================
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+</script>
+</body>
+</html>

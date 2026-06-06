@@ -1,0 +1,1244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Clothes 👕</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --sky: #b3e5fc;
+  --sun: #FFD93D;
+  --pink: #FF6B9D;
+  --green: #6BCB77;
+  --blue: #4D96FF;
+  --orange: #FF9A3C;
+  --purple: #C77DFF;
+  --red: #FF5252;
+  --bg: #FFF9F0;
+  --card: #FFFFFF;
+  --ink: #2D2A4A;
+  --correct: #6BCB77;
+  --wrong: #FF5252;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  font-family: 'Nunito', sans-serif;
+  color: var(--ink);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Floating stars background */
+body::before {
+  content: '⭐ 🌟 ✨ ⭐ 🌟 ✨ ⭐ 🌟';
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  font-size: 22px;
+  letter-spacing: 60px;
+  color: rgba(255,220,50,0.25);
+  pointer-events: none;
+  white-space: nowrap;
+  overflow: hidden;
+  z-index: 0;
+  padding: 20px;
+}
+
+.page {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 32px 20px 80px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── HEADER ── */
+header {
+  text-align: center;
+  margin-bottom: 44px;
+}
+
+.header-emoji {
+  font-size: 60px;
+  display: block;
+  animation: bounce 1.8s infinite;
+  margin-bottom: 8px;
+}
+
+@keyframes bounce {
+  0%,100% { transform: translateY(0); }
+  50%      { transform: translateY(-14px); }
+}
+
+header h1 {
+  font-family: 'Fredoka One', cursive;
+  font-size: clamp(2.6rem, 7vw, 4.2rem);
+  color: var(--pink);
+  text-shadow: 4px 4px 0 rgba(255,107,157,0.2);
+  letter-spacing: 1px;
+  line-height: 1.1;
+}
+
+header h1 span { color: var(--blue); }
+
+.header-sub {
+  margin-top: 10px;
+  font-size: 17px;
+  color: #8585a8;
+  font-weight: 700;
+}
+
+/* ── SECTION TITLES ── */
+.section-title {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.7rem;
+  color: var(--ink);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.section-badge {
+  background: var(--sun);
+  color: var(--ink);
+  font-family: 'Fredoka One', cursive;
+  font-size: 1rem;
+  padding: 4px 14px;
+  border-radius: 30px;
+  display: inline-block;
+  box-shadow: 2px 3px 0 rgba(0,0,0,0.1);
+}
+
+/* ── CARDS ── */
+.card {
+  background: var(--card);
+  border-radius: 24px;
+  padding: 32px 36px;
+  margin-bottom: 32px;
+  box-shadow: 0 6px 24px rgba(45,42,74,0.09), 0 2px 0 rgba(0,0,0,0.05);
+  border: 3px solid transparent;
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 6px;
+  border-radius: 24px 24px 0 0;
+}
+
+.card-pink::before  { background: var(--pink); }
+.card-blue::before  { background: var(--blue); }
+.card-green::before { background: var(--green); }
+.card-orange::before { background: var(--orange); }
+.card-purple::before { background: var(--purple); }
+
+/* ── VOCAB GRID ── */
+.vocab-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 16px;
+}
+
+.vocab-item {
+  background: linear-gradient(145deg, #fff 0%, #f8f4ff 100%);
+  border: 3px solid #ede8ff;
+  border-radius: 18px;
+  padding: 14px 10px 12px;
+  text-align: center;
+  transition: all 0.2s;
+  cursor: default;
+  box-shadow: 0 3px 0 #ede8ff;
+}
+
+.vocab-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 0 #ede8ff;
+}
+
+.vocab-emoji { font-size: 42px; display: block; margin-bottom: 6px; }
+.vocab-en {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.05rem;
+  color: var(--blue);
+  display: block;
+}
+.vocab-phrase {
+  font-size: 11.5px;
+  color: #9090b0;
+  font-weight: 700;
+  margin-top: 3px;
+  display: block;
+}
+
+/* ── EX 1: MATCH WORD TO PICTURE ── */
+.match-area {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+.match-words {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.match-word {
+  background: var(--sky);
+  border: 3px solid #81d4fa;
+  border-radius: 50px;
+  padding: 10px 22px;
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.15rem;
+  color: var(--ink);
+  cursor: pointer;
+  transition: all 0.18s;
+  text-align: center;
+  user-select: none;
+}
+
+.match-word:hover { background: #81d4fa; transform: scale(1.04); }
+.match-word.selected { background: var(--sun); border-color: #f9a825; transform: scale(1.06); box-shadow: 0 4px 12px rgba(255,217,61,0.4); }
+.match-word.matched-ok { background: #c8f5d0; border-color: var(--correct); color: var(--correct); pointer-events: none; }
+.match-word.matched-err { background: #ffd0d0; border-color: var(--wrong); animation: wiggle 0.4s; }
+
+.match-pictures {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.match-pic {
+  background: #fff8f0;
+  border: 3px solid #fde0c0;
+  border-radius: 16px;
+  padding: 12px 8px 8px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.18s;
+  user-select: none;
+}
+.match-pic:hover { border-color: var(--orange); transform: scale(1.05); }
+.match-pic.matched-ok { background: #d4f5dc; border-color: var(--correct); pointer-events: none; }
+.match-pic.matched-err { background: #ffd0d0; border-color: var(--wrong); animation: wiggle 0.4s; }
+
+.match-pic .mp-emoji { font-size: 36px; display: block; }
+.match-pic .mp-blank {
+  display: block;
+  margin-top: 4px;
+  height: 22px;
+  border-bottom: 2.5px solid #fde0c0;
+  font-family: 'Fredoka One', cursive;
+  font-size: 0.85rem;
+  color: var(--orange);
+}
+.match-pic.matched-ok .mp-blank { border-color: var(--correct); color: var(--correct); }
+
+@keyframes wiggle {
+  0%,100% { transform: rotate(0); }
+  25%  { transform: rotate(-6deg); }
+  75%  { transform: rotate(6deg); }
+}
+
+/* ── EX 2: DRESS THE CHARACTER ── */
+.dress-area {
+  display: flex;
+  gap: 28px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.character-stage {
+  flex: 0 0 220px;
+  background: linear-gradient(180deg, #e3f2fd 0%, #f3e5f5 100%);
+  border: 3px solid #ce93d8;
+  border-radius: 24px;
+  min-height: 360px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+.character-stage::after {
+  content: '🌈';
+  position: absolute;
+  top: 10px; right: 14px;
+  font-size: 22px;
+  opacity: 0.5;
+}
+
+.character-body {
+  position: relative;
+  width: 130px;
+  height: 230px;
+  margin: 0 auto;
+}
+
+/* SVG character */
+.char-svg {
+  width: 130px;
+  height: 230px;
+  position: absolute;
+  top: 0; left: 0;
+}
+
+/* Clothing overlays as emoji layers */
+.cloth-layer {
+  position: absolute;
+  font-size: 44px;
+  text-align: center;
+  width: 100%;
+  transition: all 0.3s;
+  opacity: 0;
+  transform: scale(0.5);
+  pointer-events: none;
+}
+.cloth-layer.on { opacity: 1; transform: scale(1); }
+
+.layer-cap    { top: -10px;  font-size: 46px; }
+.layer-top    { top: 60px;   font-size: 52px; }
+.layer-bottom { top: 130px;  font-size: 50px; }
+.layer-shoes  { top: 195px;  font-size: 38px; }
+.layer-socks  { top: 185px;  font-size: 34px; }
+
+.stage-label {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1rem;
+  color: #9c27b0;
+  margin-top: 12px;
+  text-align: center;
+}
+
+.clothes-wardrobe {
+  flex: 1;
+  min-width: 260px;
+}
+
+.wardrobe-instruction {
+  font-size: 15px;
+  font-weight: 800;
+  color: #9c27b0;
+  margin-bottom: 14px;
+  background: #f3e5f5;
+  border-radius: 12px;
+  padding: 10px 16px;
+  border-left: 4px solid var(--purple);
+}
+
+.clothes-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.cloth-btn {
+  background: #fff;
+  border: 3px solid #e0e0f0;
+  border-radius: 16px;
+  padding: 12px 6px 8px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  user-select: none;
+  position: relative;
+}
+.cloth-btn:hover { border-color: var(--purple); transform: translateY(-3px); box-shadow: 0 5px 12px rgba(199,125,255,0.2); }
+.cloth-btn.wearing {
+  background: linear-gradient(145deg, #f3e5f5, #e8f5e9);
+  border-color: var(--purple);
+  box-shadow: 0 4px 12px rgba(199,125,255,0.3);
+}
+.cloth-btn .cb-emoji { font-size: 32px; display: block; }
+.cloth-btn .cb-name {
+  font-family: 'Fredoka One', cursive;
+  font-size: 0.8rem;
+  color: var(--ink);
+  margin-top: 4px;
+  display: block;
+}
+.cloth-btn .cb-check {
+  position: absolute;
+  top: 4px; right: 6px;
+  font-size: 14px;
+  display: none;
+}
+.cloth-btn.wearing .cb-check { display: block; }
+
+.wearing-sentence {
+  margin-top: 16px;
+  background: var(--sky);
+  border-radius: 16px;
+  padding: 14px 18px;
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.05rem;
+  color: var(--ink);
+  min-height: 54px;
+  border: 2px solid #81d4fa;
+  transition: all 0.3s;
+}
+
+.wearing-sentence span { color: var(--blue); }
+
+/* ── EX 3: BUBBLE POP (LISTEN & CLICK) ── */
+.bubble-instruction {
+  background: #e8f5e9;
+  border-radius: 14px;
+  padding: 14px 18px;
+  font-size: 15px;
+  font-weight: 800;
+  color: #2e7d32;
+  margin-bottom: 20px;
+  border-left: 4px solid var(--green);
+}
+
+.bubble-question {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.4rem;
+  color: var(--ink);
+  text-align: center;
+  margin-bottom: 22px;
+  background: var(--sun);
+  border-radius: 16px;
+  padding: 14px 20px;
+  border: 3px solid #f9a825;
+}
+
+.bubbles-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.bubble {
+  background: radial-gradient(circle at 30% 30%, #fff 0%, var(--sky) 100%);
+  border: 3px solid #81d4fa;
+  border-radius: 50%;
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  user-select: none;
+  padding: 10px;
+  box-shadow: inset 0 -3px 0 rgba(0,0,0,0.06), 0 4px 10px rgba(0,0,0,0.06);
+}
+
+.bubble:hover { transform: scale(1.08); box-shadow: 0 8px 20px rgba(0,0,0,0.12); }
+.bubble .b-emoji { font-size: 36px; }
+.bubble .b-name {
+  font-family: 'Fredoka One', cursive;
+  font-size: 0.78rem;
+  color: var(--ink);
+  margin-top: 4px;
+  text-align: center;
+}
+.bubble.pop-correct {
+  background: radial-gradient(circle at 30% 30%, #fff 0%, #c8f5d0 100%);
+  border-color: var(--correct);
+  animation: pop 0.4s ease;
+}
+.bubble.pop-wrong {
+  background: radial-gradient(circle at 30% 30%, #fff 0%, #ffd0d0 100%);
+  border-color: var(--wrong);
+  animation: wiggle 0.4s;
+}
+
+@keyframes pop {
+  0%  { transform: scale(1); }
+  40% { transform: scale(1.25); }
+  100%{ transform: scale(1); }
+}
+
+.bubble-score {
+  text-align: center;
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.1rem;
+  color: var(--purple);
+  min-height: 30px;
+}
+
+.next-btn {
+  display: block;
+  margin: 14px auto 0;
+  background: var(--green);
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  padding: 12px 32px;
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.1rem;
+  cursor: pointer;
+  box-shadow: 0 4px 0 #4caf50;
+  transition: all 0.15s;
+  display: none;
+}
+.next-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 0 #4caf50; }
+.next-btn.visible { display: block; }
+
+/* ── EX 4: I LIKE WEARING ── */
+.like-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.like-item {
+  background: #fff;
+  border: 3px solid #e0e0f0;
+  border-radius: 18px;
+  padding: 14px 8px 10px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  user-select: none;
+  position: relative;
+}
+.like-item:hover { border-color: var(--pink); transform: translateY(-3px); }
+.like-item.liked {
+  background: linear-gradient(145deg, #fff0f7, #fff);
+  border-color: var(--pink);
+  box-shadow: 0 4px 14px rgba(255,107,157,0.25);
+}
+.like-item .li-heart {
+  position: absolute;
+  top: 6px; right: 8px;
+  font-size: 16px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.like-item.liked .li-heart { opacity: 1; }
+.like-item .li-emoji { font-size: 38px; display: block; }
+.like-item .li-name {
+  font-family: 'Fredoka One', cursive;
+  font-size: 0.85rem;
+  color: var(--ink);
+  margin-top: 5px;
+  display: block;
+}
+
+.like-output {
+  background: #fff0f7;
+  border: 3px solid #f8bbd9;
+  border-radius: 18px;
+  padding: 16px 20px;
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.1rem;
+  color: var(--ink);
+  min-height: 60px;
+  transition: all 0.3s;
+}
+
+.like-output span { color: var(--pink); }
+
+/* ── EX 5: COLOUR THE RIGHT ONE ── */
+.colour-wrap { display: flex; flex-direction: column; gap: 24px; }
+
+.colour-q {
+  background: #fffde7;
+  border: 3px solid var(--sun);
+  border-radius: 18px;
+  padding: 18px 20px;
+}
+
+.colour-q-text {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.2rem;
+  color: var(--ink);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.colour-options {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.colour-opt {
+  background: #fff;
+  border: 3px solid #e0e0f0;
+  border-radius: 14px;
+  padding: 10px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+  user-select: none;
+  min-width: 80px;
+}
+.colour-opt:hover { border-color: var(--sun); transform: scale(1.06); }
+.colour-opt .co-emoji { font-size: 36px; }
+.colour-opt .co-text {
+  font-family: 'Fredoka One', cursive;
+  font-size: 0.82rem;
+  color: var(--ink);
+}
+.colour-opt.chosen-ok {
+  background: #d4f5dc;
+  border-color: var(--correct);
+  animation: pop 0.4s;
+}
+.colour-opt.chosen-err {
+  background: #ffd0d0;
+  border-color: var(--wrong);
+  animation: wiggle 0.4s;
+}
+.colour-opt:disabled, .colour-opt.done { pointer-events: none; }
+.colour-fb {
+  margin-top: 8px;
+  font-family: 'Fredoka One', cursive;
+  font-size: 1rem;
+  min-height: 24px;
+}
+.colour-fb.ok { color: var(--correct); }
+.colour-fb.err { color: var(--wrong); }
+
+/* ── STARS REWARD ── */
+.reward {
+  text-align: center;
+  margin-top: 40px;
+  padding: 32px;
+  background: linear-gradient(135deg, #fff9e6, #fff0f7);
+  border-radius: 24px;
+  border: 3px solid var(--sun);
+  display: none;
+}
+.reward.show { display: block; animation: fadeIn 0.5s; }
+
+@keyframes fadeIn { from { opacity:0; transform:scale(0.9); } to { opacity:1; transform:scale(1); } }
+
+.reward-stars { font-size: 48px; letter-spacing: 6px; }
+.reward-text {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.8rem;
+  color: var(--pink);
+  margin: 10px 0 4px;
+}
+.reward-sub { font-size: 15px; color: #888; font-weight: 700; }
+
+/* ── BIG CHECK BUTTON ── */
+.check-area {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 36px;
+}
+
+.big-btn {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.2rem;
+  padding: 16px 36px;
+  border-radius: 50px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.18s;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 5px 0 rgba(0,0,0,0.12);
+}
+.big-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 0 rgba(0,0,0,0.12); }
+.big-btn:active { transform: translateY(1px); box-shadow: 0 2px 0 rgba(0,0,0,0.12); }
+.btn-check { background: var(--green); color: #fff; }
+.btn-reset { background: #e0e0f0; color: var(--ink); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 580px) {
+  .match-area { grid-template-columns: 1fr; }
+  .dress-area { flex-direction: column; }
+  .character-stage { flex: none; width: 100%; }
+  .card { padding: 24px 18px; }
+  .bubbles-grid { grid-template-columns: repeat(3,1fr); }
+  .vocab-grid { grid-template-columns: repeat(3,1fr); }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- ══ HEADER ══ -->
+<header>
+  <span class="header-emoji">🌈</span>
+  <h1>My <span>Clothes</span> 👕</h1>
+  <p class="header-sub">Let's learn clothes words in English! 🎉</p>
+</header>
+
+<!-- ══ VOCABULARY ══ -->
+<div class="card card-pink">
+  <div class="section-title">
+    <span class="section-badge">⭐ 1</span>
+    Words to Know
+  </div>
+  <div class="vocab-grid">
+    <div class="vocab-item"><span class="vocab-emoji">🧢</span><span class="vocab-en">cap</span><span class="vocab-phrase">I'm wearing a cap</span></div>
+    <div class="vocab-item"><span class="vocab-emoji">👕</span><span class="vocab-en">t-shirt</span><span class="vocab-phrase">I'm wearing a t-shirt</span></div>
+    <div class="vocab-item"><span class="vocab-emoji">👗</span><span class="vocab-en">dress</span><span class="vocab-phrase">I'm wearing a dress</span></div>
+    <div class="vocab-item"><span class="vocab-emoji">👖</span><span class="vocab-en">pants</span><span class="vocab-phrase">I'm wearing pants</span></div>
+    <div class="vocab-item"><span class="vocab-emoji">👟</span><span class="vocab-en">shoes</span><span class="vocab-phrase">I'm wearing shoes</span></div>
+    <div class="vocab-item"><span class="vocab-emoji">🧦</span><span class="vocab-en">socks</span><span class="vocab-phrase">I'm wearing socks</span></div>
+    <div class="vocab-item"><span class="vocab-emoji">👖</span><span class="vocab-en">jeans</span><span class="vocab-phrase">I'm wearing jeans</span></div>
+    <div class="vocab-item"><span class="vocab-emoji">👔</span><span class="vocab-en">shirt</span><span class="vocab-phrase">I'm wearing a shirt</span></div>
+    <div class="vocab-item"><span class="vocab-emoji">🩳</span><span class="vocab-en">shorts</span><span class="vocab-phrase">I'm wearing shorts</span></div>
+  </div>
+</div>
+
+<!-- ══ EX 1: MATCH WORD TO PICTURE ══ -->
+<div class="card card-blue">
+  <div class="section-title">
+    <span class="section-badge">⭐ 2</span>
+    Match the word and the picture!
+  </div>
+  <p style="font-size:14px;font-weight:700;color:#6060a0;margin-bottom:18px">👆 Click a word, then click the matching picture!</p>
+
+  <div class="match-area">
+    <div class="match-words" id="match-words">
+      <div class="match-word" data-word="cap"    onclick="pickWord(this)">🧢 cap</div>
+      <div class="match-word" data-word="dress"  onclick="pickWord(this)">👗 dress</div>
+      <div class="match-word" data-word="shoes"  onclick="pickWord(this)">👟 shoes</div>
+      <div class="match-word" data-word="socks"  onclick="pickWord(this)">🧦 socks</div>
+      <div class="match-word" data-word="shirt"  onclick="pickWord(this)">👔 shirt</div>
+      <div class="match-word" data-word="shorts" onclick="pickWord(this)">🩳 shorts</div>
+    </div>
+    <div class="match-pictures" id="match-pictures">
+      <div class="match-pic" data-word="socks"  onclick="pickPic(this)"><span class="mp-emoji">🧦</span><span class="mp-blank" id="mp-socks"></span></div>
+      <div class="match-pic" data-word="cap"    onclick="pickPic(this)"><span class="mp-emoji">🧢</span><span class="mp-blank" id="mp-cap"></span></div>
+      <div class="match-pic" data-word="shoes"  onclick="pickPic(this)"><span class="mp-emoji">👟</span><span class="mp-blank" id="mp-shoes"></span></div>
+      <div class="match-pic" data-word="shirt"  onclick="pickPic(this)"><span class="mp-emoji">👔</span><span class="mp-blank" id="mp-shirt"></span></div>
+      <div class="match-pic" data-word="dress"  onclick="pickPic(this)"><span class="mp-emoji">👗</span><span class="mp-blank" id="mp-dress"></span></div>
+      <div class="match-pic" data-word="shorts" onclick="pickPic(this)"><span class="mp-emoji">🩳</span><span class="mp-blank" id="mp-shorts"></span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ EX 2: DRESS THE CHARACTER ══ -->
+<div class="card card-purple">
+  <div class="section-title">
+    <span class="section-badge">⭐ 3</span>
+    Dress up your friend! 🧒
+  </div>
+
+  <div class="dress-area">
+    <div>
+      <div class="character-stage">
+        <div class="character-body" id="char-body">
+          <!-- Simple SVG character -->
+          <svg class="char-svg" viewBox="0 0 130 230" xmlns="http://www.w3.org/2000/svg">
+            <!-- Head -->
+            <circle cx="65" cy="38" r="30" fill="#FFCC99" stroke="#e6b080" stroke-width="2"/>
+            <!-- Eyes -->
+            <circle cx="55" cy="34" r="4" fill="#4D4D4D"/>
+            <circle cx="75" cy="34" r="4" fill="#4D4D4D"/>
+            <circle cx="56" cy="33" r="1.5" fill="white"/>
+            <circle cx="76" cy="33" r="1.5" fill="white"/>
+            <!-- Smile -->
+            <path d="M55 44 Q65 52 75 44" stroke="#e6804d" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <!-- Ears -->
+            <ellipse cx="35" cy="38" rx="7" ry="9" fill="#FFCC99" stroke="#e6b080" stroke-width="1.5"/>
+            <ellipse cx="95" cy="38" rx="7" ry="9" fill="#FFCC99" stroke="#e6b080" stroke-width="1.5"/>
+            <!-- Neck -->
+            <rect x="57" y="64" width="16" height="16" rx="4" fill="#FFCC99"/>
+            <!-- Body -->
+            <rect x="35" y="78" width="60" height="70" rx="14" fill="#bdbdbd"/>
+            <!-- Arms -->
+            <rect x="18" y="80" width="20" height="52" rx="10" fill="#FFCC99"/>
+            <rect x="92" y="80" width="20" height="52" rx="10" fill="#FFCC99"/>
+            <!-- Legs -->
+            <rect x="40" y="144" width="22" height="60" rx="10" fill="#9e9e9e"/>
+            <rect x="68" y="144" width="22" height="60" rx="10" fill="#9e9e9e"/>
+            <!-- Feet -->
+            <ellipse cx="51" cy="204" rx="16" ry="8" fill="#795548"/>
+            <ellipse cx="79" cy="204" rx="16" ry="8" fill="#795548"/>
+          </svg>
+          <!-- Clothing layers -->
+          <div class="cloth-layer layer-cap"    id="layer-cap">🧢</div>
+          <div class="cloth-layer layer-top"    id="layer-top"></div>
+          <div class="cloth-layer layer-bottom" id="layer-bottom"></div>
+          <div class="cloth-layer layer-socks"  id="layer-socks">🧦</div>
+          <div class="cloth-layer layer-shoes"  id="layer-shoes">👟</div>
+        </div>
+        <div class="stage-label" id="stage-label">Click clothes to dress me! 👇</div>
+      </div>
+    </div>
+
+    <div class="clothes-wardrobe">
+      <div class="wardrobe-instruction">👗 Click clothes to put them on or take them off!</div>
+      <div class="clothes-grid">
+        <div class="cloth-btn" data-item="cap"    data-layer="cap"    data-emoji="🧢" data-group="head"   onclick="toggleCloth(this)">
+          <span class="cb-emoji">🧢</span><span class="cb-name">cap</span><span class="cb-check">✅</span>
+        </div>
+        <div class="cloth-btn" data-item="t-shirt" data-layer="top"   data-emoji="👕" data-group="top"    onclick="toggleCloth(this)">
+          <span class="cb-emoji">👕</span><span class="cb-name">t-shirt</span><span class="cb-check">✅</span>
+        </div>
+        <div class="cloth-btn" data-item="shirt"  data-layer="top"    data-emoji="👔" data-group="top"    onclick="toggleCloth(this)">
+          <span class="cb-emoji">👔</span><span class="cb-name">shirt</span><span class="cb-check">✅</span>
+        </div>
+        <div class="cloth-btn" data-item="dress"  data-layer="top"    data-emoji="👗" data-group="top"    onclick="toggleCloth(this)">
+          <span class="cb-emoji">👗</span><span class="cb-name">dress</span><span class="cb-check">✅</span>
+        </div>
+        <div class="cloth-btn" data-item="pants"  data-layer="bottom" data-emoji="👖" data-group="bottom" onclick="toggleCloth(this)">
+          <span class="cb-emoji">👖</span><span class="cb-name">pants</span><span class="cb-check">✅</span>
+        </div>
+        <div class="cloth-btn" data-item="jeans"  data-layer="bottom" data-emoji="👖" data-group="bottom" onclick="toggleCloth(this)">
+          <span class="cb-emoji">👖</span><span class="cb-name">jeans</span><span class="cb-check">✅</span>
+        </div>
+        <div class="cloth-btn" data-item="shorts" data-layer="bottom" data-emoji="🩳" data-group="bottom" onclick="toggleCloth(this)">
+          <span class="cb-emoji">🩳</span><span class="cb-name">shorts</span><span class="cb-check">✅</span>
+        </div>
+        <div class="cloth-btn" data-item="socks"  data-layer="socks"  data-emoji="🧦" data-group="socks"  onclick="toggleCloth(this)">
+          <span class="cb-emoji">🧦</span><span class="cb-name">socks</span><span class="cb-check">✅</span>
+        </div>
+        <div class="cloth-btn" data-item="shoes"  data-layer="shoes"  data-emoji="👟" data-group="shoes"  onclick="toggleCloth(this)">
+          <span class="cb-emoji">👟</span><span class="cb-name">shoes</span><span class="cb-check">✅</span>
+        </div>
+      </div>
+      <div class="wearing-sentence" id="wearing-sentence">
+        I'm wearing… <span>nothing yet!</span> 😄
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ EX 3: BUBBLE POP ══ -->
+<div class="card card-green">
+  <div class="section-title">
+    <span class="section-badge">⭐ 4</span>
+    Pop the right bubble! 🫧
+  </div>
+  <div class="bubble-instruction">🎯 Read the word and click the right picture!</div>
+
+  <div class="bubble-question" id="bubble-q">Find: 👕 t-shirt</div>
+
+  <div class="bubbles-grid" id="bubbles-grid">
+    <!-- filled by JS -->
+  </div>
+
+  <div class="bubble-score" id="bubble-score">⭐ Score: 0 / 0</div>
+  <button class="next-btn" id="next-btn" onclick="nextBubble()">Next ➡️</button>
+</div>
+
+<!-- ══ EX 4: I LIKE WEARING ══ -->
+<div class="card card-orange">
+  <div class="section-title">
+    <span class="section-badge">⭐ 5</span>
+    I like wearing… ❤️
+  </div>
+  <p style="font-size:14px;font-weight:700;color:#c05400;margin-bottom:16px">💛 Click the clothes you like to wear!</p>
+
+  <div class="like-grid">
+    <div class="like-item" data-name="a cap"    onclick="toggleLike(this)"><span class="li-heart">❤️</span><span class="li-emoji">🧢</span><span class="li-name">cap</span></div>
+    <div class="like-item" data-name="a t-shirt" onclick="toggleLike(this)"><span class="li-heart">❤️</span><span class="li-emoji">👕</span><span class="li-name">t-shirt</span></div>
+    <div class="like-item" data-name="a dress"  onclick="toggleLike(this)"><span class="li-heart">❤️</span><span class="li-emoji">👗</span><span class="li-name">dress</span></div>
+    <div class="like-item" data-name="pants"    onclick="toggleLike(this)"><span class="li-heart">❤️</span><span class="li-emoji">👖</span><span class="li-name">pants</span></div>
+    <div class="like-item" data-name="shoes"    onclick="toggleLike(this)"><span class="li-heart">❤️</span><span class="li-emoji">👟</span><span class="li-name">shoes</span></div>
+    <div class="like-item" data-name="socks"    onclick="toggleLike(this)"><span class="li-heart">❤️</span><span class="li-emoji">🧦</span><span class="li-name">socks</span></div>
+    <div class="like-item" data-name="jeans"    onclick="toggleLike(this)"><span class="li-heart">❤️</span><span class="li-emoji">👖</span><span class="li-name">jeans</span></div>
+    <div class="like-item" data-name="a shirt"  onclick="toggleLike(this)"><span class="li-heart">❤️</span><span class="li-emoji">👔</span><span class="li-name">shirt</span></div>
+    <div class="like-item" data-name="shorts"   onclick="toggleLike(this)"><span class="li-heart">❤️</span><span class="li-emoji">🩳</span><span class="li-name">shorts</span></div>
+  </div>
+
+  <div class="like-output" id="like-output">I like wearing… <span>click something!</span> 💕</div>
+</div>
+
+<!-- ══ EX 5: CHOOSE THE RIGHT ANSWER ══ -->
+<div class="card card-blue">
+  <div class="section-title">
+    <span class="section-badge">⭐ 6</span>
+    What am I wearing? Choose! 🤔
+  </div>
+
+  <div class="colour-wrap">
+
+    <div class="colour-q" id="cq1">
+      <div class="colour-q-text">🧒 "I'm wearing these on my feet. They keep me warm!" 🦶</div>
+      <div class="colour-options">
+        <div class="colour-opt" onclick="pickColour(this,'cq1',false)"><span class="co-emoji">🧢</span><span class="co-text">cap</span></div>
+        <div class="colour-opt" onclick="pickColour(this,'cq1',true)"><span class="co-emoji">🧦</span><span class="co-text">socks</span></div>
+        <div class="colour-opt" onclick="pickColour(this,'cq1',false)"><span class="co-emoji">👔</span><span class="co-text">shirt</span></div>
+      </div>
+      <div class="colour-fb" id="cq1-fb"></div>
+    </div>
+
+    <div class="colour-q" id="cq2">
+      <div class="colour-q-text">🧒 "I'm wearing this on my head. It's sunny outside!" ☀️</div>
+      <div class="colour-options">
+        <div class="colour-opt" onclick="pickColour(this,'cq2',false)"><span class="co-emoji">👗</span><span class="co-text">dress</span></div>
+        <div class="colour-opt" onclick="pickColour(this,'cq2',false)"><span class="co-emoji">👟</span><span class="co-text">shoes</span></div>
+        <div class="colour-opt" onclick="pickColour(this,'cq2',true)"><span class="co-emoji">🧢</span><span class="co-text">cap</span></div>
+      </div>
+      <div class="colour-fb" id="cq2-fb"></div>
+    </div>
+
+    <div class="colour-q" id="cq3">
+      <div class="colour-q-text">🧒 "It's hot today! I'm wearing something short on my legs." 🌞</div>
+      <div class="colour-options">
+        <div class="colour-opt" onclick="pickColour(this,'cq3',true)"><span class="co-emoji">🩳</span><span class="co-text">shorts</span></div>
+        <div class="colour-opt" onclick="pickColour(this,'cq3',false)"><span class="co-emoji">👖</span><span class="co-text">pants</span></div>
+        <div class="colour-opt" onclick="pickColour(this,'cq3',false)"><span class="co-emoji">👔</span><span class="co-text">shirt</span></div>
+      </div>
+      <div class="colour-fb" id="cq3-fb"></div>
+    </div>
+
+    <div class="colour-q" id="cq4">
+      <div class="colour-q-text">🧒 "I'm going to a party and wearing a beautiful ___!" 🎉</div>
+      <div class="colour-options">
+        <div class="colour-opt" onclick="pickColour(this,'cq4',false)"><span class="co-emoji">👖</span><span class="co-text">jeans</span></div>
+        <div class="colour-opt" onclick="pickColour(this,'cq4',true)"><span class="co-emoji">👗</span><span class="co-text">dress</span></div>
+        <div class="colour-opt" onclick="pickColour(this,'cq4',false)"><span class="co-emoji">🧦</span><span class="co-text">socks</span></div>
+      </div>
+      <div class="colour-fb" id="cq4-fb"></div>
+    </div>
+
+    <div class="colour-q" id="cq5">
+      <div class="colour-q-text">🧒 "I wear these on my feet to run and play!" 🏃</div>
+      <div class="colour-options">
+        <div class="colour-opt" onclick="pickColour(this,'cq5',false)"><span class="co-emoji">👕</span><span class="co-text">t-shirt</span></div>
+        <div class="colour-opt" onclick="pickColour(this,'cq5',false)"><span class="co-emoji">🩳</span><span class="co-text">shorts</span></div>
+        <div class="colour-opt" onclick="pickColour(this,'cq5',true)"><span class="co-emoji">👟</span><span class="co-text">shoes</span></div>
+      </div>
+      <div class="colour-fb" id="cq5-fb"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══ CHECK + RESET ══ -->
+<div class="check-area">
+  <button class="big-btn btn-check" onclick="checkAll()">⭐ Check my answers!</button>
+  <button class="big-btn btn-reset" onclick="resetAll()">🔄 Try again</button>
+</div>
+
+<!-- ══ REWARD ══ -->
+<div class="reward" id="reward">
+  <div class="reward-stars">⭐⭐⭐</div>
+  <div class="reward-text" id="reward-text">Amazing job! 🎉</div>
+  <div class="reward-sub" id="reward-sub">You know your clothes words!</div>
+</div>
+
+</div><!-- /page -->
+<script>
+// ─────────────────────────────────────────────────
+// EX 1 — MATCHING
+// ─────────────────────────────────────────────────
+let selectedWord = null;
+
+function pickWord(el) {
+  if (el.classList.contains('matched-ok')) return;
+  document.querySelectorAll('.match-word').forEach(w => w.classList.remove('selected'));
+  selectedWord = el;
+  el.classList.add('selected');
+}
+
+function pickPic(el) {
+  if (!selectedWord) return;
+  if (el.classList.contains('matched-ok')) return;
+
+  const word = selectedWord.dataset.word;
+  const pic  = el.dataset.word;
+
+  if (word === pic) {
+    el.classList.add('matched-ok');
+    selectedWord.classList.remove('selected');
+    selectedWord.classList.add('matched-ok');
+    el.querySelector('.mp-blank').textContent = word;
+    selectedWord = null;
+  } else {
+    el.classList.add('matched-err');
+    selectedWord.classList.add('matched-err');
+    setTimeout(() => {
+      el.classList.remove('matched-err');
+      selectedWord && selectedWord.classList.remove('matched-err','selected');
+      selectedWord = null;
+    }, 600);
+  }
+}
+
+// ─────────────────────────────────────────────────
+// EX 2 — DRESS UP
+// ─────────────────────────────────────────────────
+const wornItems = {};
+
+function toggleCloth(btn) {
+  const item   = btn.dataset.item;
+  const layer  = btn.dataset.layer;
+  const emoji  = btn.dataset.emoji;
+  const group  = btn.dataset.group;
+  const layerEl = document.getElementById('layer-' + layer);
+
+  if (btn.classList.contains('wearing')) {
+    // Remove
+    btn.classList.remove('wearing');
+    delete wornItems[group];
+    // Check if another item in same group is still worn
+    const still = Object.values(wornItems).find(v => v.layer === layer);
+    if (!still) {
+      layerEl.classList.remove('on');
+      layerEl.textContent = '';
+    }
+  } else {
+    // Remove previous in same group
+    document.querySelectorAll('.cloth-btn').forEach(b => {
+      if (b.dataset.group === group && b.classList.contains('wearing')) {
+        b.classList.remove('wearing');
+      }
+    });
+    // Apply
+    btn.classList.add('wearing');
+    wornItems[group] = { item, layer, emoji };
+    layerEl.textContent = emoji;
+    layerEl.classList.add('on');
+  }
+
+  updateWearingSentence();
+}
+
+function updateWearingSentence() {
+  const items = Object.values(wornItems).map(v => v.item);
+  const el = document.getElementById('wearing-sentence');
+  const label = document.getElementById('stage-label');
+  if (items.length === 0) {
+    el.innerHTML = "I'm wearing… <span>nothing yet!</span> 😄";
+    label.textContent = 'Click clothes to dress me! 👇';
+  } else {
+    const articles = { cap:'a cap', 'a cap':'a cap', 'a t-shirt':'a t-shirt', 't-shirt':'a t-shirt',
+      shirt:'a shirt', dress:'a dress', pants:'pants', jeans:'jeans', shorts:'shorts', socks:'socks', shoes:'shoes' };
+    const named = items.map(i => articles[i] || i);
+    el.innerHTML = "I'm wearing <span>" + named.join(', ') + "</span>! 😊";
+    label.textContent = 'Looking good! 🌟';
+  }
+}
+
+// ─────────────────────────────────────────────────
+// EX 3 — BUBBLE POP
+// ─────────────────────────────────────────────────
+const clothes = [
+  {name:'t-shirt', emoji:'👕'},
+  {name:'cap',     emoji:'🧢'},
+  {name:'dress',   emoji:'👗'},
+  {name:'pants',   emoji:'👖'},
+  {name:'shoes',   emoji:'👟'},
+  {name:'socks',   emoji:'🧦'},
+  {name:'jeans',   emoji:'👖'},
+  {name:'shirt',   emoji:'👔'},
+  {name:'shorts',  emoji:'🩳'},
+];
+
+let bubbleQ = [];
+let bubbleCurrent = 0;
+let bubbleScore = 0;
+let bubbleTotal = 0;
+let bubbleAnswered = false;
+
+function shuffleArr(a) { return [...a].sort(() => Math.random() - 0.5); }
+
+function initBubbles() {
+  bubbleQ = shuffleArr(clothes).slice(0, 7);
+  bubbleCurrent = 0;
+  bubbleScore = 0;
+  bubbleTotal = bubbleQ.length;
+  bubbleAnswered = false;
+  renderBubble();
+}
+
+function renderBubble() {
+  if (bubbleCurrent >= bubbleQ.length) {
+    document.getElementById('bubble-q').textContent = '🎉 Well done! You got ' + bubbleScore + '/' + bubbleTotal + '!';
+    document.getElementById('bubbles-grid').innerHTML = '<div style="text-align:center;font-size:52px;grid-column:1/-1">🎊🌟🎊</div>';
+    document.getElementById('next-btn').classList.remove('visible');
+    return;
+  }
+
+  bubbleAnswered = false;
+  const correct = bubbleQ[bubbleCurrent];
+  // Pick 2 wrong options
+  const others = shuffleArr(clothes.filter(c => c.name !== correct.name)).slice(0, 2);
+  const options = shuffleArr([correct, ...others]);
+
+  document.getElementById('bubble-q').innerHTML = 'Find: <strong>' + correct.emoji + ' ' + correct.name + '</strong>';
+
+  const grid = document.getElementById('bubbles-grid');
+  grid.innerHTML = '';
+  options.forEach(opt => {
+    const div = document.createElement('div');
+    div.className = 'bubble';
+    div.innerHTML = '<span class="b-emoji">' + opt.emoji + '</span><span class="b-name">' + opt.name + '</span>';
+    div.onclick = () => answerBubble(div, opt.name === correct.name);
+    grid.appendChild(div);
+  });
+
+  document.getElementById('next-btn').classList.remove('visible');
+  updateBubbleScore();
+}
+
+function answerBubble(el, isCorrect) {
+  if (bubbleAnswered) return;
+  bubbleAnswered = true;
+  el.classList.add(isCorrect ? 'pop-correct' : 'pop-wrong');
+  if (isCorrect) {
+    bubbleScore++;
+    document.getElementById('bubble-score').textContent = '⭐ Score: ' + bubbleScore + ' / ' + bubbleTotal;
+  } else {
+    // Show correct
+    document.querySelectorAll('.bubble').forEach(b => {
+      const name = b.querySelector('.b-name').textContent;
+      if (name === bubbleQ[bubbleCurrent].name) b.classList.add('pop-correct');
+    });
+  }
+  updateBubbleScore();
+  setTimeout(() => {
+    bubbleCurrent++;
+    if (bubbleCurrent < bubbleQ.length) {
+      document.getElementById('next-btn').classList.add('visible');
+    } else {
+      setTimeout(renderBubble, 500);
+    }
+  }, 900);
+}
+
+function updateBubbleScore() {
+  document.getElementById('bubble-score').textContent = '⭐ Score: ' + bubbleScore + ' / ' + bubbleCurrent;
+}
+
+function nextBubble() {
+  document.getElementById('next-btn').classList.remove('visible');
+  renderBubble();
+}
+
+initBubbles();
+
+// ─────────────────────────────────────────────────
+// EX 4 — I LIKE WEARING
+// ─────────────────────────────────────────────────
+function toggleLike(el) {
+  el.classList.toggle('liked');
+  updateLike();
+}
+
+function updateLike() {
+  const liked = [...document.querySelectorAll('.like-item.liked')].map(e => e.dataset.name);
+  const out = document.getElementById('like-output');
+  if (liked.length === 0) {
+    out.innerHTML = "I like wearing… <span>click something!</span> 💕";
+  } else {
+    out.innerHTML = "I like wearing <span>" + liked.join(', ') + "</span>! 💕";
+  }
+}
+
+// ─────────────────────────────────────────────────
+// EX 5 — CHOOSE THE RIGHT ANSWER
+// ─────────────────────────────────────────────────
+const colourFeedbacks = { cq1:'🧦 Socks keep your feet warm!', cq2:'🧢 A cap goes on your head!', cq3:'🩳 Shorts are great in summer!', cq4:'👗 A dress is perfect for a party!', cq5:'👟 Shoes help you run and play!' };
+
+function pickColour(el, qId, isCorrect) {
+  const q = document.getElementById(qId);
+  if (q.classList.contains('done')) return;
+  q.classList.add('done');
+  el.classList.add(isCorrect ? 'chosen-ok' : 'chosen-err');
+  if (!isCorrect) {
+    // Highlight the correct one
+    el.parentElement.querySelectorAll('.colour-opt').forEach(opt => {
+      if (opt !== el) {
+        const optCorrect = opt.onclick.toString().includes('true');
+        if (optCorrect) opt.classList.add('chosen-ok');
+      }
+    });
+  }
+  const fb = document.getElementById(qId + '-fb');
+  fb.className = 'colour-fb ' + (isCorrect ? 'ok' : 'err');
+  fb.textContent = isCorrect ? '✅ ' + colourFeedbacks[qId] : '❌ Try to remember! ' + colourFeedbacks[qId];
+}
+
+// ─────────────────────────────────────────────────
+// CHECK ALL
+// ─────────────────────────────────────────────────
+function checkAll() {
+  // Count match score
+  const matchDone = document.querySelectorAll('.match-word.matched-ok').length;
+  // Count colour score
+  const colourDone = document.querySelectorAll('.colour-opt.chosen-ok').length;
+
+  const total = matchDone + bubbleScore + colourDone;
+  const max   = 6 + bubbleTotal + 5;
+
+  const reward = document.getElementById('reward');
+  const rt = document.getElementById('reward-text');
+  const rs = document.getElementById('reward-sub');
+
+  reward.classList.add('show');
+  const pct = Math.round((total/max)*100);
+
+  if (pct >= 80) {
+    rt.textContent = 'Amazing! You\'re a clothes superstar! 🌟';
+    rs.textContent = 'You know all the clothes words! Great job! 👏';
+  } else if (pct >= 50) {
+    rt.textContent = 'Good job! Keep practising! 👍';
+    rs.textContent = 'You\'re learning so fast! Try again to get more stars!';
+  } else {
+    rt.textContent = 'Keep trying! You can do it! 💪';
+    rs.textContent = 'Look at the words at the top and try again!';
+  }
+
+  reward.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+// ─────────────────────────────────────────────────
+// RESET ALL
+// ─────────────────────────────────────────────────
+function resetAll() {
+  // Ex1
+  selectedWord = null;
+  document.querySelectorAll('.match-word').forEach(w => w.className = 'match-word');
+  document.querySelectorAll('.match-pic').forEach(p => {
+    p.className = 'match-pic';
+    p.querySelector('.mp-blank').textContent = '';
+  });
+
+  // Ex2
+  document.querySelectorAll('.cloth-btn').forEach(b => b.classList.remove('wearing'));
+  Object.keys(wornItems).forEach(k => delete wornItems[k]);
+  ['cap','top','bottom','socks','shoes'].forEach(id => {
+    const l = document.getElementById('layer-'+id);
+    if (l) { l.classList.remove('on'); l.textContent = ''; }
+  });
+  updateWearingSentence();
+
+  // Ex3
+  initBubbles();
+
+  // Ex4
+  document.querySelectorAll('.like-item').forEach(e => e.classList.remove('liked'));
+  updateLike();
+
+  // Ex5
+  document.querySelectorAll('.colour-q').forEach(q => q.classList.remove('done'));
+  document.querySelectorAll('.colour-opt').forEach(o => o.classList.remove('chosen-ok','chosen-err'));
+  document.querySelectorAll('.colour-fb').forEach(f => { f.textContent=''; f.className='colour-fb'; });
+
+  // Reward
+  document.getElementById('reward').classList.remove('show');
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>

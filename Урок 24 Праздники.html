@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎂 Holidays! English Fun</title>
+<link href="https://fonts.googleapis.com/css2?family=Chewy&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #FFF0FA;
+  --card: #FFFFFF;
+  --card2: #FDF5FF;
+  --ink: #2A1A3E;
+  --muted: #A08CB0;
+  --c1: #FF5FA0;   /* pink */
+  --c2: #7C4DFF;   /* purple */
+  --c3: #FFB800;   /* yellow */
+  --c4: #00C9A7;   /* mint */
+  --c5: #FF7043;   /* orange */
+  --c6: #42A5F5;   /* blue */
+  --radius: 20px;
+  --shadow: 0 6px 24px rgba(124,77,255,0.10);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;overflow-x:hidden;}
+
+/* confetti dots bg */
+body::before{
+  content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:
+    radial-gradient(circle,rgba(255,95,160,.13) 0%,transparent 60%),
+    radial-gradient(circle at 80% 20%,rgba(124,77,255,.10) 0%,transparent 55%),
+    radial-gradient(circle at 20% 80%,rgba(255,184,0,.10) 0%,transparent 55%);
+}
+
+/* ── HEADER ── */
+header{
+  position:relative;z-index:1;
+  background:linear-gradient(135deg,#FF5FA0 0%,#7C4DFF 60%,#42A5F5 100%);
+  text-align:center;padding:42px 20px 60px;overflow:hidden;
+}
+header::after{
+  content:'';position:absolute;bottom:-2px;left:0;right:0;height:54px;
+  background:var(--bg);clip-path:ellipse(55% 100% at 50% 100%);
+}
+.hbadge{
+  display:inline-block;background:rgba(255,255,255,.22);
+  color:#fff;font-size:.78rem;font-weight:900;letter-spacing:2px;
+  text-transform:uppercase;padding:4px 16px;border-radius:50px;margin-bottom:12px;
+  border:1.5px solid rgba(255,255,255,.35);
+}
+header h1{
+  font-family:'Chewy',cursive;font-size:clamp(2.8rem,8vw,4.6rem);
+  color:#fff;letter-spacing:2px;text-shadow:3px 4px 0 rgba(0,0,0,.18);
+}
+header p{color:rgba(255,255,255,.85);font-size:1.05rem;font-weight:700;margin-top:6px;}
+.confetti-row{font-size:1.8rem;letter-spacing:4px;margin-top:10px;position:relative;z-index:1;}
+
+/* ── NAV ── */
+nav{
+  position:sticky;top:0;z-index:100;
+  background:rgba(255,240,250,.92);backdrop-filter:blur(10px);
+  border-bottom:2px solid rgba(255,95,160,.15);
+  display:flex;justify-content:center;flex-wrap:wrap;gap:5px;padding:11px 14px;
+}
+nav a{
+  padding:6px 13px;border-radius:50px;font-size:.79rem;font-weight:900;
+  text-decoration:none;color:var(--muted);border:2px solid #E8D8F0;background:#fff;
+  transition:all .2s;
+}
+nav a:hover{border-color:var(--c1);color:var(--c1);transform:translateY(-2px);}
+
+/* ── MAIN ── */
+main{position:relative;z-index:1;max-width:880px;margin:0 auto;padding:28px 15px 70px;}
+
+/* ── SECTION ── */
+.section{
+  background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);
+  padding:26px 22px;margin-bottom:34px;border-top:5px solid var(--c1);
+  animation:up .5s ease both;
+}
+.section:nth-child(2){border-color:var(--c2);}
+.section:nth-child(3){border-color:var(--c3);}
+.section:nth-child(4){border-color:var(--c4);}
+.section:nth-child(5){border-color:var(--c5);}
+.section:nth-child(6){border-color:var(--c6);}
+@keyframes up{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+
+.snum{font-size:.7rem;font-weight:900;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:3px;}
+.stitle{font-family:'Chewy',cursive;font-size:clamp(1.5rem,4.5vw,2.1rem);color:var(--ink);margin-bottom:5px;letter-spacing:.5px;}
+.ssub{color:var(--muted);font-size:.9rem;font-weight:700;margin-bottom:18px;}
+
+/* ═══ EX1: WORD CARDS ═══ */
+.wcards{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:12px;}
+.wcard{
+  background:var(--card2);border-radius:16px;padding:16px 8px 13px;
+  text-align:center;cursor:pointer;border:2.5px solid #EDD8FF;
+  transition:all .22s;user-select:none;
+}
+.wcard:hover{transform:translateY(-4px) scale(1.05);border-color:var(--c1);box-shadow:0 8px 22px rgba(255,95,160,.22);}
+.wcard.playing{animation:pop .4s;border-color:var(--c2);}
+@keyframes pop{0%,100%{transform:scale(1)}50%{transform:scale(1.14)}}
+.wc-icon{font-size:2.6rem;display:block;margin-bottom:8px;}
+.wc-label{font-size:.85rem;font-weight:900;color:var(--ink);}
+.wc-play{display:inline-block;margin-top:7px;background:rgba(255,95,160,.12);color:var(--c1);border-radius:50px;padding:2px 11px;font-size:.7rem;font-weight:900;}
+
+/* ═══ EX2: MATCH ═══ */
+.match-area{display:flex;gap:14px;flex-wrap:wrap;}
+.match-col{flex:1;min-width:130px;display:flex;flex-direction:column;gap:9px;}
+.mi{
+  padding:11px 14px;border-radius:13px;font-size:.95rem;font-weight:900;
+  cursor:pointer;border:2.5px solid #EDD8FF;background:var(--card2);
+  transition:all .2s;text-align:center;user-select:none;color:var(--ink);
+}
+.mi.emoji-mi{font-size:1.9rem;padding:8px 10px;}
+.mi:hover{transform:scale(1.04);border-color:var(--c2);}
+.mi.sel{border-color:var(--c3);background:rgba(255,184,0,.12);color:#9A6F00;}
+.mi.ok{border-color:var(--c4)!important;background:rgba(0,201,167,.12)!important;color:var(--c4)!important;pointer-events:none;}
+.mi.bad{border-color:var(--c1)!important;background:rgba(255,95,160,.12)!important;animation:shake .4s;}
+.mscore{text-align:right;font-size:.85rem;font-weight:800;color:var(--c4);margin-bottom:12px;}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+
+/* ═══ EX3: YES/NO BIRTHDAY ═══ */
+.yno-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;}
+.yno-card{
+  background:var(--card2);border-radius:16px;padding:16px 10px 14px;
+  text-align:center;border:2.5px solid #EDD8FF;
+}
+.yno-icon{font-size:2.8rem;display:block;margin-bottom:8px;}
+.yno-label{font-size:.88rem;font-weight:800;margin-bottom:12px;color:var(--ink);}
+.yno-btns{display:flex;justify-content:center;gap:7px;}
+.yno-btn{
+  padding:6px 14px;border-radius:50px;border:none;font-size:.85rem;font-weight:900;
+  cursor:pointer;transition:all .2s;
+}
+.yno-yes{background:rgba(0,201,167,.15);color:var(--c4);border:2px solid var(--c4);}
+.yno-no{background:rgba(255,95,160,.12);color:var(--c1);border:2px solid var(--c1);}
+.yno-btn:hover{transform:scale(1.09);}
+.yno-btn.correct-ans{pointer-events:none;}
+.yno-yes.correct-ans{background:var(--c4);color:#fff;}
+.yno-no.correct-ans{background:var(--c1);color:#fff;}
+.yno-btn.wrong-ans{animation:shake .4s;opacity:.6;}
+.yno-result{font-size:1.4rem;margin-top:9px;min-height:26px;}
+
+/* ═══ EX4: PRESENTS ═══ */
+.presents-stage{text-align:center;}
+.present-display{
+  background:linear-gradient(135deg,var(--c1),var(--c2));
+  border-radius:var(--radius);padding:26px 20px;max-width:380px;
+  margin:0 auto 22px;box-shadow:0 10px 34px rgba(124,77,255,.3);
+  transition:all .4s cubic-bezier(.17,.67,.4,1.2);
+}
+.present-display.liked{background:linear-gradient(135deg,#00C9A7,#42A5F5);}
+.present-display.disliked{background:linear-gradient(135deg,#FF7043,#FF5FA0);}
+.present-emoji{font-size:5rem;display:block;margin-bottom:12px;animation:swing 2s ease infinite;}
+@keyframes swing{0%,100%{transform:rotate(-6deg)}50%{transform:rotate(6deg)}}
+.present-name{
+  font-family:'Chewy',cursive;font-size:1.7rem;color:#fff;
+  text-shadow:2px 2px 0 rgba(0,0,0,.18);
+}
+.present-btns{display:flex;justify-content:center;gap:12px;margin-bottom:14px;}
+.pres-btn{
+  padding:11px 26px;border-radius:50px;border:none;
+  font-family:'Chewy',cursive;font-size:1.2rem;cursor:pointer;
+  transition:all .22s;box-shadow:0 4px 14px rgba(0,0,0,.14);color:#fff;
+}
+.pres-like{background:var(--c4);}
+.pres-like:hover{background:#00A888;transform:translateY(-3px) scale(1.06);}
+.pres-dislike{background:var(--c5);}
+.pres-dislike:hover{background:#E5623A;transform:translateY(-3px) scale(1.06);}
+.pres-feedback{
+  font-family:'Chewy',cursive;font-size:1.25rem;color:var(--ink);
+  min-height:32px;margin-bottom:8px;transition:all .3s;
+}
+.pres-progress{color:var(--muted);font-size:.88rem;font-weight:700;}
+.present-nav{display:flex;justify-content:center;gap:10px;margin-top:14px;}
+.pnav-btn{
+  padding:8px 22px;border-radius:50px;border:2px solid #EDD8FF;
+  background:#fff;font-size:.9rem;font-weight:900;cursor:pointer;transition:all .2s;
+}
+.pnav-btn:hover{border-color:var(--c2);color:var(--c2);transform:scale(1.05);}
+
+/* ═══ EX5: FILL IN ═══ */
+.fill-list{display:flex;flex-direction:column;gap:13px;}
+.fill-row{
+  background:var(--card2);border-radius:14px;padding:14px 16px;
+  border:2.5px solid #EDD8FF;
+  font-size:1rem;font-weight:800;
+  display:flex;flex-direction:column;gap:9px;
+}
+.fill-sentence{display:flex;align-items:center;flex-wrap:wrap;gap:6px;line-height:1.8;}
+.fblank{
+  display:inline-block;border-bottom:3px solid var(--c3);
+  min-width:80px;text-align:center;padding:0 5px;
+  font-size:.98rem;font-weight:900;color:var(--c5);transition:all .2s;
+}
+.fblank.ok{color:var(--c4);border-color:var(--c4);border-bottom:none;background:rgba(0,201,167,.1);border-radius:8px;padding:0 9px;}
+.fblank.bad{color:var(--c1);background:rgba(255,95,160,.1);border-radius:8px;animation:shake .4s;}
+.fill-opts{display:flex;flex-wrap:wrap;gap:6px;}
+.fopt{
+  padding:5px 14px;border-radius:50px;border:2px solid #EDD8FF;
+  background:#fff;font-size:.86rem;font-weight:900;cursor:pointer;transition:all .2s;
+}
+.fopt:hover{border-color:var(--c3);background:rgba(255,184,0,.12);transform:scale(1.05);}
+.fopt.used{opacity:.35;pointer-events:none;}
+
+/* ═══ EX6: OTHER HOLIDAYS ═══ */
+.hol-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:14px;}
+.hol-card{
+  background:var(--card2);border-radius:18px;padding:20px 10px 15px;
+  text-align:center;cursor:pointer;border:2.5px solid #D8EEFF;
+  transition:all .22s;user-select:none;
+}
+.hol-card:hover{transform:translateY(-4px) scale(1.04);border-color:var(--c6);box-shadow:0 8px 24px rgba(66,165,245,.22);}
+.hol-card.playing{animation:pop .4s;border-color:var(--c2);}
+.hol-icon{font-size:3rem;display:block;margin-bottom:9px;}
+.hol-label{font-size:.82rem;font-weight:900;color:var(--ink);line-height:1.3;}
+.hol-sub{font-size:.72rem;color:var(--muted);font-weight:700;margin-top:4px;}
+.hol-play{display:inline-block;margin-top:7px;background:rgba(66,165,245,.13);color:var(--c6);border-radius:50px;padding:2px 11px;font-size:.7rem;font-weight:900;}
+
+/* ── TOAST ── */
+.toast{
+  position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(80px);
+  background:#2A1A3E;color:#fff;padding:10px 26px;border-radius:50px;
+  font-size:.95rem;font-weight:800;box-shadow:0 8px 28px rgba(0,0,0,.28);
+  transition:transform .35s cubic-bezier(.17,.67,.4,1.3);z-index:9999;pointer-events:none;
+}
+.toast.good{background:var(--c4);}
+.toast.bad{background:var(--c1);}
+.toast.show{transform:translateX(-50%) translateY(0);}
+
+@media(max-width:520px){
+  .section{padding:18px 13px;}
+  .match-area{flex-direction:column;}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hbadge">English for Kids · Holidays</div>
+  <h1>🎂 Holidays!</h1>
+  <p>Birthdays, parties &amp; more fun celebrations!</p>
+  <div class="confetti-row">🎈 🎁 🎉 🕯️ 🎂 🎊</div>
+</header>
+
+<nav>
+  <a href="#ex1">🔊 Words</a>
+  <a href="#ex2">🔗 Match</a>
+  <a href="#ex3">🎂 Birthday?</a>
+  <a href="#ex4">🎁 Presents</a>
+  <a href="#ex5">✍️ Fill In</a>
+  <a href="#ex6">🌍 Holidays</a>
+</nav>
+
+<main>
+
+<!-- ═══════════════════════════════
+     EX 1 · LISTEN & LEARN
+════════════════════════════════ -->
+<section class="section" id="ex1">
+  <div class="snum">Exercise 1</div>
+  <div class="stitle">🔊 Listen &amp; Learn</div>
+  <div class="ssub">Click a card to hear the word in British English!</div>
+  <div class="wcards" id="ex1-grid"></div>
+</section>
+
+<!-- ═══════════════════════════════
+     EX 2 · MATCH
+════════════════════════════════ -->
+<section class="section" id="ex2">
+  <div class="snum">Exercise 2</div>
+  <div class="stitle">🔗 Match the Words!</div>
+  <div class="ssub">Click a word, then click the matching picture!</div>
+  <div class="mscore" id="m-score">⭐ 0 / 6</div>
+  <div class="match-area">
+    <div class="match-col" id="m-words"></div>
+    <div class="match-col" id="m-emojis"></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════
+     EX 3 · YES / NO BIRTHDAY
+════════════════════════════════ -->
+<section class="section" id="ex3">
+  <div class="snum">Exercise 3</div>
+  <div class="stitle">🎂 Do we need it at a birthday party?</div>
+  <div class="ssub">Press <strong style="color:var(--c4)">YES</strong> or <strong style="color:var(--c1)">NO</strong> for each item!</div>
+  <div class="yno-grid" id="yno-grid"></div>
+</section>
+
+<!-- ═══════════════════════════════
+     EX 4 · PRESENTS
+════════════════════════════════ -->
+<section class="section" id="ex4">
+  <div class="snum">Exercise 4</div>
+  <div class="stitle">🎁 What Presents Do You Like?</div>
+  <div class="ssub">Look at the present — do you like it? Press 💚 or 🙈!</div>
+  <div class="presents-stage">
+    <div class="present-display" id="pres-display">
+      <span class="present-emoji" id="pres-emoji">🧸</span>
+      <div class="present-name" id="pres-name">a teddy bear</div>
+    </div>
+    <div class="pres-feedback" id="pres-fb"></div>
+    <div class="present-btns">
+      <button class="pres-btn pres-like" onclick="likePresent(true)">💚 I like this!</button>
+      <button class="pres-btn pres-dislike" onclick="likePresent(false)">🙈 No, thanks!</button>
+    </div>
+    <p class="pres-progress" id="pres-prog">Present 1 of 8</p>
+    <div class="present-nav">
+      <button class="pnav-btn" onclick="prevPresent()">◀ Back</button>
+      <button class="pnav-btn" onclick="nextPresent()">Next ▶</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════
+     EX 5 · FILL IN
+════════════════════════════════ -->
+<section class="section" id="ex5">
+  <div class="snum">Exercise 5</div>
+  <div class="stitle">✍️ Fill in the Sentences!</div>
+  <div class="ssub">Choose the correct word to complete each sentence.</div>
+  <div class="fill-list" id="fill-list"></div>
+</section>
+
+<!-- ═══════════════════════════════
+     EX 6 · OTHER HOLIDAYS
+════════════════════════════════ -->
+<section class="section" id="ex6">
+  <div class="snum">Exercise 6</div>
+  <div class="stitle">🌍 Other Holidays — Listen &amp; Repeat!</div>
+  <div class="ssub">Click each card to hear the holiday in British English — then repeat it!</div>
+  <div class="hol-grid" id="hol-grid"></div>
+</section>
+
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ─── UTILS ─── */
+const shuffle = a => [...a].sort(()=>Math.random()-.5);
+let _tt;
+function toast(msg, type='') {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.className = 'toast show'+(type?' '+type:'');
+  clearTimeout(_tt); _tt = setTimeout(()=>t.className='toast',2000);
+}
+function speak(text, cb) {
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang='en-GB'; u.rate=0.82; u.pitch=1.05;
+  const vv = speechSynthesis.getVoices();
+  const gb = vv.find(v=>v.lang==='en-GB')||vv.find(v=>v.lang.startsWith('en'));
+  if (gb) u.voice = gb;
+  if (cb) u.onend = cb;
+  speechSynthesis.cancel(); speechSynthesis.speak(u);
+}
+window.speechSynthesis.onvoiceschanged = () => speechSynthesis.getVoices();
+
+/* ═══════════ EX 1 ═══════════ */
+const ex1Words = [
+  {w:'a cake',     e:'🎂', say:'a cake'},
+  {w:'a party',    e:'🎉', say:'a party'},
+  {w:'a candle',   e:'🕯️', say:'a candle'},
+  {w:'a balloon',  e:'🎈', say:'a balloon'},
+  {w:'a present',  e:'🎁', say:'a present'},
+  {w:'a birthday', e:'🥳', say:'a birthday'},
+];
+(function(){
+  const g = document.getElementById('ex1-grid');
+  ex1Words.forEach(({w,e,say})=>{
+    const c = document.createElement('div'); c.className='wcard';
+    c.innerHTML=`<span class="wc-icon">${e}</span><div class="wc-label">${w}</div><span class="wc-play">▶ play</span>`;
+    c.onclick=()=>{ speak(say); c.classList.add('playing'); setTimeout(()=>c.classList.remove('playing'),600); };
+    g.appendChild(c);
+  });
+})();
+
+/* ═══════════ EX 2 ═══════════ */
+const matchPairs = [
+  {word:'a cake',     emoji:'🎂'},
+  {word:'a party',    emoji:'🎉'},
+  {word:'a candle',   emoji:'🕯️'},
+  {word:'a balloon',  emoji:'🎈'},
+  {word:'a present',  emoji:'🎁'},
+  {word:'a birthday', emoji:'🥳'},
+];
+let mSel=null, mScore=0;
+(function(){
+  const L=document.getElementById('m-words'), R=document.getElementById('m-emojis');
+  shuffle(matchPairs).forEach(p=>L.appendChild(makeMI(p.word,'W',p.word)));
+  shuffle(matchPairs).forEach(p=>R.appendChild(makeMI(p.emoji,'E',p.word,true)));
+})();
+function makeMI(label,side,key,isEmoji=false){
+  const el=document.createElement('div');
+  el.className='mi'+(isEmoji?' emoji-mi':'');
+  el.dataset.key=key; el.dataset.side=side;
+  el.textContent=label; el.onclick=()=>selMI(el); return el;
+}
+function selMI(el){
+  if(el.classList.contains('ok')) return;
+  if(!mSel){el.classList.add('sel');mSel=el;return;}
+  if(mSel===el){el.classList.remove('sel');mSel=null;return;}
+  if(mSel.dataset.side===el.dataset.side){mSel.classList.remove('sel');el.classList.add('sel');mSel=el;return;}
+  const a=mSel,b=el; mSel=null;
+  if(a.dataset.key===b.dataset.key){
+    a.classList.remove('sel');b.classList.remove('sel');
+    a.classList.add('ok');b.classList.add('ok');
+    speak(a.dataset.key);
+    mScore++;
+    document.getElementById('m-score').textContent=`⭐ ${mScore} / 6`;
+    toast(mScore===6?'🎉 All matched! Amazing!':'✅ Correct!','good');
+  } else {
+    a.classList.add('bad');b.classList.add('bad');
+    setTimeout(()=>{a.classList.remove('bad','sel');b.classList.remove('bad','sel');},700);
+    toast('❌ Try again!','bad');
+  }
+}
+
+/* ═══════════ EX 3 ═══════════ */
+const ynoData = [
+  {label:'candles',   e:'🕯️', yes:true},
+  {label:'a cake',    e:'🎂', yes:true},
+  {label:'balloons',  e:'🎈', yes:true},
+  {label:'presents',  e:'🎁', yes:true},
+  {label:'snakes',    e:'🐍', yes:false},
+  {label:'friends',   e:'👯', yes:true},
+  {label:'boots',     e:'🥾', yes:false},
+  {label:'music',     e:'🎵', yes:true},
+  {label:'spiders',   e:'🕷️', yes:false},
+  {label:'a party hat',e:'🥳',yes:true},
+];
+(function(){
+  const g=document.getElementById('yno-grid');
+  ynoData.forEach((d,i)=>{
+    const c=document.createElement('div'); c.className='yno-card';
+    c.innerHTML=`
+      <span class="yno-icon">${d.e}</span>
+      <div class="yno-label">${d.label}</div>
+      <div class="yno-btns">
+        <button class="yno-btn yno-yes" onclick="checkYno(this,true,${d.yes},${i})">✅ YES</button>
+        <button class="yno-btn yno-no"  onclick="checkYno(this,false,${d.yes},${i})">❌ NO</button>
+      </div>
+      <div class="yno-result" id="yr-${i}"></div>`;
+    g.appendChild(c);
+  });
+})();
+function checkYno(btn,chosen,correct,i){
+  const card=btn.closest('.yno-card');
+  if(card.dataset.done) return;
+  const res=document.getElementById(`yr-${i}`);
+  if(chosen===correct){
+    btn.classList.add('correct-ans'); res.textContent='⭐';
+    card.dataset.done='1';
+    speak(ynoData[i].label + (correct ? ': yes!' : ': no!'));
+    toast('✅ Correct!','good');
+  } else {
+    btn.classList.add('wrong-ans');
+    setTimeout(()=>btn.classList.remove('wrong-ans'),700);
+    toast('❌ Try again!','bad');
+  }
+}
+
+/* ═══════════ EX 4 ═══════════ */
+const presents = [
+  {e:'🧸', name:'a teddy bear'},
+  {e:'🪆', name:'a doll'},
+  {e:'🚂', name:'a toy train'},
+  {e:'🎨', name:'a painting set'},
+  {e:'🧩', name:'a puzzle'},
+  {e:'🚀', name:'a toy rocket'},
+  {e:'🎮', name:'a video game'},
+  {e:'📚', name:'a book'},
+];
+let presIdx=0;
+const feedbacks = {
+  like:    ['💚 I like this present!','🎉 Great present!','😍 I love it!','⭐ Wonderful!'],
+  dislike: ['🙈 No, thanks!','😅 Not for me!','🤔 Hmm, no...','😬 I don\'t like it!'],
+};
+function updatePresent(){
+  const p=presents[presIdx];
+  const disp=document.getElementById('pres-display');
+  disp.className='present-display';
+  document.getElementById('pres-emoji').textContent=p.e;
+  document.getElementById('pres-name').textContent=p.name;
+  document.getElementById('pres-fb').textContent='';
+  document.getElementById('pres-prog').textContent=`Present ${presIdx+1} of ${presents.length}`;
+  speak(p.name);
+}
+function likePresent(like){
+  const p=presents[presIdx];
+  const disp=document.getElementById('pres-display');
+  const fb=document.getElementById('pres-fb');
+  disp.className='present-display '+(like?'liked':'disliked');
+  const arr=like?feedbacks.like:feedbacks.dislike;
+  const msg=arr[Math.floor(Math.random()*arr.length)];
+  fb.textContent=msg;
+  const said=like?'I like this present!':'I don\'t like this present.';
+  speak(said);
+  setTimeout(()=>nextPresent(),1600);
+}
+function nextPresent(){ presIdx=(presIdx+1)%presents.length; updatePresent(); }
+function prevPresent(){ presIdx=(presIdx-1+presents.length)%presents.length; updatePresent(); }
+updatePresent();
+
+/* ═══════════ EX 5 ═══════════ */
+const fillData=[
+  {
+    template:'We blow out the _____ on the birthday cake.',
+    answer:'candles',
+    opts:['candles','balloons','presents'],
+  },
+  {
+    template:'I got a big _____ for my birthday!',
+    answer:'present',
+    opts:['present','party','candle'],
+  },
+  {
+    template:'My friends come to my birthday _____.',
+    answer:'party',
+    opts:['party','balloon','cake'],
+  },
+  {
+    template:'The birthday _____ has chocolate and cream.',
+    answer:'cake',
+    opts:['cake','party','birthday'],
+  },
+  {
+    template:'We put up colourful _____ to decorate the room.',
+    answer:'balloons',
+    opts:['balloons','candles','cakes'],
+  },
+  {
+    template:'Today is my _____! I am six years old!',
+    answer:'birthday',
+    opts:['birthday','party','present'],
+  },
+];
+(function(){
+  const list=document.getElementById('fill-list');
+  fillData.forEach((d,i)=>{
+    const row=document.createElement('div'); row.className='fill-row';
+    const sent=d.template.replace('_____',`<span class="fblank" id="fb-${i}">_____</span>`);
+    const opts=shuffle(d.opts).map(o=>`<button class="fopt" onclick="checkFill(${i},'${o}','${d.answer}')">${o}</button>`).join('');
+    row.innerHTML=`<div class="fill-sentence">${sent}</div><div class="fill-opts">${opts}</div>`;
+    list.appendChild(row);
+  });
+})();
+function checkFill(i,chosen,correct){
+  const blank=document.getElementById(`fb-${i}`);
+  if(blank.classList.contains('ok')) return;
+  if(chosen===correct){
+    blank.textContent=chosen; blank.classList.add('ok');
+    blank.closest('.fill-row').querySelectorAll('.fopt').forEach(b=>{b.classList.add('used');});
+    speak(chosen); toast('✅ Correct!','good');
+  } else {
+    blank.classList.add('bad');
+    setTimeout(()=>blank.classList.remove('bad'),700);
+    toast('❌ Try again!','bad');
+  }
+}
+
+/* ═══════════ EX 6 ═══════════ */
+const holidays=[
+  {label:'Christmas',      sub:'25th December',    e:'🎄', say:'Christmas'},
+  {label:'New Year',       sub:"1st January",      e:'🎆', say:'New Year'},
+  {label:'Easter',         sub:'Spring festival',   e:'🐣', say:'Easter'},
+  {label:'Halloween',      sub:'31st October',      e:'🎃', say:'Halloween'},
+  {label:'Valentine\'s Day',sub:'14th February',   e:'💝', say:"Valentine's Day"},
+  {label:'Mother\'s Day',  sub:'Spring Sunday',    e:'💐', say:"Mother's Day"},
+  {label:'Father\'s Day',  sub:'Summer Sunday',    e:'👔', say:"Father's Day"},
+  {label:'Bonfire Night',  sub:'5th November',     e:'🔥', say:'Bonfire Night'},
+];
+(function(){
+  const g=document.getElementById('hol-grid');
+  holidays.forEach(h=>{
+    const c=document.createElement('div'); c.className='hol-card';
+    c.innerHTML=`<span class="hol-icon">${h.e}</span><div class="hol-label">${h.label}</div><div class="hol-sub">${h.sub}</div><span class="hol-play">▶ listen</span>`;
+    c.onclick=()=>{
+      speak(h.say);
+      c.classList.add('playing');
+      setTimeout(()=>c.classList.remove('playing'),700);
+    };
+    g.appendChild(c);
+  });
+})();
+</script>
+</body>
+</html>

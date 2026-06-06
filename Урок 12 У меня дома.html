@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>In My House! 🏠</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --pink:#ff7eb3;--yellow:#ffd84d;--mint:#3ddbb0;--blue:#4db8ff;
+  --orange:#ff9f4a;--purple:#c07aff;--red:#ff6060;--green:#5dcc7a;
+  --wall:#f5e6d0;--floor:#d4a96a;--ok:#3dcc88;--wrong:#ff5252;
+  --ink:#2a1f3d;--bg:#fff8f0;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);font-family:'Nunito',sans-serif;min-height:100vh;padding:20px 16px 80px;overflow-x:hidden;}
+
+.bubbles{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.bub{position:absolute;border-radius:50%;opacity:0.1;animation:rise linear infinite;}
+@keyframes rise{from{transform:translateY(110vh) scale(0.6)}to{transform:translateY(-10vh) scale(1.4)}}
+
+.page{max-width:840px;margin:0 auto;position:relative;z-index:1;}
+
+/* HEADER */
+.header{text-align:center;margin-bottom:26px;animation:popIn 0.7s cubic-bezier(.34,1.56,.64,1);}
+@keyframes popIn{from{opacity:0;transform:scale(0.4)}to{opacity:1;transform:scale(1)}}
+.header h1{font-family:'Fredoka One',cursive;font-size:clamp(46px,12vw,78px);color:var(--orange);text-shadow:4px 4px 0 #ffd4b8;line-height:1.0;}
+.header-sub{font-family:'Fredoka One',cursive;font-size:16px;color:var(--purple);margin-top:6px;}
+
+/* STARS */
+.star-bar{display:flex;align-items:center;justify-content:center;gap:10px;background:white;border-radius:100px;padding:10px 22px;margin:0 auto 24px;box-shadow:0 4px 16px rgba(0,0,0,0.09);width:fit-content;font-family:'Fredoka One',cursive;font-size:19px;color:var(--purple);}
+.star-slot{font-size:24px;}
+.star-slot.earned{animation:starPop 0.4s cubic-bezier(.34,1.56,.64,1);}
+@keyframes starPop{50%{transform:scale(1.9)}}
+
+/* SECTION */
+.section{background:white;border-radius:24px;padding:22px 18px;margin-bottom:22px;box-shadow:0 6px 20px rgba(0,0,0,0.07);animation:slideUp 0.5s ease both;}
+@keyframes slideUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+.section-title{font-family:'Fredoka One',cursive;font-size:21px;display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.task-num{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:17px;color:white;flex-shrink:0;}
+.task-desc{font-size:13.5px;color:#bbb;font-weight:700;margin-bottom:14px;}
+
+/* WORD BANK */
+.words-grid{display:flex;flex-wrap:wrap;gap:11px;justify-content:center;}
+.word-card{background:#f9f5ff;border-radius:18px;padding:12px 12px 10px;text-align:center;cursor:pointer;border:3px solid transparent;min-width:100px;flex:1 1 100px;max-width:130px;transition:transform 0.2s,box-shadow 0.2s;}
+.word-card:hover{transform:translateY(-4px);box-shadow:0 8px 20px rgba(0,0,0,0.11);}
+.word-card svg{display:block;margin:0 auto 7px;}
+.word-card .wlabel{font-family:'Fredoka One',cursive;font-size:14px;}
+.sound-icon{font-size:14px;opacity:0.5;margin-top:2px;}
+
+/* MATCH */
+.match-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.match-col-label{font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#bbb;margin-bottom:9px;text-align:center;}
+.mi{border-radius:14px;padding:10px 12px;text-align:center;cursor:pointer;border:3px solid transparent;background:#f8f5ff;transition:transform 0.15s,border-color 0.15s,box-shadow 0.15s;user-select:none;font-family:'Fredoka One',cursive;font-size:15px;margin-bottom:8px;}
+.mi:hover{transform:scale(1.04);}
+.mi.selected{border-color:var(--purple);box-shadow:0 0 0 3px rgba(192,122,255,0.2);}
+.mi.matched{border-color:var(--ok);background:#edfff6;opacity:0.6;pointer-events:none;}
+.mi.shake{animation:mShake 0.35s ease;border-color:var(--wrong);}
+@keyframes mShake{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+.match-msg{text-align:center;font-family:'Fredoka One',cursive;font-size:17px;color:var(--ok);min-height:24px;margin-top:12px;}
+
+/* ROOM GAME */
+.room-wrap{position:relative;width:100%;max-width:600px;margin:0 auto;}
+.room-svg-wrap{position:relative;border-radius:16px;overflow:hidden;border:4px solid var(--orange);box-shadow:0 8px 24px rgba(0,0,0,0.12);}
+.room-svg-wrap svg{display:block;width:100%;}
+
+.furniture-bank{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:16px;min-height:80px;background:#f9f5ff;border-radius:16px;padding:12px;border:3px dashed #d0b8ff;}
+.furniture-bank-label{font-family:'Fredoka One',cursive;font-size:14px;color:var(--purple);width:100%;text-align:center;margin-bottom:6px;}
+.drag-item{cursor:grab;display:inline-flex;flex-direction:column;align-items:center;gap:4px;padding:8px 10px;background:white;border-radius:12px;border:2.5px solid #d0b8ff;user-select:none;transition:transform 0.15s,box-shadow 0.15s,opacity 0.2s;touch-action:none;}
+.drag-item:hover{transform:scale(1.08);box-shadow:0 6px 16px rgba(0,0,0,0.12);}
+.drag-item:active{cursor:grabbing;}
+.drag-item.dragging{opacity:0.5;transform:scale(1.1);}
+.drag-item .dlabel{font-family:'Fredoka One',cursive;font-size:12px;color:var(--ink);}
+.drag-item.placed{opacity:0.3;pointer-events:none;}
+
+.drop-zone{cursor:pointer;transition:fill 0.2s;}
+.drop-zone:hover{fill:rgba(255,255,200,0.5)!important;}
+.drop-zone.active-drop{fill:rgba(255,220,100,0.3)!important;stroke:#ffd84d;stroke-width:3;}
+.drop-zone.filled{pointer-events:none;}
+
+.room-placed-item{position:absolute;pointer-events:none;transition:all 0.3s cubic-bezier(.34,1.56,.64,1);}
+.game-msg{text-align:center;font-family:'Fredoka One',cursive;font-size:17px;color:var(--ok);margin-top:10px;min-height:24px;}
+.game-progress{display:flex;gap:8px;justify-content:center;margin-top:12px;flex-wrap:wrap;}
+.gp-dot{width:28px;height:28px;border-radius:50%;background:#e0d8f8;display:flex;align-items:center;justify-content:center;font-size:14px;transition:background 0.3s;}
+.gp-dot.done{background:var(--ok);animation:starPop 0.4s;}
+
+/* CHOOSE */
+.choose-row{background:#f8f5ff;border-radius:14px;padding:14px 16px;margin-bottom:10px;}
+.choose-q{font-size:15px;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:10px;}
+.choose-opts{display:flex;flex-wrap:wrap;gap:8px;}
+.choose-opt{background:white;border:2.5px solid #d0b8ff;border-radius:100px;padding:6px 18px;font-family:'Fredoka One',cursive;font-size:15px;color:var(--purple);cursor:pointer;transition:transform 0.15s,background 0.15s,border-color 0.15s;}
+.choose-opt:hover{background:#ede8ff;transform:scale(1.06);}
+.choose-opt.ok-ans{border-color:var(--ok);background:#edfff6;color:var(--ok);pointer-events:none;}
+.choose-opt.bad-ans{border-color:var(--wrong);background:#fff0f0;color:var(--wrong);animation:mShake 0.3s ease;pointer-events:none;}
+.choose-fb{font-size:13px;font-weight:800;margin-top:7px;min-height:17px;}
+.choose-fb.ok{color:var(--ok);}
+.choose-fb.bad{color:var(--wrong);}
+
+/* WHAT IS IT write */
+.write-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;}
+.write-card{border-radius:16px;padding:13px 10px 10px;text-align:center;border:2.5px solid #e0d8f8;background:#f9f5ff;}
+.write-card svg{display:block;margin:0 auto 8px;}
+.write-input{width:100%;background:white;border:2.5px solid #d0b8ff;border-radius:10px;padding:6px 10px;font-family:'Fredoka One',cursive;font-size:14px;color:var(--ink);text-align:center;}
+.write-input::placeholder{color:#ccc;}
+.write-input:focus{outline:none;border-color:var(--purple);}
+.write-input.ok{border-color:var(--ok);background:#edfff6;color:var(--ok);}
+.write-input.bad{border-color:var(--wrong);background:#fff0f0;}
+.write-fb{font-size:12px;font-weight:800;margin-top:4px;min-height:15px;}
+.write-fb.ok{color:var(--ok);}
+.write-fb.bad{color:var(--wrong);}
+
+/* BTNS */
+.btn-row{display:flex;gap:12px;margin-top:16px;justify-content:center;flex-wrap:wrap;}
+.kid-btn{padding:12px 28px;border-radius:100px;border:none;font-family:'Fredoka One',cursive;font-size:18px;cursor:pointer;box-shadow:0 5px 0 rgba(0,0,0,0.12);transition:transform 0.15s,box-shadow 0.15s;}
+.kid-btn:hover{transform:translateY(-3px);box-shadow:0 8px 0 rgba(0,0,0,0.12);}
+.kid-btn:active{transform:translateY(2px);box-shadow:0 2px 0 rgba(0,0,0,0.12);}
+.btn-check{background:var(--orange);color:white;}
+.btn-reset{background:var(--yellow);color:var(--ink);}
+
+/* WELL DONE */
+.well-done{display:none;background:white;border-radius:24px;padding:30px 20px;text-align:center;box-shadow:0 8px 28px rgba(0,0,0,0.1);margin-top:18px;}
+.well-done.show{display:block;animation:popIn 0.6s cubic-bezier(.34,1.56,.64,1);}
+.well-done .big-em{font-size:58px;display:block;margin-bottom:10px;}
+.well-done h2{font-family:'Fredoka One',cursive;font-size:34px;color:var(--orange);}
+.well-done p{font-size:17px;font-weight:700;color:var(--purple);margin-top:8px;}
+
+#cnv{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:9999;}
+/* ── TASK 6: CRAZY HOUSE ── */
+.crazy-progress{display:flex;gap:7px;justify-content:center;margin-bottom:18px;flex-wrap:wrap;}
+.crazy-dot{width:14px;height:14px;border-radius:50%;background:#e0d8f8;transition:background 0.3s;}
+.crazy-dot.yes-dot{background:var(--ok);}
+.crazy-dot.no-dot{background:var(--wrong);}
+
+.crazy-card{background:linear-gradient(135deg,#fff8f0,#f5f0ff);border-radius:20px;padding:26px 20px;text-align:center;border:3px solid #e0d0f8;box-shadow:0 6px 20px rgba(0,0,0,0.07);}
+.crazy-scene{font-size:clamp(48px,12vw,80px);margin-bottom:14px;animation:crazyWobble 2s ease-in-out infinite;}
+@keyframes crazyWobble{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg)}}
+.crazy-sentence{font-family:'Fredoka One',cursive;font-size:clamp(18px,5vw,26px);color:var(--ink);margin-bottom:22px;line-height:1.4;}
+.crazy-sentence span{color:var(--purple);}
+
+.crazy-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;}
+.crazy-btn{padding:16px 36px;border-radius:100px;border:none;font-family:'Fredoka One',cursive;font-size:clamp(20px,5vw,28px);cursor:pointer;box-shadow:0 6px 0 rgba(0,0,0,0.12);transition:transform 0.15s,box-shadow 0.15s;display:flex;align-items:center;gap:10px;}
+.crazy-btn:hover{transform:translateY(-4px);box-shadow:0 10px 0 rgba(0,0,0,0.12);}
+.crazy-btn:active{transform:translateY(2px);box-shadow:0 2px 0 rgba(0,0,0,0.12);}
+.crazy-btn.yes-btn{background:#3dcc88;color:white;}
+.crazy-btn.no-btn{background:#ff5252;color:white;}
+
+.crazy-feedback{font-family:'Fredoka One',cursive;font-size:20px;min-height:32px;text-align:center;margin-top:16px;}
+.crazy-score{font-family:'Fredoka One',cursive;font-size:16px;color:#aaa;text-align:center;margin-top:8px;}
+
+@media(max-width:480px){.match-grid{grid-template-columns:1fr;}.write-grid{grid-template-columns:1fr 1fr;}.crazy-btns{flex-direction:column;align-items:center;}}
+</style>
+</head>
+<body>
+<div class="bubbles" id="bubbles"></div>
+<canvas id="cnv"></canvas>
+
+<div class="page">
+
+<!-- HEADER -->
+<div class="header">
+  <svg width="90" height="80" viewBox="0 0 90 80" style="display:block;margin:0 auto 10px;animation:popIn 0.9s cubic-bezier(.34,1.56,.64,1) 0.15s both">
+    <!-- house -->
+    <polygon points="45,4 88,36 2,36" fill="#ff9f4a"/>
+    <rect x="12" y="36" width="66" height="44" rx="4" fill="#ffecd8"/>
+    <!-- door -->
+    <rect x="34" y="54" width="22" height="26" rx="4" fill="#c07aff"/>
+    <circle cx="50" cy="67" r="2.5" fill="white"/>
+    <!-- window left -->
+    <rect x="16" y="44" width="15" height="13" rx="3" fill="#9ee8ff"/>
+    <line x1="23.5" y1="44" x2="23.5" y2="57" stroke="white" stroke-width="1.5"/>
+    <line x1="16" y1="50.5" x2="31" y2="50.5" stroke="white" stroke-width="1.5"/>
+    <!-- window right -->
+    <rect x="59" y="44" width="15" height="13" rx="3" fill="#9ee8ff"/>
+    <line x1="66.5" y1="44" x2="66.5" y2="57" stroke="white" stroke-width="1.5"/>
+    <line x1="59" y1="50.5" x2="74" y2="50.5" stroke="white" stroke-width="1.5"/>
+    <!-- chimney -->
+    <rect x="60" y="12" width="10" height="16" rx="2" fill="#ff7eb3"/>
+    <!-- smoke -->
+    <ellipse cx="63" cy="9" rx="3" ry="4" fill="rgba(255,255,255,0.6)"/>
+    <ellipse cx="67" cy="7" rx="3" ry="4" fill="rgba(255,255,255,0.4)"/>
+  </svg>
+  <h1>In My House! 🏠</h1>
+  <p class="header-sub">a door · a window · a chair · a table · a bed · a carpet · a sofa · a lamp · a fridge</p>
+</div>
+
+<!-- STAR BAR -->
+<div class="star-bar">
+  ⭐ Stars:
+  <span class="star-slot" id="s1">☆</span>
+  <span class="star-slot" id="s2">☆</span>
+  <span class="star-slot" id="s3">☆</span>
+  <span class="star-slot" id="s4">☆</span>
+  <span class="star-slot" id="s5">☆</span>
+  <span id="starCount" style="margin-left:4px">0 / 5</span>
+</div>
+
+<!-- ═══ TASK 1: WORD BANK ═══ -->
+<div class="section">
+  <div class="section-title">
+    <div class="task-num" style="background:var(--blue)">1</div>
+    <span style="color:var(--blue)">Learn the words! 🔊</span>
+  </div>
+  <p class="task-desc">Tap a card to hear the word! 👂✨</p>
+  <div class="words-grid">
+
+    <div class="word-card" id="wc-door" style="border-color:#ffd0e8" onclick="spk('a door','wc-door')">
+      <svg width="58" height="66" viewBox="0 0 58 66">
+        <rect x="4" y="6" width="50" height="58" rx="4" fill="#c07aff"/>
+        <rect x="4" y="2" width="50" height="8" rx="3" fill="#a050e0"/>
+        <rect x="8" y="10" width="18" height="22" rx="2" fill="rgba(255,255,255,0.2)"/>
+        <rect x="32" y="10" width="18" height="22" rx="2" fill="rgba(255,255,255,0.2)"/>
+        <rect x="14" y="36" width="30" height="22" rx="2" fill="rgba(255,255,255,0.15)"/>
+        <circle cx="40" cy="40" r="4" fill="#ffd84d"/>
+        <rect x="1" y="58" width="56" height="6" rx="3" fill="#8040c0"/>
+      </svg>
+      <div class="wlabel" style="color:#8040c0">a door</div>
+      <div class="sound-icon">🔊</div>
+    </div>
+
+    <div class="word-card" id="wc-window" style="border-color:#c8e8ff" onclick="spk('a window','wc-window')">
+      <svg width="60" height="58" viewBox="0 0 60 58">
+        <rect x="4" y="4" width="52" height="50" rx="5" fill="#4db8ff"/>
+        <rect x="8" y="8" width="20" height="22" rx="2" fill="#9ee8ff"/>
+        <rect x="32" y="8" width="20" height="22" rx="2" fill="#9ee8ff"/>
+        <rect x="8" y="34" width="20" height="16" rx="2" fill="#9ee8ff"/>
+        <rect x="32" y="34" width="20" height="16" rx="2" fill="#9ee8ff"/>
+        <rect x="26" y="4" width="8" height="50" fill="#4db8ff"/>
+        <rect x="4" y="27" width="52" height="8" fill="#4db8ff"/>
+        <circle cx="30" cy="30" r="3" fill="white"/>
+        <!-- shine -->
+        <ellipse cx="14" cy="14" rx="5" ry="3" fill="rgba(255,255,255,0.4)" transform="rotate(-30 14 14)"/>
+      </svg>
+      <div class="wlabel" style="color:#1a7acc">a window</div>
+      <div class="sound-icon">🔊</div>
+    </div>
+
+    <div class="word-card" id="wc-chair" style="border-color:#ffd0e8" onclick="spk('a chair','wc-chair')">
+      <svg width="58" height="64" viewBox="0 0 58 64">
+        <rect x="10" y="4" width="38" height="24" rx="6" fill="#ff7eb3"/>
+        <rect x="14" y="28" width="30" height="10" rx="4" fill="#ff9fc8"/>
+        <rect x="6" y="38" width="46" height="8" rx="4" fill="#ff7eb3"/>
+        <rect x="10" y="46" width="8" height="16" rx="4" fill="#ff7eb3"/>
+        <rect x="40" y="46" width="8" height="16" rx="4" fill="#ff7eb3"/>
+        <rect x="12" y="6" width="34" height="6" rx="3" fill="rgba(255,255,255,0.3)"/>
+      </svg>
+      <div class="wlabel" style="color:#c83080">a chair</div>
+      <div class="sound-icon">🔊</div>
+    </div>
+
+    <div class="word-card" id="wc-table" style="border-color:#d0ffe8" onclick="spk('a table','wc-table')">
+      <svg width="60" height="56" viewBox="0 0 60 56">
+        <rect x="4" y="20" width="52" height="10" rx="5" fill="#3dcc88"/>
+        <rect x="10" y="30" width="8" height="24" rx="4" fill="#2ab070"/>
+        <rect x="42" y="30" width="8" height="24" rx="4" fill="#2ab070"/>
+        <rect x="6" y="6" width="48" height="16" rx="5" fill="#5ddc9a"/>
+        <rect x="10" y="8" width="40" height="4" rx="2" fill="rgba(255,255,255,0.3)"/>
+      </svg>
+      <div class="wlabel" style="color:#1a8a50">a table</div>
+      <div class="sound-icon">🔊</div>
+    </div>
+
+    <div class="word-card" id="wc-bed" style="border-color:#ffe0cc" onclick="spk('a bed','wc-bed')">
+      <svg width="64" height="52" viewBox="0 0 64 52">
+        <rect x="4" y="28" width="56" height="20" rx="5" fill="#ff9f4a"/>
+        <rect x="4" y="20" width="56" height="12" rx="4" fill="#ffd9b8"/>
+        <!-- pillow -->
+        <rect x="8" y="22" width="20" height="8" rx="4" fill="white"/>
+        <rect x="36" y="22" width="20" height="8" rx="4" fill="white"/>
+        <!-- blanket waves -->
+        <path d="M4 32 Q16 28 28 32 Q40 36 52 32 Q58 30 60 32" stroke="rgba(255,255,255,0.4)" stroke-width="2" fill="none"/>
+        <!-- headboard -->
+        <rect x="4" y="8" width="56" height="16" rx="5" fill="#e8834a"/>
+        <rect x="4" y="44" width="8" height="8" rx="4" fill="#e8834a"/>
+        <rect x="52" y="44" width="8" height="8" rx="4" fill="#e8834a"/>
+      </svg>
+      <div class="wlabel" style="color:#c86a00">a bed</div>
+      <div class="sound-icon">🔊</div>
+    </div>
+
+    <div class="word-card" id="wc-carpet" style="border-color:#ffe8d0" onclick="spk('a carpet','wc-carpet')">
+      <svg width="64" height="44" viewBox="0 0 64 44">
+        <rect x="4" y="10" width="56" height="24" rx="6" fill="#ff6060"/>
+        <rect x="8" y="14" width="48" height="16" rx="4" fill="#ff8888"/>
+        <!-- pattern -->
+        <rect x="20" y="18" width="6" height="8" rx="2" fill="rgba(255,255,255,0.4)"/>
+        <rect x="29" y="18" width="6" height="8" rx="2" fill="rgba(255,255,255,0.4)"/>
+        <rect x="38" y="18" width="6" height="8" rx="2" fill="rgba(255,255,255,0.4)"/>
+        <rect x="4" y="8" width="56" height="6" rx="3" fill="#dd4040"/>
+        <rect x="4" y="30" width="56" height="6" rx="3" fill="#dd4040"/>
+        <!-- fringe -->
+        <line x1="8" y1="8" x2="8" y2="2" stroke="#dd4040" stroke-width="2" stroke-linecap="round"/>
+        <line x1="16" y1="8" x2="16" y2="2" stroke="#dd4040" stroke-width="2" stroke-linecap="round"/>
+        <line x1="24" y1="8" x2="24" y2="2" stroke="#dd4040" stroke-width="2" stroke-linecap="round"/>
+        <line x1="40" y1="8" x2="40" y2="2" stroke="#dd4040" stroke-width="2" stroke-linecap="round"/>
+        <line x1="48" y1="8" x2="48" y2="2" stroke="#dd4040" stroke-width="2" stroke-linecap="round"/>
+        <line x1="56" y1="8" x2="56" y2="2" stroke="#dd4040" stroke-width="2" stroke-linecap="round"/>
+        <line x1="8" y1="36" x2="8" y2="42" stroke="#dd4040" stroke-width="2" stroke-linecap="round"/>
+        <line x1="16" y1="36" x2="16" y2="42" stroke="#dd4040" stroke-width="2" stroke-linecap="round"/>
+        <line x1="40" y1="36" x2="40" y2="42" stroke="#dd4040" stroke-width="2" stroke-linecap="round"/>
+        <line x1="56" y1="36" x2="56" y2="42" stroke="#dd4040" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <div class="wlabel" style="color:#c83030">a carpet</div>
+      <div class="sound-icon">🔊</div>
+    </div>
+
+    <div class="word-card" id="wc-sofa" style="border-color:#d0eeff" onclick="spk('a sofa','wc-sofa')">
+      <svg width="64" height="48" viewBox="0 0 64 48">
+        <rect x="8" y="22" width="48" height="20" rx="6" fill="#4db8ff"/>
+        <rect x="2" y="28" width="14" height="14" rx="5" fill="#3aadff"/>
+        <rect x="48" y="28" width="14" height="14" rx="5" fill="#3aadff"/>
+        <rect x="8" y="14" width="48" height="12" rx="5" fill="#6ecfff"/>
+        <!-- cushions -->
+        <rect x="10" y="16" width="18" height="9" rx="4" fill="rgba(255,255,255,0.35)"/>
+        <rect x="36" y="16" width="18" height="9" rx="4" fill="rgba(255,255,255,0.35)"/>
+        <!-- legs -->
+        <rect x="12" y="42" width="7" height="6" rx="3" fill="#2898dd"/>
+        <rect x="45" y="42" width="7" height="6" rx="3" fill="#2898dd"/>
+      </svg>
+      <div class="wlabel" style="color:#1a6acc">a sofa</div>
+      <div class="sound-icon">🔊</div>
+    </div>
+
+    <div class="word-card" id="wc-lamp" style="border-color:#fffacc" onclick="spk('a lamp','wc-lamp')">
+      <svg width="52" height="66" viewBox="0 0 52 66">
+        <!-- shade -->
+        <path d="M8 30 L18 6 L34 6 L44 30Z" fill="#ffd84d"/>
+        <path d="M8 30 L18 6" stroke="#f0c030" stroke-width="2"/>
+        <path d="M44 30 L34 6" stroke="#f0c030" stroke-width="2"/>
+        <ellipse cx="26" cy="6" rx="9" ry="4" fill="#f0c030"/>
+        <ellipse cx="26" cy="30" rx="19" ry="5" fill="#f0c030"/>
+        <!-- pole -->
+        <rect x="23" y="30" width="6" height="26" rx="3" fill="#888"/>
+        <!-- base -->
+        <ellipse cx="26" cy="58" rx="14" ry="6" fill="#666"/>
+        <ellipse cx="26" cy="56" rx="14" ry="6" fill="#888"/>
+        <!-- glow -->
+        <ellipse cx="26" cy="18" rx="8" ry="5" fill="rgba(255,255,200,0.5)"/>
+      </svg>
+      <div class="wlabel" style="color:#a08000">a lamp</div>
+      <div class="sound-icon">🔊</div>
+    </div>
+
+    <div class="word-card" id="wc-fridge" style="border-color:#d0ffe8" onclick="spk('a fridge','wc-fridge')">
+      <svg width="52" height="68" viewBox="0 0 52 68">
+        <rect x="6" y="4" width="40" height="64" rx="6" fill="#5bc8ee"/>
+        <rect x="6" y="4" width="40" height="28" rx="6" fill="#3ab8e0"/>
+        <rect x="6" y="28" width="40" height="4" fill="#2aa8d0"/>
+        <rect x="8" y="6" width="36" height="24" rx="4" fill="rgba(255,255,255,0.15)"/>
+        <rect x="8" y="34" width="36" height="32" rx="4" fill="rgba(255,255,255,0.12)"/>
+        <!-- handle -->
+        <rect x="38" y="12" width="5" height="12" rx="2.5" fill="white" opacity="0.7"/>
+        <rect x="38" y="38" width="5" height="18" rx="2.5" fill="white" opacity="0.7"/>
+        <!-- items inside hint -->
+        <circle cx="18" cy="42" r="4" fill="rgba(255,255,255,0.2)"/>
+        <rect x="24" y="38" width="12" height="8" rx="2" fill="rgba(255,255,255,0.2)"/>
+      </svg>
+      <div class="wlabel" style="color:#1a8aaa">a fridge</div>
+      <div class="sound-icon">🔊</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ═══ TASK 2: MATCH ═══ -->
+<div class="section" style="animation-delay:0.05s">
+  <div class="section-title">
+    <div class="task-num" style="background:var(--orange)">2</div>
+    <span style="color:var(--orange)">Match! 🔗</span>
+  </div>
+  <p class="task-desc">Tap a picture → then tap the right word! 👆</p>
+  <div class="match-grid">
+    <div>
+      <div class="match-col-label">Pictures</div>
+      <div class="mi" data-side="pic" data-id="bed" onclick="mTap(this)" style="background:#fff5ec">
+        <svg width="52" height="38" viewBox="0 0 52 38"><rect x="2" y="18" width="48" height="16" rx="4" fill="#ff9f4a"/><rect x="2" y="12" width="48" height="10" rx="3" fill="#ffd9b8"/><rect x="4" y="14" width="16" height="6" rx="3" fill="white"/><rect x="28" y="14" width="16" height="6" rx="3" fill="white"/><rect x="2" y="4" width="48" height="12" rx="4" fill="#e8834a"/><rect x="2" y="32" width="6" height="6" rx="3" fill="#e8834a"/><rect x="44" y="32" width="6" height="6" rx="3" fill="#e8834a"/></svg>
+      </div>
+      <div class="mi" data-side="pic" data-id="lamp" onclick="mTap(this)" style="background:#fffaec">
+        <svg width="40" height="52" viewBox="0 0 40 52"><path d="M4 24 L12 4 L28 4 L36 24Z" fill="#ffd84d"/><ellipse cx="20" cy="4" rx="8" ry="3" fill="#f0c030"/><ellipse cx="20" cy="24" rx="17" ry="4" fill="#f0c030"/><rect x="17" y="24" width="6" height="20" rx="3" fill="#888"/><ellipse cx="20" cy="46" rx="12" ry="5" fill="#888"/></svg>
+      </div>
+      <div class="mi" data-side="pic" data-id="sofa" onclick="mTap(this)" style="background:#f0f8ff">
+        <svg width="54" height="38" viewBox="0 0 54 38"><rect x="6" y="16" width="42" height="16" rx="5" fill="#4db8ff"/><rect x="0" y="20" width="12" height="12" rx="4" fill="#3aadff"/><rect x="42" y="20" width="12" height="12" rx="4" fill="#3aadff"/><rect x="6" y="8" width="42" height="10" rx="4" fill="#6ecfff"/><rect x="8" y="10" width="14" height="7" rx="3" fill="rgba(255,255,255,0.3)"/><rect x="30" y="10" width="14" height="7" rx="3" fill="rgba(255,255,255,0.3)"/></svg>
+      </div>
+      <div class="mi" data-side="pic" data-id="fridge" onclick="mTap(this)" style="background:#eafff8">
+        <svg width="42" height="54" viewBox="0 0 42 54"><rect x="4" y="2" width="34" height="50" rx="5" fill="#5bc8ee"/><rect x="4" y="2" width="34" height="22" rx="5" fill="#3ab8e0"/><rect x="4" y="22" width="34" height="4" fill="#2aa8d0"/><rect x="32" y="8" width="4" height="10" rx="2" fill="white" opacity="0.7"/><rect x="32" y="30" width="4" height="14" rx="2" fill="white" opacity="0.7"/></svg>
+      </div>
+      <div class="mi" data-side="pic" data-id="carpet" onclick="mTap(this)" style="background:#fff0f0">
+        <svg width="56" height="32" viewBox="0 0 56 32"><rect x="2" y="6" width="52" height="18" rx="5" fill="#ff6060"/><rect x="6" y="10" width="44" height="10" rx="3" fill="#ff8888"/><rect x="16" y="12" width="5" height="6" rx="1.5" fill="rgba(255,255,255,0.4)"/><rect x="24" y="12" width="5" height="6" rx="1.5" fill="rgba(255,255,255,0.4)"/><rect x="32" y="12" width="5" height="6" rx="1.5" fill="rgba(255,255,255,0.4)"/></svg>
+      </div>
+    </div>
+    <div>
+      <div class="match-col-label">Words</div>
+      <div class="mi" data-side="word" data-id="fridge" onclick="mTap(this)" style="background:#eafff8;color:#1a8aaa">a fridge ❄️</div>
+      <div class="mi" data-side="word" data-id="carpet" onclick="mTap(this)" style="background:#fff0f0;color:#c83030">a carpet 🟥</div>
+      <div class="mi" data-side="word" data-id="bed"    onclick="mTap(this)" style="background:#fff5ec;color:#c86a00">a bed 🛏️</div>
+      <div class="mi" data-side="word" data-id="sofa"   onclick="mTap(this)" style="background:#f0f8ff;color:#1a6acc">a sofa 🛋️</div>
+      <div class="mi" data-side="word" data-id="lamp"   onclick="mTap(this)" style="background:#fffaec;color:#a08000">a lamp 💡</div>
+    </div>
+  </div>
+  <div class="match-msg" id="matchMsg"></div>
+</div>
+
+
+<!-- ═══ TASK 3: ROOM GAME ═══ -->
+<div class="section" style="animation-delay:0.1s">
+  <div class="section-title">
+    <div class="task-num" style="background:var(--purple)">3</div>
+    <span style="color:var(--purple)">Put it in the right room! 🏡</span>
+  </div>
+  <p class="task-desc">Drag or tap each piece of furniture into the correct room! 🛋️</p>
+
+  <!-- simple room with 3 zones: bedroom, living room, kitchen -->
+  <svg viewBox="0 0 600 380" xmlns="http://www.w3.org/2000/svg" style="width:100%;border-radius:14px;border:4px solid var(--purple);background:#f5e6d0;display:block;">
+    <!-- floor -->
+    <rect x="0" y="0" width="600" height="380" fill="#f5e6d0"/>
+
+    <!-- BEDROOM (left) -->
+    <rect x="10" y="10" width="185" height="360" rx="8" fill="#ffecd8" stroke="#e0c8a0" stroke-width="2"/>
+    <text x="103" y="38" text-anchor="middle" font-family="Fredoka One, cursive" font-size="17" fill="#c86a00">🛏 Bedroom</text>
+
+    <!-- LIVING ROOM (centre) -->
+    <rect x="205" y="10" width="190" height="360" rx="8" fill="#fff0fa" stroke="#e0b8d0" stroke-width="2"/>
+    <text x="300" y="38" text-anchor="middle" font-family="Fredoka One, cursive" font-size="17" fill="#c04080">🛋 Living Room</text>
+
+    <!-- KITCHEN (right) -->
+    <rect x="405" y="10" width="185" height="360" rx="8" fill="#eafff5" stroke="#b8e0c8" stroke-width="2"/>
+    <text x="498" y="38" text-anchor="middle" font-family="Fredoka One, cursive" font-size="17" fill="#1a8a50">🍽 Kitchen</text>
+
+    <!-- drop zones (invisible click targets) -->
+    <rect id="dz-bed"    class="drop-zone" x="15"  y="45" width="175" height="320" rx="6" fill="transparent" data-accepts="bed,lamp,carpet" onclick="dzClick(this)"/>
+    <rect id="dz-living" class="drop-zone" x="210" y="45" width="180" height="320" rx="6" fill="transparent" data-accepts="sofa,carpet,lamp,table,chair" onclick="dzClick(this)"/>
+    <rect id="dz-kitchen"class="drop-zone" x="410" y="45" width="175" height="320" rx="6" fill="transparent" data-accepts="fridge,table,chair" onclick="dzClick(this)"/>
+
+    <!-- placed items will be added here as foreignObject or text -->
+    <g id="placedGroup"></g>
+  </svg>
+
+  <div class="furniture-bank" id="furniBank">
+    <div class="furniture-bank-label">Tap a piece of furniture, then tap the right room ↑</div>
+    <div class="drag-item" data-name="bed"    id="di-bed"    onclick="selectItem(this)"><svg width="48" height="34" viewBox="0 0 52 38"><rect x="2" y="18" width="48" height="16" rx="4" fill="#ff9f4a"/><rect x="2" y="12" width="48" height="10" rx="3" fill="#ffd9b8"/><rect x="4" y="14" width="16" height="6" rx="3" fill="white"/><rect x="28" y="14" width="16" height="6" rx="3" fill="white"/><rect x="2" y="4" width="48" height="12" rx="4" fill="#e8834a"/></svg><span class="dlabel">bed</span></div>
+    <div class="drag-item" data-name="sofa"   id="di-sofa"   onclick="selectItem(this)"><svg width="48" height="32" viewBox="0 0 54 38"><rect x="6" y="16" width="42" height="16" rx="5" fill="#4db8ff"/><rect x="0" y="20" width="12" height="12" rx="4" fill="#3aadff"/><rect x="42" y="20" width="12" height="12" rx="4" fill="#3aadff"/><rect x="6" y="8" width="42" height="10" rx="4" fill="#6ecfff"/></svg><span class="dlabel">sofa</span></div>
+    <div class="drag-item" data-name="fridge" id="di-fridge" onclick="selectItem(this)"><svg width="36" height="48" viewBox="0 0 42 54"><rect x="4" y="2" width="34" height="50" rx="5" fill="#5bc8ee"/><rect x="4" y="2" width="34" height="22" rx="5" fill="#3ab8e0"/><rect x="4" y="22" width="34" height="4" fill="#2aa8d0"/><rect x="32" y="8" width="4" height="10" rx="2" fill="white" opacity="0.7"/></svg><span class="dlabel">fridge</span></div>
+    <div class="drag-item" data-name="lamp"   id="di-lamp"   onclick="selectItem(this)"><svg width="34" height="48" viewBox="0 0 40 52"><path d="M4 24 L12 4 L28 4 L36 24Z" fill="#ffd84d"/><ellipse cx="20" cy="24" rx="17" ry="4" fill="#f0c030"/><rect x="17" y="24" width="6" height="18" rx="3" fill="#888"/><ellipse cx="20" cy="44" rx="10" ry="4" fill="#888"/></svg><span class="dlabel">lamp</span></div>
+    <div class="drag-item" data-name="table"  id="di-table"  onclick="selectItem(this)"><svg width="44" height="38" viewBox="0 0 60 46"><rect x="4" y="14" width="52" height="8" rx="4" fill="#3dcc88"/><rect x="10" y="22" width="7" height="20" rx="3" fill="#2ab070"/><rect x="43" y="22" width="7" height="20" rx="3" fill="#2ab070"/><rect x="6" y="4" width="48" height="12" rx="4" fill="#5ddc9a"/></svg><span class="dlabel">table</span></div>
+    <div class="drag-item" data-name="chair"  id="di-chair"  onclick="selectItem(this)"><svg width="38" height="46" viewBox="0 0 58 64"><rect x="10" y="4" width="38" height="24" rx="6" fill="#ff7eb3"/><rect x="14" y="28" width="30" height="8" rx="4" fill="#ff9fc8"/><rect x="6" y="36" width="46" height="7" rx="4" fill="#ff7eb3"/><rect x="10" y="43" width="7" height="14" rx="3" fill="#ff7eb3"/><rect x="41" y="43" width="7" height="14" rx="3" fill="#ff7eb3"/></svg><span class="dlabel">chair</span></div>
+    <div class="drag-item" data-name="carpet" id="di-carpet" onclick="selectItem(this)"><svg width="44" height="28" viewBox="0 0 56 32"><rect x="2" y="5" width="52" height="18" rx="5" fill="#ff6060"/><rect x="6" y="9" width="44" height="10" rx="3" fill="#ff8888"/><rect x="16" y="11" width="4" height="5" rx="1" fill="rgba(255,255,255,0.5)"/><rect x="24" y="11" width="4" height="5" rx="1" fill="rgba(255,255,255,0.5)"/><rect x="32" y="11" width="4" height="5" rx="1" fill="rgba(255,255,255,0.5)"/></svg><span class="dlabel">carpet</span></div>
+  </div>
+  <div class="game-progress" id="gameProgress"></div>
+  <div class="game-msg" id="gameMsg"></div>
+</div>
+
+
+<!-- ═══ TASK 3: WHAT ROOM IS IT IN? ═══ -->
+<div class="section" style="animation-delay:0.15s">
+  <div class="section-title">
+    <div class="task-num" style="background:var(--mint)">4</div>
+    <span style="color:#1aaa88">Where is it? 🏠</span>
+  </div>
+  <p class="task-desc">Look at the picture — tap the right answer! 👀</p>
+
+  <div class="choose-row">
+    <div class="choose-q">
+      <svg width="44" height="36" viewBox="0 0 54 38"><rect x="2" y="18" width="50" height="16" rx="4" fill="#ff9f4a"/><rect x="2" y="12" width="50" height="10" rx="3" fill="#ffd9b8"/><rect x="4" y="14" width="17" height="6" rx="3" fill="white"/><rect x="30" y="14" width="17" height="6" rx="3" fill="white"/><rect x="2" y="4" width="50" height="12" rx="4" fill="#e8834a"/></svg>
+      Where is the bed?
+    </div>
+    <div class="choose-opts">
+      <div class="choose-opt" onclick="chk(this,'in the bedroom','in the bedroom')">in the bedroom</div>
+      <div class="choose-opt" onclick="chk(this,'in the kitchen','in the bedroom')">in the kitchen</div>
+      <div class="choose-opt" onclick="chk(this,'in the living room','in the bedroom')">in the living room</div>
+    </div>
+    <div class="choose-fb"></div>
+  </div>
+
+  <div class="choose-row">
+    <div class="choose-q">
+      <svg width="34" height="44" viewBox="0 0 42 54"><rect x="4" y="2" width="34" height="50" rx="5" fill="#5bc8ee"/><rect x="4" y="2" width="34" height="22" rx="5" fill="#3ab8e0"/><rect x="4" y="22" width="34" height="4" fill="#2aa8d0"/><rect x="32" y="8" width="4" height="10" rx="2" fill="white" opacity="0.7"/></svg>
+      Where is the fridge?
+    </div>
+    <div class="choose-opts">
+      <div class="choose-opt" onclick="chk(this,'in the bedroom','in the kitchen')">in the bedroom</div>
+      <div class="choose-opt" onclick="chk(this,'in the kitchen','in the kitchen')">in the kitchen</div>
+      <div class="choose-opt" onclick="chk(this,'in the garden','in the kitchen')">in the garden</div>
+    </div>
+    <div class="choose-fb"></div>
+  </div>
+
+  <div class="choose-row">
+    <div class="choose-q">
+      <svg width="48" height="30" viewBox="0 0 54 38"><rect x="6" y="16" width="42" height="16" rx="5" fill="#4db8ff"/><rect x="0" y="20" width="12" height="12" rx="4" fill="#3aadff"/><rect x="42" y="20" width="12" height="12" rx="4" fill="#3aadff"/><rect x="6" y="8" width="42" height="10" rx="4" fill="#6ecfff"/></svg>
+      Where is the sofa?
+    </div>
+    <div class="choose-opts">
+      <div class="choose-opt" onclick="chk(this,'in the kitchen','in the living room')">in the kitchen</div>
+      <div class="choose-opt" onclick="chk(this,'in the living room','in the living room')">in the living room</div>
+      <div class="choose-opt" onclick="chk(this,'in the garden','in the living room')">in the garden</div>
+    </div>
+    <div class="choose-fb"></div>
+  </div>
+
+  <div class="choose-row">
+    <div class="choose-q">
+      <svg width="40" height="44" viewBox="0 0 40 52"><path d="M4 24 L12 4 L28 4 L36 24Z" fill="#ffd84d"/><ellipse cx="20" cy="24" rx="17" ry="4" fill="#f0c030"/><rect x="17" y="24" width="6" height="18" rx="3" fill="#888"/><ellipse cx="20" cy="44" rx="10" ry="4" fill="#888"/></svg>
+      What is it?
+    </div>
+    <div class="choose-opts">
+      <div class="choose-opt" onclick="chk(this,'a table','a lamp')">a table</div>
+      <div class="choose-opt" onclick="chk(this,'a lamp','a lamp')">a lamp</div>
+      <div class="choose-opt" onclick="chk(this,'a chair','a lamp')">a chair</div>
+    </div>
+    <div class="choose-fb"></div>
+  </div>
+
+  <div class="choose-row">
+    <div class="choose-q">
+      <svg width="52" height="26" viewBox="0 0 56 32"><rect x="2" y="5" width="52" height="18" rx="5" fill="#ff6060"/><rect x="6" y="9" width="44" height="10" rx="3" fill="#ff8888"/><rect x="16" y="11" width="4" height="5" rx="1" fill="rgba(255,255,255,0.5)"/><rect x="26" y="11" width="4" height="5" rx="1" fill="rgba(255,255,255,0.5)"/><rect x="36" y="11" width="4" height="5" rx="1" fill="rgba(255,255,255,0.5)"/></svg>
+      What is it?
+    </div>
+    <div class="choose-opts">
+      <div class="choose-opt" onclick="chk(this,'a carpet','a carpet')">a carpet</div>
+      <div class="choose-opt" onclick="chk(this,'a bed','a carpet')">a bed</div>
+      <div class="choose-opt" onclick="chk(this,'a window','a carpet')">a window</div>
+    </div>
+    <div class="choose-fb"></div>
+  </div>
+</div>
+
+
+<!-- ═══ TASK 5: WRITE THE WORD ═══ -->
+<div class="section" style="animation-delay:0.2s">
+  <div class="section-title">
+    <div class="task-num" style="background:var(--pink)">5</div>
+    <span style="color:var(--pink)">Write the word! ✏️</span>
+  </div>
+  <p class="task-desc">Look at the picture and write the word! 🌟</p>
+
+  <div class="write-grid">
+
+    <div class="write-card">
+      <svg width="68" height="48" viewBox="0 0 68 48">
+        <rect x="4" y="4" width="60" height="40" rx="5" fill="#4db8ff"/>
+        <rect x="8" y="8" width="24" height="18" rx="2" fill="#9ee8ff"/><line x1="20" y1="8" x2="20" y2="26" stroke="white" stroke-width="1.5"/><line x1="8" y1="17" x2="32" y2="17" stroke="white" stroke-width="1.5"/>
+        <rect x="36" y="8" width="24" height="18" rx="2" fill="#9ee8ff"/><line x1="48" y1="8" x2="48" y2="26" stroke="white" stroke-width="1.5"/><line x1="36" y1="17" x2="60" y2="17" stroke="white" stroke-width="1.5"/>
+        <rect x="8" y="30" width="52" height="10" rx="2" fill="#9ee8ff"/>
+      </svg>
+      <input class="write-input" type="text" placeholder="w _ _ d _ w" oninput="chkW(this,['window','a window'])">
+      <div class="write-fb"></div>
+    </div>
+
+    <div class="write-card">
+      <svg width="56" height="68" viewBox="0 0 58 68">
+        <rect x="4" y="6" width="50" height="60" rx="4" fill="#c07aff"/>
+        <rect x="4" y="2" width="50" height="8" rx="3" fill="#a050e0"/>
+        <rect x="8" y="10" width="17" height="20" rx="2" fill="rgba(255,255,255,0.2)"/>
+        <rect x="32" y="10" width="17" height="20" rx="2" fill="rgba(255,255,255,0.2)"/>
+        <rect x="14" y="34" width="28" height="20" rx="2" fill="rgba(255,255,255,0.15)"/>
+        <circle cx="38" cy="40" r="4" fill="#ffd84d"/>
+      </svg>
+      <input class="write-input" type="text" placeholder="d _ _ r" oninput="chkW(this,['door','a door'])">
+      <div class="write-fb"></div>
+    </div>
+
+    <div class="write-card">
+      <svg width="60" height="50" viewBox="0 0 60 46">
+        <rect x="4" y="14" width="52" height="8" rx="5" fill="#3dcc88"/>
+        <rect x="10" y="22" width="7" height="20" rx="3" fill="#2ab070"/>
+        <rect x="43" y="22" width="7" height="20" rx="3" fill="#2ab070"/>
+        <rect x="6" y="4" width="48" height="12" rx="5" fill="#5ddc9a"/>
+        <rect x="10" y="6" width="40" height="4" rx="2" fill="rgba(255,255,255,0.3)"/>
+      </svg>
+      <input class="write-input" type="text" placeholder="t _ b l _" oninput="chkW(this,['table','a table'])">
+      <div class="write-fb"></div>
+    </div>
+
+    <div class="write-card">
+      <svg width="54" height="62" viewBox="0 0 58 64">
+        <rect x="10" y="4" width="38" height="24" rx="6" fill="#ff7eb3"/>
+        <rect x="14" y="28" width="30" height="9" rx="4" fill="#ff9fc8"/>
+        <rect x="6" y="37" width="46" height="7" rx="4" fill="#ff7eb3"/>
+        <rect x="10" y="44" width="7" height="16" rx="3" fill="#ff7eb3"/>
+        <rect x="41" y="44" width="7" height="16" rx="3" fill="#ff7eb3"/>
+        <rect x="12" y="6" width="34" height="6" rx="3" fill="rgba(255,255,255,0.3)"/>
+      </svg>
+      <input class="write-input" type="text" placeholder="c _ a _ r" oninput="chkW(this,['chair','a chair'])">
+      <div class="write-fb"></div>
+    </div>
+
+    <div class="write-card">
+      <svg width="54" height="56" viewBox="0 0 52 68">
+        <rect x="6" y="4" width="40" height="60" rx="6" fill="#5bc8ee"/>
+        <rect x="6" y="4" width="40" height="28" rx="6" fill="#3ab8e0"/>
+        <rect x="6" y="28" width="40" height="4" fill="#2aa8d0"/>
+        <rect x="38" y="10" width="5" height="12" rx="2.5" fill="white" opacity="0.7"/>
+        <rect x="38" y="36" width="5" height="18" rx="2.5" fill="white" opacity="0.7"/>
+      </svg>
+      <input class="write-input" type="text" placeholder="f _ i _ g _" oninput="chkW(this,['fridge','a fridge'])">
+      <div class="write-fb"></div>
+    </div>
+
+    <div class="write-card">
+      <svg width="56" height="40" viewBox="0 0 64 48">
+        <rect x="4" y="28" width="56" height="16" rx="5" fill="#ff9f4a"/>
+        <rect x="4" y="18" width="56" height="13" rx="4" fill="#ffd9b8"/>
+        <rect x="6" y="20" width="20" height="8" rx="3" fill="white"/>
+        <rect x="38" y="20" width="20" height="8" rx="3" fill="white"/>
+        <rect x="4" y="6" width="56" height="14" rx="5" fill="#e8834a"/>
+      </svg>
+      <input class="write-input" type="text" placeholder="b _ d" oninput="chkW(this,['bed','a bed'])">
+      <div class="write-fb"></div>
+    </div>
+
+  </div>
+
+  <div class="btn-row">
+    <button class="kid-btn btn-check" onclick="checkWrite()">Check! ⭐</button>
+    <button class="kid-btn btn-reset" onclick="resetAll()">Try Again 🔄</button>
+  </div>
+</div>
+
+<!-- ═══ TASK 6: CRAZY HOUSE ═══ -->
+<div class="section" style="animation-delay:0.25s">
+  <div class="section-title">
+    <div class="task-num" style="background:var(--red)">6</div>
+    <span style="color:var(--red)">Crazy House! 🤪</span>
+  </div>
+  <p class="task-desc">Is this sentence correct? Tap 👍 Yes or 👎 No! 🏠</p>
+  <div class="crazy-progress" id="crazyProgress"></div>
+  <div class="crazy-card">
+    <div class="crazy-scene" id="crazyScene"></div>
+    <div class="crazy-sentence" id="crazySentence"></div>
+    <div class="crazy-btns">
+      <button class="crazy-btn yes-btn" onclick="crazyAnswer(true)">👍 Yes!</button>
+      <button class="crazy-btn no-btn"  onclick="crazyAnswer(false)">👎 No!</button>
+    </div>
+    <div class="crazy-feedback" id="crazyFeedback"></div>
+    <div class="crazy-score" id="crazyScore"></div>
+  </div>
+  <div class="btn-row">
+    <button class="kid-btn btn-check" style="background:var(--red)" onclick="crazyStart()">▶️ Start!</button>
+  </div>
+</div>
+
+<div class="well-done" id="wellDone">
+  <span class="big-em">🏆</span>
+  <h2>You are a SUPERSTAR!</h2>
+  <p>You know all the house words! 🌟🌟🌟🌟</p>
+</div>
+
+</div><!-- page -->
+
+<script>
+/* ── BG BUBBLES ── */
+var bubs=document.getElementById('bubbles');
+var bcols=['#ffd0e8','#c8e8ff','#d0ffe8','#ffe8c8','#e8d0ff'];
+for(var i=0;i<18;i++){var b=document.createElement('div');b.className='bub';var sz=Math.random()*50+20;b.style.width=sz+'px';b.style.height=sz+'px';b.style.left=(Math.random()*100)+'%';b.style.background=bcols[Math.floor(Math.random()*bcols.length)];b.style.animationDuration=(Math.random()*16+12)+'s';b.style.animationDelay=(-Math.random()*25)+'s';bubs.appendChild(b);}
+
+/* ── CONFETTI ── */
+var cnv=document.getElementById('cnv'),cx=cnv.getContext('2d'),pts=[],rr=null;
+var CC=['#ff7eb3','#ffd84d','#4db8ff','#3ddbb0','#c07aff','#ff9f4a','#5dcc7a'];
+function rsz(){cnv.width=window.innerWidth;cnv.height=window.innerHeight;}rsz();window.addEventListener('resize',rsz);
+function spawn(x,y,n){for(var i=0;i<(n||14);i++){pts.push({x:x,y:y,vx:(Math.random()-.5)*10,vy:-(Math.random()*9+2),sz:Math.random()*9+4,col:CC[Math.floor(Math.random()*CC.length)],rot:Math.random()*360,rv:(Math.random()-.5)*16,life:1,circ:Math.random()>.5});}if(!rr)tick();}
+function tick(){cx.clearRect(0,0,cnv.width,cnv.height);pts=pts.filter(function(p){return p.life>0;});pts.forEach(function(p){cx.save();cx.globalAlpha=p.life;cx.translate(p.x,p.y);cx.rotate(p.rot*Math.PI/180);cx.fillStyle=p.col;if(p.circ){cx.beginPath();cx.arc(0,0,p.sz/2,0,Math.PI*2);cx.fill();}else{cx.fillRect(-p.sz/2,-p.sz/4,p.sz,p.sz/2);}cx.restore();p.x+=p.vx;p.y+=p.vy;p.vy+=0.3;p.vx*=.97;p.rot+=p.rv;p.life-=0.019;});if(pts.length>0){rr=requestAnimationFrame(tick);}else{rr=null;cx.clearRect(0,0,cnv.width,cnv.height);}}
+function bigBlast(){for(var i=0;i<8;i++){(function(d){setTimeout(function(){spawn(Math.random()*window.innerWidth,window.innerHeight*.3,32);},d);})(i*110);}}
+
+/* ── SPEECH ── */
+function spk(w,cardId){
+  if(!window.speechSynthesis)return;
+  window.speechSynthesis.cancel();
+  var u=new SpeechSynthesisUtterance(w);u.lang='en-GB';u.rate=0.82;
+  var vs=window.speechSynthesis.getVoices();
+  var v=vs.find(function(x){return x.lang.startsWith('en')&&(x.name.includes('Daniel')||x.name.includes('Karen')||x.name.includes('Samantha'));})
+       ||vs.find(function(x){return x.lang.startsWith('en');});
+  if(v)u.voice=v;
+  if(cardId){var c=document.getElementById(cardId);if(c){c.style.borderColor='var(--blue)';u.onend=function(){c.style.borderColor='transparent';};}}
+  window.speechSynthesis.speak(u);
+}
+
+/* ── STARS ── */
+var starsArr=[false,false,false,false,false];
+function earnStar(i){
+  if(starsArr[i])return;starsArr[i]=true;
+  var el=document.getElementById('s'+(i+1));el.textContent='⭐';el.classList.add('earned');
+  setTimeout(function(){el.classList.remove('earned');},600);
+  document.getElementById('starCount').textContent=starsArr.filter(Boolean).length+' / 5';
+  if(starsArr.filter(Boolean).length===5){bigBlast();document.getElementById('wellDone').classList.add('show');}
+}
+
+/* ── MATCH ── */
+var mSel=null,mDone=0;
+function mTap(el){
+  if(el.classList.contains('matched'))return;
+  if(!mSel){el.classList.add('selected');mSel=el;return;}
+  if(mSel===el){el.classList.remove('selected');mSel=null;return;}
+  if(mSel.dataset.side===el.dataset.side){mSel.classList.remove('selected');el.classList.add('selected');mSel=el;return;}
+  var a=mSel,b=el;a.classList.remove('selected');mSel=null;
+  if(a.dataset.id===b.dataset.id){
+    a.classList.add('matched');b.classList.add('matched');mDone++;
+    var r=a.getBoundingClientRect();spawn(r.left+r.width/2,r.top+r.height/2,16);
+    if(mDone===5){document.getElementById('matchMsg').textContent='All matched! Amazing! 🎉';earnStar(0);}
+  } else {
+    a.classList.add('shake');b.classList.add('shake');
+    setTimeout(function(){a.classList.remove('shake');b.classList.remove('shake');},400);
+  }
+}
+
+/* ── ROOM GAME ── */
+/* 
+  Correct placements:
+  bed    → bedroom
+  lamp   → bedroom or living room
+  sofa   → living room
+  fridge → kitchen
+  table  → kitchen or living room
+  chair  → kitchen or living room
+  carpet → bedroom or living room
+*/
+var roomCorrect={
+  bed:    ['dz-bed'],
+  sofa:   ['dz-living'],
+  fridge: ['dz-kitchen'],
+  lamp:   ['dz-bed','dz-living'],
+  table:  ['dz-kitchen','dz-living'],
+  chair:  ['dz-kitchen','dz-living'],
+  carpet: ['dz-bed','dz-living']
+};
+var roomEmoji={bed:'🛏',sofa:'🛋',fridge:'❄️',lamp:'💡',table:'🪑',chair:'🪑',carpet:'🟥'};
+var roomColors={bed:'#ff9f4a',sofa:'#4db8ff',fridge:'#3ab8e0',lamp:'#ffd84d',table:'#3dcc88',chair:'#ff7eb3',carpet:'#ff6060'};
+var selectedItem=null;
+var roomPlaced={};
+var roomDone=0;
+var ROOM_TOTAL=7;
+
+/* build progress dots */
+function buildProgress(){
+  var pg=document.getElementById('gameProgress');pg.innerHTML='';
+  var items=['bed','sofa','fridge','lamp','table','chair','carpet'];
+  items.forEach(function(name){
+    var d=document.createElement('div');d.className='gp-dot';d.id='gpd-'+name;
+    d.textContent='?';d.title=name;
+    if(roomPlaced[name])d.classList.add('done'),d.textContent='✓';
+    pg.appendChild(d);
+  });
+}
+buildProgress();
+
+function selectItem(el){
+  if(el.classList.contains('placed'))return;
+  document.querySelectorAll('.drag-item').forEach(function(d){d.style.outline='none';d.style.transform='';});
+  if(selectedItem===el){selectedItem=null;return;}
+  el.style.outline='3px solid var(--purple)';
+  el.style.transform='scale(1.1)';
+  selectedItem=el;
+  document.getElementById('gameMsg').textContent='Now tap the right room! 👆';
+}
+
+function dzClick(dzEl){
+  if(!selectedItem)return;
+  var name=selectedItem.dataset.name;
+  var dzId=dzEl.id;
+  var correct=roomCorrect[name]||[];
+  if(correct.indexOf(dzId)>=0){
+    /* correct! */
+    placeInRoom(name,dzId,dzEl);
+    selectedItem.classList.add('placed');
+    selectedItem.style.outline='none';selectedItem.style.transform='';
+    selectedItem=null;
+    roomPlaced[name]=true;roomDone++;
+    document.getElementById('gpd-'+name).classList.add('done');
+    document.getElementById('gpd-'+name).textContent='✓';
+    spawn(window.innerWidth/2,window.innerHeight/2,16);
+    if(roomDone===ROOM_TOTAL){
+      document.getElementById('gameMsg').textContent='Perfect! All furniture placed! 🎉🏠';
+      earnStar(1);bigBlast();
+    } else {
+      document.getElementById('gameMsg').textContent='Yes! '+name+' is in the right room! ✅';
+    }
+  } else {
+    /* wrong */
+    dzEl.classList.add('active-drop');
+    document.getElementById('gameMsg').textContent='Hmm, try a different room! 🤔';
+    setTimeout(function(){dzEl.classList.remove('active-drop');},600);
+    selectedItem.style.outline='3px solid var(--wrong)';
+    setTimeout(function(){if(selectedItem)selectedItem.style.outline='3px solid var(--purple)';},500);
+  }
+}
+
+function placeInRoom(name,dzId,dzEl){
+  /* place a text label inside SVG */
+  var g=document.getElementById('placedGroup');
+  /* get zone position */
+  var dzRect=dzEl.getBBox?dzEl.getBBox():null;
+  var cx2,cy2;
+  if(dzRect){cx2=dzRect.x+dzRect.width/2;cy2=dzRect.y+dzRect.height/2;}
+  else{
+    var m={
+      'dz-bed':{x:103,y:200},
+      'dz-living':{x:300,y:200},
+      'dz-kitchen':{x:498,y:200}
+    };
+    var already=document.querySelectorAll('[data-placed="'+dzId+'"]').length;
+    cx2=m[dzId].x;cy2=m[dzId].y+(already%3)*55-50;
+  }
+  var already=g.querySelectorAll('[data-placed="'+dzId+'"]').length;
+  var offsets=[[-30,-60],[30,-60],[-30,10],[30,10],[-30,80],[30,80],[0,-130]];
+  var off=offsets[already]||[0,0];
+  var t=document.createElementNS('http://www.w3.org/2000/svg','text');
+  t.setAttribute('x',cx2+off[0]);t.setAttribute('y',cy2+off[1]);
+  t.setAttribute('text-anchor','middle');
+  t.setAttribute('font-family','Fredoka One, cursive');
+  t.setAttribute('font-size','26');
+  t.setAttribute('data-placed',dzId);
+  t.textContent=roomEmoji[name]||'📦';
+  g.appendChild(t);
+  /* also add label */
+  var tl=document.createElementNS('http://www.w3.org/2000/svg','text');
+  tl.setAttribute('x',cx2+off[0]);tl.setAttribute('y',cy2+off[1]+18);
+  tl.setAttribute('text-anchor','middle');
+  tl.setAttribute('font-family','Fredoka One, cursive');
+  tl.setAttribute('font-size','11');
+  tl.setAttribute('fill',roomColors[name]||'#444');
+  tl.setAttribute('data-placed',dzId);
+  tl.textContent=name;
+  g.appendChild(tl);
+}
+
+/* ── TASK 3: CHOOSE ── */
+var chooseDone={};
+function chk(opt,chosen,correct){
+  var row=opt.closest('.choose-row');
+  if(row.dataset.done)return;
+  var opts=row.querySelectorAll('.choose-opt');
+  var fb=row.querySelector('.choose-fb');
+  if(chosen===correct){
+    opt.classList.add('ok-ans');opts.forEach(function(o){o.style.pointerEvents='none';});
+    fb.textContent='Yes! ✓ '+correct+'!';fb.className='choose-fb ok';
+    var r=opt.getBoundingClientRect();spawn(r.left+r.width/2,r.top,10);
+    row.dataset.done='1';
+    var allRows=document.querySelectorAll('.choose-row');
+    var doneCount=0;allRows.forEach(function(r){if(r.dataset.done)doneCount++;});
+    if(doneCount===5)earnStar(2);
+  } else {
+    opt.classList.add('bad-ans');
+    fb.textContent='Try again! ✗';fb.className='choose-fb bad';
+    setTimeout(function(){opt.classList.remove('bad-ans');opt.style.pointerEvents='';fb.textContent='';fb.className='choose-fb';},700);
+  }
+}
+
+/* ── TASK 4: WRITE ── */
+var writeDone={};
+function chkW(el,acc){
+  var fb=el.nextElementSibling;
+  var val=el.value.toLowerCase().trim();
+  if(!val){el.classList.remove('ok','bad');fb.textContent='';fb.className='write-fb';return;}
+  if(acc.some(function(a){return a===val;})){
+    el.classList.remove('bad');el.classList.add('ok');
+    fb.textContent='Yes! ✓';fb.className='write-fb ok';
+    var r=el.getBoundingClientRect();spawn(r.left+r.width/2,r.top,10);
+    writeDone[val]=true;
+    if(Object.keys(writeDone).length>=5)earnStar(3);
+  } else {
+    el.classList.remove('ok');el.classList.add('bad');
+    fb.textContent='Try again! ✗';fb.className='write-fb bad';
+  }
+}
+
+function checkWrite(){
+  var all=document.querySelectorAll('.write-input');
+  all.forEach(function(el){if(!el.value.trim()){el.classList.add('bad');var fb=el.nextElementSibling;fb.textContent='Write the word!';fb.className='write-fb bad';}});
+}
+
+/* ── RESET ── */
+function resetAll(){
+  mSel=null;mDone=0;
+  document.querySelectorAll('.mi').forEach(function(el){el.classList.remove('matched','selected','shake');});
+  document.getElementById('matchMsg').textContent='';
+  selectedItem=null;roomPlaced={};roomDone=0;
+  document.getElementById('placedGroup').innerHTML='';
+  document.querySelectorAll('.drag-item').forEach(function(el){el.classList.remove('placed');el.style.outline='none';el.style.transform='';});
+  document.getElementById('gameMsg').textContent='';
+  buildProgress();
+  document.querySelectorAll('.choose-row').forEach(function(row){
+    delete row.dataset.done;
+    row.querySelectorAll('.choose-opt').forEach(function(o){o.classList.remove('ok-ans','bad-ans');o.style.pointerEvents='';});
+    var fb=row.querySelector('.choose-fb');if(fb){fb.textContent='';fb.className='choose-fb';}
+  });
+  writeDone={};
+  document.querySelectorAll('.write-input').forEach(function(el){el.value='';el.classList.remove('ok','bad');var fb=el.nextElementSibling;fb.textContent='';fb.className='write-fb';});
+  crazyReset();
+  starsArr=[false,false,false,false,false];
+  ['s1','s2','s3','s4','s5'].forEach(function(id){document.getElementById(id).textContent='☆';});
+  document.getElementById('starCount').textContent='0 / 5';
+  document.getElementById('wellDone').classList.remove('show');
+}
+
+/* ── TASK 6: CRAZY HOUSE ── */
+var CRAZY_QS=[
+  {scene:'🛏️🍳',  sentence:'The <span>bed</span> is in the <span>kitchen</span>.',       correct:false},
+  {scene:'🛏️🛏️',  sentence:'The <span>bed</span> is in the <span>bedroom</span>.',      correct:true},
+  {scene:'🛋️🍳',  sentence:'The <span>sofa</span> is in the <span>kitchen</span>.',      correct:false},
+  {scene:'🛋️🛋️',  sentence:'The <span>sofa</span> is in the <span>living room</span>.', correct:true},
+  {scene:'❄️🛏️',  sentence:'The <span>fridge</span> is in the <span>bedroom</span>.',   correct:false},
+  {scene:'❄️🍳',  sentence:'The <span>fridge</span> is in the <span>kitchen</span>.',    correct:true},
+  {scene:'🪑🍳',  sentence:'The <span>chair</span> is in the <span>kitchen</span>.',     correct:true},
+  {scene:'🪑🛏️',  sentence:'The <span>chair</span> is in the <span>bedroom</span>.',    correct:false},
+  {scene:'🪟🛏️',  sentence:'The <span>window</span> is in the <span>bedroom</span>.',   correct:true},
+  {scene:'💡🍳',  sentence:'The <span>lamp</span> is in the <span>kitchen</span>.',      correct:false},
+  {scene:'💡🛋️',  sentence:'The <span>lamp</span> is in the <span>living room</span>.', correct:true},
+  {scene:'🚪🛋️',  sentence:'The <span>door</span> is in the <span>living room</span>.', correct:true},
+  {scene:'🟥🛋️',  sentence:'The <span>carpet</span> is in the <span>living room</span>.',correct:true},
+  {scene:'🟥🍳',  sentence:'The <span>carpet</span> is in the <span>kitchen</span>.',    correct:false},
+  {scene:'🛏️🛋️',  sentence:'The <span>bed</span> is in the <span>living room</span>.',  correct:false},
+];
+
+var crazyIdx=0, crazyCorrectCount=0, crazyList=[], crazyAnswered=false;
+
+function crazyReset(){
+  crazyIdx=0; crazyCorrectCount=0; crazyAnswered=false;
+  document.getElementById('crazyScene').textContent='🏠';
+  document.getElementById('crazySentence').textContent='Press Start!';
+  document.getElementById('crazyFeedback').textContent='';
+  document.getElementById('crazyScore').textContent='';
+  document.getElementById('crazyProgress').innerHTML='';
+}
+
+function crazyStart(){
+  crazyList=CRAZY_QS.slice().sort(function(){return Math.random()-0.5;}).slice(0,10);
+  crazyIdx=0; crazyCorrectCount=0; crazyAnswered=false;
+  var prog=document.getElementById('crazyProgress');
+  prog.innerHTML=crazyList.map(function(){return '<div class="crazy-dot"></div>';}).join('');
+  document.getElementById('crazyFeedback').textContent='';
+  document.getElementById('crazyScore').textContent='';
+  crazyShow();
+}
+
+function crazyShow(){
+  if(crazyIdx>=crazyList.length){crazyDone();return;}
+  crazyAnswered=false;
+  var q=crazyList[crazyIdx];
+  document.getElementById('crazyScene').textContent=q.scene;
+  document.getElementById('crazySentence').innerHTML=q.sentence;
+  document.getElementById('crazyFeedback').textContent='';
+  document.getElementById('crazyScore').textContent='⭐ '+crazyCorrectCount+' correct so far';
+  // enable buttons
+  document.querySelectorAll('.crazy-btn').forEach(function(b){b.disabled=false;b.style.opacity='1';});
+}
+
+function crazyAnswer(userSaysYes){
+  if(crazyAnswered)return;
+  crazyAnswered=true;
+  document.querySelectorAll('.crazy-btn').forEach(function(b){b.disabled=true;b.style.opacity='0.5';});
+  var q=crazyList[crazyIdx];
+  var dots=document.getElementById('crazyProgress').querySelectorAll('.crazy-dot');
+  var fb=document.getElementById('crazyFeedback');
+
+  if(userSaysYes===q.correct){
+    crazyCorrectCount++;
+    fb.textContent='✅ Correct! 🌟';
+    fb.style.color='var(--ok)';
+    if(dots[crazyIdx])dots[crazyIdx].classList.add('yes-dot');
+    var el=document.getElementById('crazyScene');
+    var r=el.getBoundingClientRect();
+    spawn(r.left+r.width/2,r.top+r.height/2,14);
+  } else {
+    fb.textContent=q.correct?'❌ Yes, that\'s right! 😅':'❌ No! That\'s crazy! 🤪';
+    fb.style.color='var(--wrong)';
+    if(dots[crazyIdx])dots[crazyIdx].classList.add('no-dot');
+  }
+  crazyIdx++;
+  setTimeout(crazyShow,1600);
+}
+
+function crazyDone(){
+  var total=crazyList.length;
+  var pct=Math.round(crazyCorrectCount/total*100);
+  document.getElementById('crazyScene').textContent=pct>=70?'🏆':'💪';
+  document.getElementById('crazySentence').innerHTML=
+    '<span>'+crazyCorrectCount+' / '+total+' correct!</span>';
+  document.getElementById('crazyFeedback').textContent=
+    pct>=80?'Amazing! You know your rooms! 🎉':
+    pct>=60?'Good job! Try again! 🌟':'Keep practising! 💪';
+  document.getElementById('crazyFeedback').style.color=pct>=60?'var(--ok)':'var(--orange)';
+  document.getElementById('crazyScore').textContent='';
+  if(crazyCorrectCount>=7){earnStar(4);if(pct>=80)bigBlast();}
+}
+
+crazyReset();
+</script>
+</body>
+</html>

@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>School Supplies ✏️</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --chalk: #f5f0e8;
+  --board: #2d5a3d;
+  --board-dark: #1e3d2a;
+  --yellow: #FFE566;
+  --coral: #FF6B6B;
+  --sky: #4FC3F7;
+  --mint: #69D9B1;
+  --lavender: #C589E8;
+  --orange: #FFA552;
+  --pink: #FF8CB4;
+  --navy: #1a2744;
+  --white: #FFFFFF;
+  --offwhite: #FAFAF7;
+  --shadow-sm: 0 3px 10px rgba(0,0,0,0.12);
+  --shadow-md: 0 6px 24px rgba(0,0,0,0.15);
+  --shadow-lg: 0 12px 40px rgba(0,0,0,0.2);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background: var(--board-dark);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ─── CHALK LINES BACKGROUND ─── */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image:
+    repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255,255,255,0.04) 39px, rgba(255,255,255,0.04) 40px),
+    repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(255,255,255,0.03) 39px, rgba(255,255,255,0.03) 40px);
+  pointer-events: none; z-index: 0;
+}
+
+/* ─── HEADER ─── */
+header {
+  background: var(--board);
+  position: relative;
+  padding: 32px 20px 24px;
+  text-align: center;
+  border-bottom: 8px solid #3d7a55;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  z-index: 1;
+}
+.chalk-dots { letter-spacing: 4px; font-size: 1.6rem; margin-bottom: 6px; }
+header h1 {
+  font-family: 'Fredoka One', cursive;
+  font-size: clamp(2rem, 7vw, 3.8rem);
+  color: var(--yellow);
+  text-shadow: 3px 3px 0 rgba(0,0,0,0.25);
+  letter-spacing: 2px;
+}
+header p { color: rgba(245,240,232,0.75); font-size: 1rem; margin-top: 6px; font-weight: 600; }
+
+/* chalk line under header */
+.chalk-line { height: 3px; background: rgba(255,255,255,0.15); border-radius: 2px; width: 60%; margin: 12px auto 0; }
+
+/* ─── NAV ─── */
+nav {
+  background: var(--board);
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 8px;
+  padding: 14px 16px;
+  border-bottom: 4px solid #3d7a55;
+  position: sticky; top: 0; z-index: 100;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+}
+nav button {
+  font-family: 'Fredoka One', cursive;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 2px solid rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.08);
+  color: rgba(245,240,232,0.8);
+  cursor: pointer;
+  transition: all .22s;
+}
+nav button:hover { background: rgba(255,255,255,0.18); color: white; transform: translateY(-2px); }
+nav button.active { color: var(--navy); transform: translateY(-2px); box-shadow: var(--shadow-sm); border-color: transparent; }
+nav button:nth-child(1).active { background: var(--yellow); }
+nav button:nth-child(2).active { background: var(--sky); }
+nav button:nth-child(3).active { background: var(--coral); }
+nav button:nth-child(4).active { background: var(--mint); }
+nav button:nth-child(5).active { background: var(--orange); }
+nav button:nth-child(6).active { background: var(--lavender); }
+
+/* ─── MAIN ─── */
+main { position: relative; z-index: 1; padding: 28px 16px 80px; max-width: 900px; margin: 0 auto; }
+
+.section { display: none; animation: popIn .35s ease; }
+.section.active { display: block; }
+@keyframes popIn { from { opacity:0; transform: scale(0.97) translateY(12px); } to { opacity:1; transform: scale(1) translateY(0); } }
+
+/* ─── SECTION HEADER ─── */
+.sec-head {
+  text-align: center;
+  margin-bottom: 22px;
+}
+.sec-head h2 {
+  font-family: 'Fredoka One', cursive;
+  font-size: clamp(1.5rem, 5vw, 2.2rem);
+  color: var(--chalk);
+  text-shadow: 2px 2px 0 rgba(0,0,0,0.2);
+}
+.sec-head p { color: rgba(245,240,232,0.6); font-size: 0.95rem; margin-top: 4px; font-weight: 600; }
+
+/* ─── SCORE ─── */
+.score-pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(255,255,255,0.1);
+  border: 2px solid rgba(255,255,255,0.18);
+  color: var(--yellow);
+  font-family: 'Fredoka One', cursive;
+  font-size: 1rem;
+  padding: 6px 20px;
+  border-radius: 50px;
+  margin-bottom: 18px;
+  backdrop-filter: blur(4px);
+}
+
+/* ─── CARD BASE ─── */
+.card {
+  background: var(--offwhite);
+  border-radius: 20px;
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+}
+
+/* ════════════════════════════════════
+   EX 1 – WORD CARDS
+════════════════════════════════════ */
+.word-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 14px;
+}
+.word-card {
+  background: white;
+  border-radius: 18px;
+  padding: 22px 14px 16px;
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  transition: transform .2s, box-shadow .2s;
+  border-bottom: 5px solid transparent;
+  position: relative;
+}
+.word-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-md); }
+.wc-icon { font-size: 3.8rem; display: block; margin-bottom: 10px; line-height: 1; }
+.wc-word { font-family: 'Fredoka One', cursive; font-size: 1.15rem; color: var(--navy); display: block; }
+.wc-ipa { font-size: 0.75rem; color: #aaa; margin-top: 3px; display: block; letter-spacing: 0.3px; }
+.wc-audio {
+  margin-top: 12px;
+  background: none; border: none; cursor: pointer;
+  font-size: 1.5rem;
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  transition: transform .2s, background .2s;
+}
+.wc-audio:hover { background: #f0f0f0; transform: scale(1.15); }
+.wc-audio.playing { animation: bounce .5s infinite alternate; }
+@keyframes bounce { from { transform: scale(1); } to { transform: scale(1.3); } }
+
+/* ════════════════════════════════════
+   EX 2 – MATCH
+════════════════════════════════════ */
+.match-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.match-col { display: flex; flex-direction: column; gap: 10px; }
+.match-col-title { font-family: 'Fredoka One', cursive; color: rgba(245,240,232,0.5); text-align: center; font-size: 0.9rem; margin-bottom: 4px; letter-spacing: 1px; text-transform: uppercase; }
+.match-item {
+  background: white;
+  border: 3px dashed #ddd;
+  border-radius: 14px;
+  padding: 13px 16px;
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.05rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all .18s;
+  min-height: 52px;
+  display: flex; align-items: center; justify-content: center;
+  user-select: none;
+}
+.match-item:hover { border-style: solid; transform: scale(1.04); background: #fafafa; }
+.match-item.selected { border-style: solid; transform: scale(1.06); background: #fff8e0; border-color: var(--yellow); }
+.match-item.correct { background: #d0f0e0; border-style: solid; border-color: var(--mint); color: #155724; }
+.match-item.wrong { background: #ffe0e0; border-style: solid; border-color: var(--coral); animation: shake .4s; }
+@keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-7px)} 75%{transform:translateX(7px)} }
+
+/* ════════════════════════════════════
+   EX 3 – WHAT IS IT?
+════════════════════════════════════ */
+.quiz-card {
+  background: white;
+  border-radius: 24px;
+  padding: 32px 24px;
+  text-align: center;
+  box-shadow: var(--shadow-md);
+  max-width: 480px;
+  margin: 0 auto 18px;
+}
+.quiz-icon { font-size: 5.5rem; display: block; margin-bottom: 8px; }
+.quiz-q { font-family: 'Fredoka One', cursive; font-size: 1.2rem; color: #666; margin-bottom: 22px; }
+.quiz-opts { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+.quiz-opt {
+  padding: 11px 22px; border-radius: 50px;
+  border: 3px solid #eee; background: white;
+  font-family: 'Fredoka One', cursive; font-size: 1rem;
+  cursor: pointer; transition: all .2s; color: var(--navy);
+}
+.quiz-opt:hover { border-color: var(--sky); transform: scale(1.05); }
+.quiz-opt.correct { background: var(--mint); border-color: var(--mint); color: white; }
+.quiz-opt.wrong { background: var(--coral); border-color: var(--coral); color: white; animation: shake .4s; }
+.quiz-fb { min-height: 30px; font-weight: 700; margin-top: 14px; font-size: 1.1rem; }
+.quiz-meta { text-align: center; color: rgba(245,240,232,0.4); font-size: 0.9rem; margin-bottom: 8px; font-weight: 600; }
+
+/* ════════════════════════════════════
+   EX 4 – SHOW ME!
+════════════════════════════════════ */
+.showme-card {
+  background: white;
+  border-radius: 24px;
+  padding: 28px 24px;
+  box-shadow: var(--shadow-md);
+  text-align: center;
+  max-width: 520px;
+  margin: 0 auto 16px;
+}
+.showme-command {
+  font-family: 'Fredoka One', cursive;
+  font-size: clamp(1.4rem, 4vw, 2rem);
+  color: var(--navy);
+  margin-bottom: 20px;
+  line-height: 1.3;
+}
+.showme-command .highlight {
+  display: inline-block;
+  padding: 2px 14px;
+  border-radius: 8px;
+  color: white;
+}
+.showme-options {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.showme-opt {
+  background: var(--offwhite);
+  border: 3px solid #eee;
+  border-radius: 16px;
+  padding: 18px 10px;
+  cursor: pointer;
+  transition: all .2s;
+  font-family: 'Fredoka One', cursive;
+  font-size: 0.95rem;
+  color: var(--navy);
+}
+.showme-opt:hover { transform: translateY(-4px); box-shadow: var(--shadow-sm); border-color: #ccc; }
+.showme-opt .opt-icon { font-size: 2.8rem; display: block; margin-bottom: 8px; }
+.showme-opt.correct { background: #d0f0e0; border-color: var(--mint); }
+.showme-opt.wrong { background: #ffe0e0; border-color: var(--coral); animation: shake .4s; }
+.showme-fb { font-weight: 700; font-size: 1.1rem; min-height: 28px; }
+.showme-progress { color: rgba(245,240,232,0.4); font-size: 0.9rem; text-align: center; margin-bottom: 6px; font-weight: 600; }
+
+/* ════════════════════════════════════
+   EX 5 – HOW MANY?
+════════════════════════════════════ */
+.count-card {
+  background: white;
+  border-radius: 24px;
+  padding: 28px 24px;
+  box-shadow: var(--shadow-md);
+  text-align: center;
+  max-width: 520px;
+  margin: 0 auto 16px;
+}
+.count-q { font-family: 'Fredoka One', cursive; font-size: 1.3rem; color: var(--navy); margin-bottom: 18px; }
+.count-items { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 22px; min-height: 70px; align-items: center; }
+.count-item { font-size: 2.6rem; transition: transform .2s; cursor: default; }
+.count-item:hover { transform: scale(1.15) rotate(-5deg); }
+.count-answers { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+.count-btn {
+  padding: 12px 26px; border-radius: 50px;
+  border: 3px solid #eee; background: white;
+  font-family: 'Fredoka One', cursive; font-size: 1.1rem;
+  cursor: pointer; transition: all .2s; color: var(--navy);
+  min-width: 64px;
+}
+.count-btn:hover { transform: scale(1.08); border-color: var(--orange); }
+.count-btn.correct { background: var(--mint); border-color: var(--mint); color: white; }
+.count-btn.wrong { background: var(--coral); border-color: var(--coral); color: white; animation: shake .4s; }
+.count-fb { min-height: 28px; font-weight: 700; font-size: 1.1rem; margin-top: 14px; }
+
+/* ════════════════════════════════════
+   EX 6 – COLOUR QUIZ
+════════════════════════════════════ */
+.colour-intro {
+  background: white; border-radius: 20px; padding: 20px 22px;
+  box-shadow: var(--shadow-sm); text-align: center;
+  margin-bottom: 18px;
+  font-family: 'Fredoka One', cursive; color: var(--navy); font-size: 1rem;
+}
+.colour-card {
+  background: white;
+  border-radius: 24px;
+  padding: 26px 22px;
+  box-shadow: var(--shadow-md);
+  text-align: center;
+  max-width: 520px;
+  margin: 0 auto 16px;
+}
+.colour-display {
+  display: flex; align-items: center; justify-content: center; gap: 16px;
+  margin-bottom: 20px; flex-wrap: wrap;
+}
+.colour-icon-wrap {
+  position: relative; display: inline-block;
+}
+.colour-icon { font-size: 4.5rem; display: block; }
+.colour-swatch {
+  width: 54px; height: 54px; border-radius: 50%;
+  border: 4px solid rgba(0,0,0,0.08);
+  box-shadow: var(--shadow-sm);
+}
+.colour-q { font-family: 'Fredoka One', cursive; font-size: 1.2rem; color: #555; margin-bottom: 18px; }
+.colour-opts { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+.colour-opt {
+  padding: 11px 22px; border-radius: 50px;
+  border: 3px solid #eee; background: white;
+  font-family: 'Fredoka One', cursive; font-size: 1rem;
+  cursor: pointer; transition: all .2s; color: var(--navy);
+  display: flex; align-items: center; gap: 8px;
+}
+.colour-opt:hover { transform: scale(1.05); }
+.colour-opt .dot { width: 18px; height: 18px; border-radius: 50%; flex-shrink: 0; }
+.colour-opt.correct { border-color: var(--mint); background: #d0f0e0; }
+.colour-opt.wrong { border-color: var(--coral); background: #ffe0e0; animation: shake .4s; }
+.colour-fb { min-height: 28px; font-weight: 700; font-size: 1.1rem; margin-top: 12px; }
+
+/* ─── BUTTONS ─── */
+.btn-next {
+  display: block; margin: 28px auto 0;
+  padding: 14px 44px; border-radius: 50px; border: none;
+  font-family: 'Fredoka One', cursive; font-size: 1.1rem;
+  color: var(--navy); cursor: pointer;
+  box-shadow: var(--shadow-md);
+  transition: transform .2s, box-shadow .2s;
+  letter-spacing: 0.5px;
+}
+.btn-next:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+.btn-s1 { background: linear-gradient(135deg, var(--yellow), var(--orange)); }
+.btn-s2 { background: linear-gradient(135deg, var(--sky), #29b6f6); }
+.btn-s3 { background: linear-gradient(135deg, var(--coral), #ff8a65); }
+.btn-s4 { background: linear-gradient(135deg, var(--mint), #26c6a0); }
+.btn-s5 { background: linear-gradient(135deg, var(--orange), var(--coral)); }
+
+.btn-reset {
+  display: block; margin: 12px auto 0;
+  background: none; border: 2px solid rgba(255,255,255,0.15);
+  color: rgba(245,240,232,0.4); border-radius: 50px;
+  padding: 8px 24px; font-family: 'Poppins', sans-serif;
+  font-size: 0.85rem; cursor: pointer; transition: all .2s;
+}
+.btn-reset:hover { border-color: rgba(255,255,255,0.3); color: rgba(245,240,232,0.7); }
+
+.btn-quiz-next {
+  margin-top: 16px;
+  padding: 12px 30px; border-radius: 50px; border: none;
+  font-family: 'Fredoka One', cursive; font-size: 1rem;
+  cursor: pointer; transition: all .2s;
+  color: white; box-shadow: var(--shadow-sm);
+}
+.btn-quiz-next:hover { transform: translateY(-3px); }
+
+@media (max-width:520px) {
+  .match-wrap { grid-template-columns: 1fr; }
+  .showme-options { grid-template-columns: repeat(2,1fr); }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="chalk-dots">✏️ 📏 ✂️ 🖍️ 📐 🖊️</div>
+  <h1>School Supplies</h1>
+  <p>Learn your classroom words in English!</p>
+  <div class="chalk-line"></div>
+</header>
+
+<nav id="mainNav">
+  <button onclick="go(0)" class="active">1 ✏️ Words</button>
+  <button onclick="go(1)">2 🔗 Match</button>
+  <button onclick="go(2)">3 ❓ What is it?</button>
+  <button onclick="go(3)">4 👀 Show me!</button>
+  <button onclick="go(4)">5 🔢 How many?</button>
+  <button onclick="go(5)">6 🎨 Colours!</button>
+</nav>
+
+<main>
+
+<!-- ══════════ S1: WORDS ══════════ -->
+<div class="section active" id="s0">
+  <div class="sec-head">
+    <h2>✏️ Listen & Learn!</h2>
+    <p>Tap the 🔊 button to hear the word in British English!</p>
+  </div>
+  <div class="word-grid" id="wordGrid"></div>
+  <button class="btn-next btn-s1" onclick="go(1)">Next Exercise →</button>
+</div>
+
+<!-- ══════════ S2: MATCH ══════════ -->
+<div class="section" id="s1">
+  <div class="sec-head">
+    <h2>🔗 Match the Words!</h2>
+    <p>Tap a word, then tap its picture to match them!</p>
+  </div>
+  <div style="text-align:center" class="score-pill" id="matchScore">⭐ 0 / 7</div>
+  <div class="match-wrap">
+    <div class="match-col"><div class="match-col-title">Words</div><div id="mWords"></div></div>
+    <div class="match-col"><div class="match-col-title">Pictures</div><div id="mPics"></div></div>
+  </div>
+  <button class="btn-reset" onclick="initMatch()">🔄 Try Again</button>
+  <button class="btn-next btn-s2" onclick="go(2)">Next Exercise →</button>
+</div>
+
+<!-- ══════════ S3: WHAT IS IT? ══════════ -->
+<div class="section" id="s2">
+  <div class="sec-head">
+    <h2>❓ What Is It?</h2>
+    <p>Look at the picture and choose the right word!</p>
+  </div>
+  <div style="text-align:center;margin-bottom:14px" class="score-pill" id="quizScore">⭐ 0 / 7</div>
+  <div class="quiz-meta" id="quizMeta"></div>
+  <div class="quiz-card">
+    <span class="quiz-icon" id="qIcon"></span>
+    <div class="quiz-q" id="qQ"></div>
+    <div class="quiz-opts" id="qOpts"></div>
+    <div class="quiz-fb" id="qFb"></div>
+  </div>
+  <div style="text-align:center">
+    <button class="btn-quiz-next" style="background:var(--coral)" onclick="nextQuiz()">Next →</button>
+  </div>
+  <button class="btn-next btn-s3" onclick="go(3)">Next Exercise →</button>
+</div>
+
+<!-- ══════════ S4: SHOW ME ══════════ -->
+<div class="section" id="s3">
+  <div class="sec-head">
+    <h2>👀 Show Me!</h2>
+    <p>Read the command and tap the correct picture!</p>
+  </div>
+  <div style="text-align:center;margin-bottom:14px" class="score-pill" id="showScore">⭐ 0 / 7</div>
+  <div class="showme-progress" id="showProg"></div>
+  <div class="showme-card">
+    <div class="showme-command" id="showCmd"></div>
+    <div class="showme-options" id="showOpts"></div>
+    <div class="showme-fb" id="showFb"></div>
+  </div>
+  <div style="text-align:center">
+    <button class="btn-quiz-next" style="background:var(--mint);color:var(--navy)" onclick="nextShow()">Next →</button>
+  </div>
+  <button class="btn-reset" onclick="initShow()">🔄 Try Again</button>
+  <button class="btn-next btn-s4" onclick="go(4)">Next Exercise →</button>
+</div>
+
+<!-- ══════════ S5: HOW MANY ══════════ -->
+<div class="section" id="s4">
+  <div class="sec-head">
+    <h2>🔢 How Many?</h2>
+    <p>Count the items and tap the right number!</p>
+  </div>
+  <div style="text-align:center;margin-bottom:14px" class="score-pill" id="countScore">⭐ 0 / 6</div>
+  <div class="count-card">
+    <div class="count-q" id="countQ"></div>
+    <div class="count-items" id="countItems"></div>
+    <div class="count-answers" id="countAns"></div>
+    <div class="count-fb" id="countFb"></div>
+  </div>
+  <div style="text-align:center">
+    <button class="btn-quiz-next" style="background:var(--orange);color:var(--navy)" onclick="nextCount()">Next →</button>
+  </div>
+  <button class="btn-reset" onclick="initCount()">🔄 Try Again</button>
+  <button class="btn-next btn-s5" onclick="go(5)">Next Exercise →</button>
+</div>
+
+<!-- ══════════ S6: COLOURS ══════════ -->
+<div class="section" id="s5">
+  <div class="sec-head">
+    <h2>🎨 What Colour Is It?</h2>
+    <p>Look at the school supply and choose the right colour!</p>
+  </div>
+  <div style="text-align:center;margin-bottom:14px" class="score-pill" id="colScore">⭐ 0 / 8</div>
+  <div class="colour-intro">🖍️ School supplies come in many colours! Can you name them?</div>
+  <div class="colour-card">
+    <div class="colour-display">
+      <span class="colour-icon" id="colIcon"></span>
+      <div class="colour-swatch" id="colSwatch"></div>
+    </div>
+    <div class="colour-q" id="colQ"></div>
+    <div class="colour-opts" id="colOpts"></div>
+    <div class="colour-fb" id="colFb"></div>
+  </div>
+  <div style="text-align:center">
+    <button class="btn-quiz-next" style="background:var(--lavender);color:white" onclick="nextColour()">Next →</button>
+  </div>
+  <button class="btn-reset" onclick="initColour()">🔄 Try Again</button>
+  <div style="text-align:center;margin-top:20px">
+    <span style="font-family:'Fredoka One',cursive;color:var(--yellow);font-size:1.2rem" id="finishMsg"></span>
+  </div>
+</div>
+
+</main>
+
+<script>
+// ═══════════ DATA ═══════════
+const words = [
+  { w:'a pen',     e:'🖊️',  ipa:'/ə pɛn/',      s:'a pen',     id:0 },
+  { w:'a pencil',  e:'✏️',  ipa:'/ə ˈpɛnsɪl/',  s:'a pencil',  id:1 },
+  { w:'an eraser', e:'🧹',  ipa:'/ən ɪˈreɪzə/', s:'an eraser', id:2 },
+  { w:'a ruler',   e:'📏',  ipa:'/ə ˈruːlə/',   s:'a ruler',   id:3 },
+  { w:'a crayon',  e:'🖍️', ipa:'/ə ˈkreɪɒn/',  s:'a crayon',  id:4 },
+  { w:'glue',      e:'🧴',  ipa:'/ɡluː/',        s:'glue',      id:5 },
+  { w:'scissors',  e:'✂️',  ipa:'/ˈsɪzəz/',     s:'scissors',  id:6 },
+];
+const cardColors = ['#FFE566','#4FC3F7','#FF6B6B','#69D9B1','#C589E8','#FFA552','#FF8CB4'];
+
+// ═══════════ TTS ═══════════
+function speak(text) {
+  if (!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'en-GB'; u.rate = 0.82; u.pitch = 1.05;
+  const vs = window.speechSynthesis.getVoices();
+  const brit = vs.find(v => v.lang === 'en-GB') || vs.find(v => v.lang.startsWith('en'));
+  if (brit) u.voice = brit;
+  window.speechSynthesis.speak(u);
+}
+if (window.speechSynthesis) window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+
+// ═══════════ NAV ═══════════
+const navBtns = document.querySelectorAll('#mainNav button');
+function go(i) {
+  document.querySelectorAll('.section').forEach((s,j)=>s.classList.toggle('active',j===i));
+  navBtns.forEach((b,j)=>b.classList.toggle('active',j===i));
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ═══════════ UTILS ═══════════
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+const numWords = ['zero','one','two','three','four','five','six','seven'];
+
+// ═══════════════════════════════════════════════
+// EX 1 – WORD CARDS
+// ═══════════════════════════════════════════════
+function initWords(){
+  const g=document.getElementById('wordGrid'); g.innerHTML='';
+  words.forEach((w,i)=>{
+    const c=document.createElement('div');
+    c.className='word-card';
+    c.style.borderBottomColor=cardColors[i];
+    c.innerHTML=`
+      <span class="wc-icon">${w.e}</span>
+      <span class="wc-word">${w.w}</span>
+      <span class="wc-ipa">${w.ipa}</span>
+      <button class="wc-audio" title="Listen" onclick="speakCard(this,'${w.s}')">🔊</button>
+    `;
+    g.appendChild(c);
+  });
+}
+function speakCard(btn,t){btn.classList.add('playing');speak(t);setTimeout(()=>btn.classList.remove('playing'),1600);}
+initWords();
+
+// ═══════════════════════════════════════════════
+// EX 2 – MATCH
+// ═══════════════════════════════════════════════
+let mSel=null, mScore=0;
+function initMatch(){
+  mSel=null; mScore=0;
+  document.getElementById('matchScore').textContent='⭐ 0 / 7';
+  const ws=shuffle(words.map(w=>({...w}))),ps=shuffle(words.map(w=>({...w})));
+  const wc=document.getElementById('mWords'),pc=document.getElementById('mPics');
+  wc.innerHTML=''; pc.innerHTML='';
+  ws.forEach(w=>{
+    const el=document.createElement('div');
+    el.className='match-item'; el.dataset.id=w.id; el.dataset.type='word';
+    el.style.borderColor=cardColors[w.id];
+    el.textContent=w.w; el.onclick=()=>onMatch(el);
+    wc.appendChild(el);
+  });
+  ps.forEach(w=>{
+    const el=document.createElement('div');
+    el.className='match-item'; el.dataset.id=w.id; el.dataset.type='pic';
+    el.style.borderColor=cardColors[w.id]; el.style.fontSize='2rem';
+    el.textContent=w.e; el.onclick=()=>onMatch(el);
+    pc.appendChild(el);
+  });
+}
+function onMatch(el){
+  if(el.classList.contains('correct')||el.classList.contains('wrong'))return;
+  if(!mSel){mSel=el;el.classList.add('selected');return;}
+  if(mSel===el){el.classList.remove('selected');mSel=null;return;}
+  const a=mSel,b=el;
+  a.classList.remove('selected');
+  if(a.dataset.id===b.dataset.id&&a.dataset.type!==b.dataset.type){
+    a.classList.add('correct');b.classList.add('correct');
+    mScore++;document.getElementById('matchScore').textContent=`⭐ ${mScore} / 7`;
+  } else {
+    a.classList.add('wrong');b.classList.add('wrong');
+    setTimeout(()=>{a.classList.remove('wrong');b.classList.remove('wrong');},700);
+  }
+  mSel=null;
+}
+initMatch();
+
+// ═══════════════════════════════════════════════
+// EX 3 – WHAT IS IT?
+// ═══════════════════════════════════════════════
+let qIdx=0,qScore=0,qDone=false;
+const quizOrder=shuffle([...words]);
+
+function renderQuiz(){
+  const item=quizOrder[qIdx];
+  document.getElementById('qIcon').textContent=item.e;
+  document.getElementById('qQ').textContent='What is it?';
+  document.getElementById('qFb').textContent='';
+  document.getElementById('quizMeta').textContent=`Question ${qIdx+1} of ${quizOrder.length}`;
+  document.getElementById('quizScore').textContent=`⭐ ${qScore} / ${quizOrder.length}`;
+  qDone=false;
+  const opts=shuffle([item,...shuffle(words.filter(x=>x.id!==item.id)).slice(0,3)]);
+  const c=document.getElementById('qOpts'); c.innerHTML='';
+  opts.forEach(o=>{
+    const b=document.createElement('button');
+    b.className='quiz-opt'; b.textContent=o.w;
+    b.onclick=()=>checkQuiz(b,o.id,item.id,item.w);
+    c.appendChild(b);
+  });
+}
+function checkQuiz(btn,chosen,ans,ansWord){
+  if(qDone)return; qDone=true;
+  if(chosen===ans){
+    btn.classList.add('correct');
+    document.getElementById('qFb').innerHTML='<span style="color:#26a65b">🎉 That\'s right!</span>';
+    qScore++;
+  } else {
+    btn.classList.add('wrong');
+    document.getElementById('qFb').innerHTML=`<span style="color:#e74c3c">It's ${ansWord}!</span>`;
+    document.querySelectorAll('.quiz-opt').forEach(b=>{if(b.textContent===ansWord)b.classList.add('correct');});
+  }
+  document.getElementById('quizScore').textContent=`⭐ ${qScore} / ${quizOrder.length}`;
+}
+function nextQuiz(){qIdx=(qIdx+1)%quizOrder.length; renderQuiz();}
+renderQuiz();
+
+// ═══════════════════════════════════════════════
+// EX 4 – SHOW ME!
+// ═══════════════════════════════════════════════
+let shIdx=0, shScore=0, shDone=false;
+const showOrder=shuffle([...words]);
+const showColors=['#FFE566','#4FC3F7','#FF6B6B','#69D9B1','#C589E8','#FFA552','#FF8CB4'];
+
+function renderShow(){
+  const item=showOrder[shIdx];
+  document.getElementById('showProg').textContent=`Round ${shIdx+1} of ${showOrder.length}`;
+  document.getElementById('showScore').textContent=`⭐ ${shScore} / ${showOrder.length}`;
+  document.getElementById('showFb').textContent='';
+  shDone=false;
+
+  // Speak the command
+  speak('Show me ' + item.s);
+
+  const cmd=document.getElementById('showCmd');
+  cmd.innerHTML=`Show me <span class="highlight" style="background:${showColors[item.id]};color:${item.id===0||item.id===3?'#1a2744':'white'}">${item.w}</span>!`;
+
+  // 4 choices: correct + 3 random wrong
+  const choices=shuffle([item,...shuffle(words.filter(x=>x.id!==item.id)).slice(0,3)]);
+  const c=document.getElementById('showOpts'); c.innerHTML='';
+  choices.forEach(ch=>{
+    const d=document.createElement('div');
+    d.className='showme-opt'; d.dataset.id=ch.id;
+    d.innerHTML=`<span class="opt-icon">${ch.e}</span>${ch.w}`;
+    d.onclick=()=>checkShow(d,ch.id,item.id,item.w);
+    c.appendChild(d);
+  });
+}
+function checkShow(el,chosen,ans,ansWord){
+  if(shDone)return; shDone=true;
+  if(chosen===ans){
+    el.classList.add('correct');
+    document.getElementById('showFb').innerHTML='<span style="color:#26a65b">🎉 Well done!</span>';
+    shScore++;
+  } else {
+    el.classList.add('wrong');
+    document.getElementById('showFb').innerHTML=`<span style="color:#e74c3c">This is ${ansWord}! Try again next time.</span>`;
+    document.querySelectorAll('.showme-opt').forEach(d=>{if(+d.dataset.id===ans)d.classList.add('correct');});
+  }
+  document.getElementById('showScore').textContent=`⭐ ${shScore} / ${showOrder.length}`;
+}
+function nextShow(){shIdx=(shIdx+1)%showOrder.length; renderShow();}
+function initShow(){shIdx=0;shScore=0;renderShow();}
+renderShow();
+
+// ═══════════════════════════════════════════════
+// EX 5 – HOW MANY?
+// ═══════════════════════════════════════════════
+const countRounds=[
+  {item:words[1],count:3},
+  {item:words[0],count:5},
+  {item:words[4],count:2},
+  {item:words[3],count:4},
+  {item:words[6],count:1},
+  {item:words[2],count:6},
+];
+let cIdx=0, cScore=0, cDone=false;
+const cOrder=shuffle([...countRounds]);
+
+function renderCount(){
+  const r=cOrder[cIdx];
+  document.getElementById('countQ').textContent=`How many ${r.item.w.replace(/^an? /,'')}s are there?`;
+  document.getElementById('countFb').textContent='';
+  document.getElementById('countScore').textContent=`⭐ ${cScore} / ${cOrder.length}`;
+  cDone=false;
+
+  const items=document.getElementById('countItems');
+  items.innerHTML='';
+  for(let i=0;i<r.count;i++){
+    const s=document.createElement('span');
+    s.className='count-item'; s.textContent=r.item.e;
+    s.style.animationDelay=i*0.05+'s';
+    items.appendChild(s);
+  }
+
+  // Offer r.count and 3 neighbours
+  const pool=new Set([r.count]);
+  while(pool.size<4){const n=Math.max(1,r.count+Math.floor(Math.random()*5)-2);pool.add(n);}
+  const opts=shuffle([...pool]);
+  const ans=document.getElementById('countAns'); ans.innerHTML='';
+  opts.forEach(n=>{
+    const b=document.createElement('button');
+    b.className='count-btn'; b.textContent=`${n} — ${numWords[n]}`;
+    b.onclick=()=>checkCount(b,n,r.count,r.item.w);
+    ans.appendChild(b);
+  });
+}
+function checkCount(btn,chosen,ans,word){
+  if(cDone)return; cDone=true;
+  if(chosen===ans){
+    btn.classList.add('correct');
+    document.getElementById('countFb').innerHTML=`<span style="color:#26a65b">🎉 Yes! ${numWords[ans]}!</span>`;
+    cScore++;
+  } else {
+    btn.classList.add('wrong');
+    document.getElementById('countFb').innerHTML=`<span style="color:#e74c3c">There are ${numWords[ans]}!</span>`;
+    document.querySelectorAll('.count-btn').forEach(b=>{if(b.textContent===`${ans} — ${numWords[ans]}`)b.classList.add('correct');});
+  }
+  document.getElementById('countScore').textContent=`⭐ ${cScore} / ${cOrder.length}`;
+}
+function nextCount(){cIdx=(cIdx+1)%cOrder.length; renderCount();}
+function initCount(){cIdx=0;cScore=0;renderCount();}
+renderCount();
+
+// ═══════════════════════════════════════════════
+// EX 6 – WHAT COLOUR?
+// ═══════════════════════════════════════════════
+const colRounds=[
+  {e:'✏️', item:'pencil', colour:'yellow',  hex:'#FFD700'},
+  {e:'✂️', item:'scissors',colour:'red',    hex:'#E53935'},
+  {e:'📏', item:'ruler',  colour:'blue',    hex:'#1E88E5'},
+  {e:'🖊️', item:'pen',    colour:'black',   hex:'#212121'},
+  {e:'🧴', item:'glue',   colour:'white',   hex:'#F5F5F5'},
+  {e:'📐', item:'set square', colour:'orange', hex:'#FB8C00'},
+  {e:'🖍️', item:'crayon', colour:'green',   hex:'#43A047'},
+  {e:'🗂️', item:'folder', colour:'purple',  hex:'#8E24AA'},
+];
+const allColours=[
+  {name:'yellow',hex:'#FFD700'},{name:'red',hex:'#E53935'},{name:'blue',hex:'#1E88E5'},
+  {name:'black',hex:'#212121'},{name:'white',hex:'#F5F5F5'},{name:'orange',hex:'#FB8C00'},
+  {name:'green',hex:'#43A047'},{name:'purple',hex:'#8E24AA'},{name:'pink',hex:'#E91E8C'}
+];
+let coIdx=0, coScore=0, coDone=false;
+const coOrder=shuffle([...colRounds]);
+
+function renderColour(){
+  const r=coOrder[coIdx];
+  document.getElementById('colIcon').textContent=r.e;
+  document.getElementById('colSwatch').style.background=r.hex;
+  document.getElementById('colQ').textContent=`What colour is the ${r.item}?`;
+  document.getElementById('colFb').textContent='';
+  document.getElementById('colScore').textContent=`⭐ ${coScore} / ${coOrder.length}`;
+  coDone=false;
+
+  const wrongs=shuffle(allColours.filter(c=>c.name!==r.colour)).slice(0,3);
+  const opts=shuffle([{name:r.colour,hex:r.hex},...wrongs]);
+  const c=document.getElementById('colOpts'); c.innerHTML='';
+  opts.forEach(o=>{
+    const b=document.createElement('button');
+    b.className='colour-opt';
+    b.innerHTML=`<span class="dot" style="background:${o.hex};border:2px solid rgba(0,0,0,0.1)"></span>${o.name}`;
+    b.onclick=()=>checkColour(b,o.name,r.colour);
+    c.appendChild(b);
+  });
+}
+function checkColour(btn,chosen,ans){
+  if(coDone)return; coDone=true;
+  if(chosen===ans){
+    btn.classList.add('correct');
+    document.getElementById('colFb').innerHTML=`<span style="color:#26a65b">🎉 Yes, it's ${ans}!</span>`;
+    coScore++;
+  } else {
+    btn.classList.add('wrong');
+    document.getElementById('colFb').innerHTML=`<span style="color:#e74c3c">It's ${ans}!</span>`;
+    document.querySelectorAll('.colour-opt').forEach(b=>{if(b.textContent.trim()===ans)b.classList.add('correct');});
+  }
+  document.getElementById('colScore').textContent=`⭐ ${coScore} / ${coOrder.length}`;
+  if(coIdx+1>=coOrder.length&&coDone){
+    document.getElementById('finishMsg').textContent=`🏆 Fantastic! You got ${coScore} out of ${coOrder.length}! 🌟`;
+  }
+}
+function nextColour(){
+  coIdx=(coIdx+1)%coOrder.length; renderColour();
+  document.getElementById('finishMsg').textContent='';
+}
+function initColour(){coIdx=0;coScore=0;renderColour();document.getElementById('finishMsg').textContent='';}
+renderColour();
+</script>
+</body>
+</html>
